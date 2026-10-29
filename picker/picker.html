@@ -12,13 +12,16 @@
   header { display:flex; align-items:center; gap:10px; padding:12px 18px;
            background:var(--panel); border-bottom:1px solid var(--line); }
   header h1 { font-size:15px; font-weight:600; letter-spacing:.4px; }
-  header .badge { margin-left:auto; font-size:11px; color:var(--dim); }
+  header .badge { font-size:11px; color:var(--dim); }
   header .from-opencode { font-size:11px; color:var(--ok); display:none;
                           border:1px solid var(--ok); border-radius:20px; padding:2px 10px; }
   main { display:flex; flex:1; min-height:0; }
-  #rail { width:230px; border-right:1px solid var(--line); background:var(--panel);
-          padding:12px; overflow-y:auto; flex-shrink:0; }
-  #rail h2 { font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--dim); margin:10px 0 6px; }
+  #rail { width:360px; flex-shrink:0; border-right:1px solid var(--line); background:var(--panel);
+          padding:12px 14px; overflow-y:auto; }
+  #rail h2 { font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--dim); margin:12px 0 6px; }
+  .side-actions { display:flex; gap:10px; margin-top:14px; }
+  .side-actions button { flex:1; }
+  .side-rule { border:0; border-top:1px solid var(--line); margin:14px 0 10px; }
   #rail input[type=search] { width:100%; background:var(--bg); color:var(--text);
                              border:1px solid var(--line); border-radius:6px; padding:6px 8px; font-size:13px; }
   #rail label.chip { display:block; font-size:12px; padding:3px 0; cursor:pointer; }
@@ -34,7 +37,6 @@
   .card .tag { font-size:11px; color:var(--dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .card.sel { border-color:var(--accent); }
   .card.sel .name::after { content:"  ✓"; color:var(--ok); }
-  footer { border-top:1px solid var(--line); background:var(--panel); padding:14px 18px; }
   #ribbon { font-size:12px; margin-bottom:10px; }
   #ribbon b { color:var(--accent); }
   .row { display:flex; gap:18px; align-items:center; flex-wrap:wrap; }
@@ -47,7 +49,6 @@
   #content_files.bad { border-color:var(--bad); }
   #notes { width:100%; background:var(--bg); color:var(--text);
            border:1px solid var(--line); border-radius:6px; padding:6px 10px; }
-  #actions { display:flex; justify-content:flex-end; gap:10px; margin-top:10px; }
   button { border:0; border-radius:8px; padding:10px 18px; font-size:13px; font-weight:600; cursor:pointer; }
   #copyBtn { background:transparent; color:var(--dim); border:1px solid var(--line); }
   #buildBtn { background:var(--accent); color:#0a0e18; }
@@ -60,7 +61,6 @@
 <header>
   <h1>HTML SLIDES — Lesson Deck Picker</h1>
   <span class="from-opencode" id="fromOpencode">waiting for your submission (opencode is watching)</span>
-  <span class="badge" id="json-library-badge"></span>
 </header>
 <main>
   <nav id="rail">
@@ -68,38 +68,38 @@
     <h2>Scheme</h2><div data-filter="scheme"></div>
     <h2>Density</h2><div data-filter="density"></div>
     <h2>Formality</h2><div data-filter="formality"></div>
-    <h2>Tags</h2><div data-filter="occasion"></div>
     <div class="count" id="count"></div>
+    <h2>Deck options</h2>
+    <div class="row">
+      <div class="field"><span>Slide count</span>
+        <div class="row">
+          <label><input id="autoCount" type="checkbox"> auto</label>
+          <input id="countN" type="number" min="3" max="30" value="12" disabled>
+        </div>
+      </div>
+      <div class="field"><span>Density</span>
+        <select id="density">
+          <option value="auto">auto</option><option value="sparse">sparse</option>
+          <option value="balanced" selected>balanced</option><option value="dense">dense</option>
+        </select>
+      </div>
+    </div>
+    <div class="field" style="margin-top:8px"><span>Content files (one absolute path per line)</span>
+      <textarea id="content_files" placeholder="D:\lessons\Week-1-Notebook.html"></textarea>
+    </div>
+    <div class="field" style="margin-top:8px"><span>Extra notes (optional)</span>
+      <input id="notes" placeholder="e.g. keep section dividers minimal">
+    </div>
+    <hr class="side-rule">
+    <div id="ribbon">Select a template to begin.</div>
+    <span class="badge" id="json-library-badge"></span>
+    <div class="side-actions">
+      <button id="copyBtn">Copy selection</button>
+      <button id="buildBtn" disabled>BUILD DECK</button>
+    </div>
   </nav>
   <section id="grid"></section>
 </main>
-<footer>
-  <div id="ribbon">Select a template to begin.</div>
-  <div class="row">
-    <div class="field"><span>Slide count</span>
-      <div class="row">
-        <label><input id="autoCount" type="checkbox"> auto</label>
-        <input id="countN" type="number" min="3" max="30" value="12" disabled>
-      </div>
-    </div>
-    <div class="field"><span>Density</span>
-      <select id="density">
-        <option value="auto">auto</option><option value="sparse">sparse</option>
-        <option value="balanced" selected>balanced</option><option value="dense">dense</option>
-      </select>
-    </div>
-  </div>
-  <div class="field" style="margin-top:8px"><span>Content files (one absolute path per line)</span>
-    <textarea id="content_files" placeholder="D:\lessons\Week-1-Notebook.html"></textarea>
-  </div>
-  <div class="field" style="margin-top:8px"><span>Extra notes (optional)</span>
-    <input id="notes" placeholder="e.g. keep section dividers minimal">
-  </div>
-  <div id="actions">
-    <button id="copyBtn">Copy selection</button>
-    <button id="buildBtn" disabled>BUILD DECK</button>
-  </div>
-</footer>
 <div class="toast" id="toast"></div>
 <script src="library.json.js"></script>
 <script>
@@ -115,12 +115,12 @@
 
     let recalled = localStorage.getItem('picker.lastTemplate') || '';
 
-    // filters: value lists derived from data (moods intentionally absent);
-    // occasion/scheme/density/formality only
+    // filters: value lists derived from data (occasion removed from UI, kept in data);
+    // scheme/density/formality only
     const values = k => [...new Set(
         T.map(t => Array.isArray(t[k]) ? t[k] : (t[k] == null ? [] : [t[k]]))
             .flat().filter(Boolean).sort())];
-    for (const k of ['scheme', 'density', 'formality', 'occasion']) {
+    for (const k of ['scheme', 'density', 'formality']) {
         const box = rail.querySelector('[data-filter="' + k + '"]');
         for (const v of values(k)) {
             const lab = document.createElement('label');
@@ -144,7 +144,6 @@
         if (q && !((t.name + ' ' + t.tagline).toLowerCase().includes(q))) return false;
         for (const k of ['scheme', 'density', 'formality'])
             if (f[k] && !f[k].includes(t[k])) return false;
-        if (f.occasion && !f.occasion.some(v => (t.occasion || []).includes(v))) return false;
         return true;
     }
 
@@ -160,7 +159,7 @@
             c.dataset.templateCard = t.slug;
             const img = document.createElement('img');
             img.loading = 'lazy';
-            img.src = 'screenshots/' + encodeURIComponent(t.slug) + '.png';
+            img.src = 'screenshots/' + encodeURIComponent(t.slug) + '-1.png';
             const meta = document.createElement('div');
             meta.className = 'meta';
             meta.innerHTML = '<div class="name"></div><div class="tag"></div>';

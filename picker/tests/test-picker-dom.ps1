@@ -25,5 +25,8 @@ Assert ($cardCount -ge 30) "cards rendered >= 30 (got $cardCount)"
 Assert ($dom -match 'BUILD DECK') 'build-deck button rendered'
 Assert ($dom -match 'json-library-badge') 'library badge rendered'
 Assert ($dom -match 'content_files') 'content files textarea rendered'
+Assert (-not ($dom -match 'data-filter="occasion"')) 'occasion filter absent'
+Assert (-not ($dom -match '<footer')) 'no footer element'
+Assert ($dom -match '\-1\.png') 'thumbnails use tile-1 captures'
 if ($fail -gt 0) { Write-Host "$fail failed"; exit 1 }
 Write-Host "all $pass checks passed"; exit 0
