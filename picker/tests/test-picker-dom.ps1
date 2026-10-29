@@ -28,5 +28,8 @@ Assert ($dom -match 'content_files') 'content files textarea rendered'
 Assert (-not ($dom -match 'data-filter="occasion"')) 'occasion filter absent'
 Assert (-not ($dom -match '<footer')) 'no footer element'
 Assert ($dom -match '\-1\.png') 'thumbnails use tile-1 captures'
+Assert ($dom -match 'id="shotModal"') 'modal shell present'
+Assert ($dom -match 'data-modal-shot') 'modal has 3 image slots'
+Assert ($dom -match 'id="modalSelect"') 'modal SELECT button present'
 if ($fail -gt 0) { Write-Host "$fail failed"; exit 1 }
 Write-Host "all $pass checks passed"; exit 0

@@ -55,6 +55,20 @@
   #buildBtn:disabled { opacity:.4; cursor:not-allowed; }
   .toast { position:fixed; bottom:18px; left:50%; transform:translateX(-50%); background:var(--panel);
            border:1px solid var(--line); padding:10px 16px; border-radius:8px; font-size:13px; display:none; }
+  #shotModal { position:fixed; inset:0; background:rgba(6,9,15,.78); display:none;
+               align-items:center; justify-content:center; z-index:1000; }
+  #shotModal.open { display:flex; }
+  .shots-panel { background:var(--panel); border:1px solid var(--line); border-radius:12px;
+                 padding:16px; max-width:86vw; }
+  .shots-head { display:flex; align-items:baseline; gap:10px; margin-bottom:10px; }
+  .shots-head b { font-size:14px; }
+  .shots-head span { font-size:11px; color:var(--dim); }
+  .shots-head button { margin-left:auto; background:transparent; color:var(--dim);
+                       border:0; cursor:pointer; font-size:16px; padding:2px 6px; }
+  .shots-row { display:flex; gap:10px; }
+  .shots-row img { width:32%; aspect-ratio:16/9; object-fit:cover; background:#000;
+                   border-radius:8px; display:block; }
+  .shots-foot { display:flex; justify-content:flex-end; margin-top:12px; }
 </style>
 </head>
 <body>
@@ -100,6 +114,16 @@
   </nav>
   <section id="grid"></section>
 </main>
+<div id="shotModal">
+  <div class="shots-panel" role="dialog" aria-modal="true">
+    <div class="shots-head"><b id="modalName"></b><span id="modalTag"></span>
+      <button id="modalClose" title="Close (Esc)">✕</button></div>
+    <div class="shots-row">
+      <img data-modal-shot=1 alt="slide 1"><img data-modal-shot=2 alt="slide 2"><img data-modal-shot=3 alt="slide 3">
+    </div>
+    <div class="shots-foot"><button id="modalSelect">SELECT</button></div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 <script src="library.json.js"></script>
 <script>
@@ -166,7 +190,7 @@
             meta.querySelector('.name').textContent = t.name;
             meta.querySelector('.tag').textContent = t.tagline;
             c.appendChild(img); c.appendChild(meta);
-            c.onclick = () => { recalled = t.slug; localStorage.setItem('picker.lastTemplate', t.slug); cards(); ribbon(); revalidate(); };
+            c.onclick = () => openShotModal(t.slug);
             grid.appendChild(c);
             n++;
         }
@@ -254,6 +278,27 @@
         if (new URLSearchParams(location.search).get('from') === 'opencode')
             toast('opencode is reading selection.json — you can keep this open or close it', true);
     }
+
+    function confirmSelect(slug) {
+        recalled = slug;
+        localStorage.setItem('picker.lastTemplate', slug);
+        cards(); ribbon(); revalidate();
+    }
+    function openShotModal(slug) {
+        const t = T.find(x => x.slug === slug);
+        $('#modalName').textContent = t.name;
+        $('#modalTag').textContent  = t.tagline;
+        document.querySelectorAll('[data-modal-shot]').forEach(img => {
+            img.src = 'screenshots/' + encodeURIComponent(slug) + '-' + img.dataset.modalShot + '.png';
+        });
+        const sel = $('#modalSelect');
+        sel.onclick = () => { closeShotModal(); confirmSelect(slug); };
+        $('#shotModal').classList.add('open');
+    }
+    function closeShotModal() { $('#shotModal').classList.remove('open'); }
+    $('#modalClose').onclick = closeShotModal;
+    $('#shotModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeShotModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeShotModal(); });
 
     $('#buildBtn').onclick = writeJson;
     $('#copyBtn').onclick = async () => {
