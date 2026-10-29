@@ -63,6 +63,22 @@ For every path in `content_files`, read the source. Lines that start with `stage
 **Step 3 — Build the deck in the chosen template.**
 Import: `picker\repo` (refresh with `picker\install.ps1` ONLY if `templates.json` is older than the user wants or `repo` is missing). Locate `template`'s slug in `picker\templates.json`; if mapped to a missing slug, name the nearest equivalent based on scheme/density/formality and SAY you substituted. In the chosen template: follow the repo's own `AGENTS.md` §3–§5 — preserve fonts, palette, layout grid, slide-level CSS classes, decorative elements, and the navigation runtime; replace all placeholder content; duplicate the most appropriate layout for extra slides and update page-number labels (`NN / TT`); design missing layouts with the template's own design system — same fonts, colors, decor vocabulary, spacing rhythm, component grammar, chrome.
 
+**Provenance block (REQUIRED):** the delivered HTML must begin its `<head>` with a provenance comment recording what produced it and from what source, so future debugging resolves provenance from the file itself:
+
+```html
+<head>
+<!--
+  deck-provenance
+  generator: html-slides skill (opencode)
+  template: <slug from templates.json>
+  source_files:
+    - <absolute path of each resolvable content_files entry, one per line; note staged: copies by their resolved staged path>
+  built_at: <ISO timestamp>
+-->
+```
+
+If a content file could not be resolved (Step 2), list it under `unresolved:` with the reason. Never omit the block, even when the user doesn't ask for metadata.
+
 **Step 4 — Auto font-size fit pass.** The template renders a fixed 1920×1080 stage that the browser scales uniformly (it may letterbox or pillarbox; content never reflows). After building every slide:
 1. Check each slide for overflow — content clipped, text running past cards/columns, elements colliding with decor or the page-number chrome.
 2. Fix overflow WITHOUT restructuring the design: step font sizes down within the template's type scale (keep relative hierarchy, e.g. 32→28→24 px), tighten line-height or card padding, or shorten copy. Never move the stage scale itself.
@@ -77,6 +93,10 @@ Import: `picker\repo` (refresh with `picker\install.ps1` ONLY if `templates.json
 
 For lesson/document content, organize per-slide substance the same way a presenter needs it: one idea per slide, headlines presentation-ready, notes that don't belong on the slide stay out. If the user supplies a rich source and you need slide-by-slide derivation, the docx-to-ppt skill's Steps 1–3 describe content extraction; do NOT use its slidespec file.
 
+**Calculation preservation (REQUIRED):** every calculation, formula, or numeric computation that appears in the source content must appear on the slides too — never summarized away as "the formula applies here". Render it with the template's own component grammar (mono blocks, callout cards, or equation styling the template already provides), show the full worked expression (inputs → formula → substitution → result with units), and respect the 30px font floor. If a calculation drives a key takeaway, give it its own slide rather than a footnote.
+
+**Definition preservation (REQUIRED):** when a source introduces a new term, its definition must appear on the slide where the term first shows up — term + definition together, not the term alone or "see handout". Keep definitions verbatim or near-verbatim from the source; expanding them in your own words risks drift. If the source defines many terms per slide, move definitions to follow-up slides rather than dropping them.
+
 ## Common Mistakes
 
 - Skipping Step 0 — silently producing a .pptx when the user wanted HTML (or vice versa)
@@ -90,3 +110,6 @@ For lesson/document content, organize per-slide substance the same way a present
 - Using macOS `open` on Windows
 - Mashing two templates' slides together instead of extending one
 - Skipping the `picker\status.js` checkpoints — the user's loading screen stalls on the last known step; they may think the build hung
+- Delivering an HTML deck without the `deck-provenance` comment block — debugging later can't tell what skill produced it or from which sources
+- Dropping calculations from the source and just describing them in prose — the worked expression must be on the slide
+- Showing a term without its definition when the source defines it — term and definition travel together
