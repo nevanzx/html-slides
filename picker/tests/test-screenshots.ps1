@@ -16,7 +16,7 @@ foreach ($t in $json.templates) {
         $totalTiles++
         $png = Join-Path $ssDir ($t.slug + '-' + $i + '.png')
         if (-not (Test-Path $png)) { $missing += "$($t.slug)-$i"; continue }
-        if ((Get-Item $png).Length -lt 20KB) { $tiny += "$($t.slug)-$i" }
+        if ((Get-Item $png).Length -le 20KB) { $tiny += "$($t.slug)-$i" }
     }
     $legacy = Join-Path $ssDir ($t.slug + '.png')
     if (Test-Path $legacy) { $tiny += "$($t.slug)-legacy" }

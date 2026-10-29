@@ -39,7 +39,6 @@ $json = ConvertTo-Json $payload -Depth 5
 Write-Host 'install: sections 1-2 done (templates.json + library.json.js)'
 
 # ---------- section 3: first-three-slides captures via Chrome headless (4 parallel jobs) ----------
-Add-Type -AssemblyName System.Drawing
 $ssDirPath = Join-Path $PSScriptRoot 'screenshots'
 New-Item -ItemType Directory -Force -Path $ssDirPath | Out-Null
 $chromeKey0 = Get-ItemProperty 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe' -ErrorAction SilentlyContinue
