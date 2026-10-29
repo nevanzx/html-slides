@@ -120,7 +120,7 @@ picker/
   picker.cmd                    shortcut target (GUI + watcher)
   watcher.ps1                   selection.json poller / opencode trigger
   templates.json, library.json.js    generated library data
-  screenshots/*.png             generated title-slide captures
+  screenshots/<slug>-{1,2,3}.png  generated first-three-slide captures
   repo/                         cloned template library (gitignored)
   web-browser.txt               resolved chrome.exe path (gitignored)
   tests/                        5 validation scripts
