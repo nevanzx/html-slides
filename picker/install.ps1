@@ -72,7 +72,9 @@ $chromeKey = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\A
 $chrome = if ($chromeKey) { $chromeKey.'(default)' } else { $null }
 $guiBrowser = if ($chrome -and (Test-Path $chrome)) { $chrome } else { $null }
 if (-not $guiBrowser) { throw 'Chrome (chrome.exe) not found via App Paths registry key' }
-Set-Content (Join-Path $PSScriptRoot 'web-browser.txt') -Value $guiBrowser -Encoding UTF8
+# BOM-less UTF-8: picker.cmd's for /f is not BOM-aware (PS 5.1 Set-Content -Encoding UTF8 emits a BOM)
+$browserTxt = Join-Path $PSScriptRoot 'web-browser.txt'
+[IO.File]::WriteAllText($browserTxt, $guiBrowser + [Environment]::NewLine, (New-Object System.Text.UTF8Encoding $false))
 if ($SkipShortcuts) { Write-Host 'shortcuts skipped (-SkipShortcuts)'; return }
 
 $ws = New-Object -ComObject WScript.Shell

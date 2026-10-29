@@ -9,6 +9,8 @@ $picker     = Join-Path $root 'picker'
 $browserTxt = Join-Path $picker 'web-browser.txt'
 Assert (Test-Path $browserTxt) 'web-browser.txt exists'
 if (Test-Path $browserTxt) {
+    $bytes = [IO.File]::ReadAllBytes($browserTxt)
+    Assert (-not ($bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF)) 'web-browser.txt has no UTF-8 BOM'
     $browser = (Get-Content $browserTxt -Raw).Trim()
     Assert (Test-Path $browser) "browser exe exists ($browser)"
 }
