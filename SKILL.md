@@ -1,6 +1,6 @@
 ---
 name: html-slides
-description: Use when the user wants slides, a deck, or a presentation delivered as a browser HTML file with full template artwork (or names a template from beautiful-html-templates), or when the user asks to "make slides/presentation" without specifying PowerPoint vs HTML — in that case ask whether docx-to-ppt (editable PowerPoint) or html-slides (browser HTML) should handle it before starting.
+description: Use for ANY request involving slides, a deck, a presentation, or slide content — "make slides", "build a deck", "presentation for class", "turn this lesson into slides", "HTML slides", or naming a template from beautiful-html-templates. This skill is the single destination for all slide work; it always produces browser HTML, never .pptx, unless the user explicitly asks for an editable PowerPoint file.
 ---
 
 # HTML Slides
@@ -9,13 +9,30 @@ description: Use when the user wants slides, a deck, or a presentation delivered
 
 Build presentation decks by **fully adapting the zarazhangrui/beautiful-html-templates library**: build the chosen template from the LOCAL clone at `picker\repo` (created/refreshed by `picker\install.ps1`) — never re-clone from GitHub while the local clone exists — replace placeholder content with real content, and deliver a standalone HTML file that looks exactly like the template — fonts, palette, every decorative element. The deliverable is HTML presented in a browser; never a .pptx.
 
+There are **two separate routes** into a deck. Flow A is driven entirely by the agent inside a session: no picker window, no loading screen, no status file — the agent reads the content, builds, then audits and corrects its own output before delivering. Flow B is the picker GUI handing a `selection.json` to the watcher. Never mix the two.
+
 ## Step 0 — Routing (mandatory)
 
-If the user asks for "slides", "a deck", or "a presentation" without specifying the format, STOP and ask: "PowerPoint deck (docx-to-ppt) or HTML slides (html-slides)?" Proceed only after the answer. Do not infer from past projects.
+This skill is the funnel for **all** slide work. Any request for slides, a deck, or a presentation goes here and is delivered as browser HTML — do NOT ask "PowerPoint or HTML?" and do NOT hand off to pptx/docx-to-ppt. The only exception: when the user explicitly asks for an editable `.pptx` file, say the html-slides route builds HTML and offer to proceed with HTML unless they confirm PowerPoint. Do not infer from past projects.
 
-## Progress reporting (mandatory)
+## Step 0.5 — Choose the flow (mandatory)
 
-While building — in ANY flow (this session, or a standalone `opencode run` spawned by `picker\watcher.ps1`) — overwrite `C:\Users\aclco\.claude\skills\html-slides\picker\status.js` (the file next to picker.html — NOT relative to your current working directory) at each checkpoint so the picker GUI's loading screen can show live progress. Overwrite the WHOLE file with the file-write tool (never a shell heredoc), as a single statement with exactly these fields:
+| | **Flow A — in-session build** | **Flow B — picker build** |
+|---|---|---|
+| Trigger | The user asks you for slides in the conversation, names a template, or points at content | The prompt is `Build the html-slides deck described in …selection.json` (watcher-spawned), or the user says they came from the picker |
+| Inputs | The conversation: named/attached files, pasted text, earlier context | `picker\selection.json` |
+| UI | **None.** No picker window | Picker GUI owns the screen |
+| `status.js` | **Never written** | Written at every checkpoint |
+| Template | User-named, else chosen by you from `templates.json` | `template` field in the JSON |
+| Correction | Mandatory self-check-and-fix loop (Step 4) | Same Step 4, reported through `status.js` |
+
+Flow B applies **only** when the picker/watcher started the build. A leftover `selection.json` from an earlier picker run does NOT make the current request Flow B — if the user asked in chat, it is Flow A.
+
+## Progress reporting — Flow B only
+
+Flow A must never write `status.js`: there is no loading screen to feed, and writing it would overwrite the real picker state. Skip this whole section when running Flow A.
+
+In Flow B, while building (a standalone `opencode run` spawned by `picker\watcher.ps1`), overwrite `D:\Python\html-slides\picker\status.js` (the file next to picker.html — NOT relative to your current working directory) at each checkpoint so the picker GUI's loading screen can show live progress. Overwrite the WHOLE file with the file-write tool (never a shell heredoc), as a single statement with exactly these fields:
 
 ```js
 window.__DECK_STATUS = { state: "running", step: "build", message: "Building template <slug>", output: undefined, updated_at: "2026-01-01T00:00:00.000Z" };
@@ -35,15 +52,29 @@ Required checkpoints:
 
 ## Workflow
 
-**Step 1 — Launch the picker and read selection.json.**
+**Step 1A — Flow A: intake from the session.**
+
+No picker, no watcher, no status file. Gather the source material from the conversation, in this order:
+1. Files the user named, attached, or linked.
+2. Material pasted into the chat.
+3. Relevant context from earlier in the same session.
+
+- Never launch `picker.html`, never run `watcher.ps1`, never read `selection.json`, never write `status.js`, and never send the user to the GUI. Flow A is headless by design; those steps belong to Flow B only.
+- If there is no usable source, ask **one** consolidated question (content/files, plus audience only if it changes the deck). Never a questionnaire, never "pick a template in the picker".
+- **Template:** use the slug the user named. If they described a look ("clean", "bold", "dark", "academic"), map it onto `templates.json`. If they said nothing, choose the best match yourself from `templates.json` (subject, formality, density, colour mood) and move on — do not ask.
+- **Slide count and density:** derive both from the content under the Density rule in Content mapping. Ask only when the user set a hard limit that fights the content.
+- **Audience/occasion:** use what the user said. When unstated, default to classroom discussion for high school (the user's standing context).
+
+**Step 1B — Flow B: launch the picker and read selection.json.**
+
 If the user did not already come from the picker GUI:
 ```powershell
-$browser = (Get-Content "C:\Users\aclco\.claude\skills\html-slides\picker\web-browser.txt" -Raw).Trim()
-Start-Process $browser -ArgumentList '--app=file:///C:/Users/aclco/.claude/skills/html-slides/picker/picker.html?from=opencode'
+$browser = (Get-Content "D:\Python\html-slides\picker\web-browser.txt" -Raw).Trim()
+Start-Process $browser -ArgumentList '--app=file:///D:/Python/html-slides/picker/picker.html?from=opencode'
 ```
 Wait for the watcher to report the selection — bounded retry loop, NOT one blocking hour-long call:
 ```powershell
-$watcher = "C:\Users\aclco\.claude\skills\html-slides\picker\watcher.ps1"
+$watcher = "D:\Python\html-slides\picker\watcher.ps1"
 $tries = 0
 while ($tries -lt 5) {
     powershell -NoProfile -ExecutionPolicy Bypass -File $watcher -NotifyOnly -TimeoutSec 120
@@ -58,10 +89,10 @@ Expected schema (selection.json): `template`: slug from templates.json; `slide_c
 Fixed context (never asked, never surfaced): occasion = classroom discussion; audience = high school; mood is irrelevant (the template choice covers it); deck titles follow the source document titles; extra slides only when content earns them. Only if a required JSON field is missing/invalid: ask — otherwise trust the JSON.
 
 **Step 2 — Extract the content.**
-For every path in `content_files`, read the source. Lines that start with `staged:` reference copies the picker GUI made via its native open-file dialog: resolve `staged:<name>` to `C:\Users\aclco\.claude\skills\html-slides\picker\staged\<name>` and read that file. Read all other lines as absolute paths as-is. Organize slides from the source itself: one idea per slide; headlines presentation-ready and true to the source's titles; slide count and density from the JSON (`"auto"` → decide per slide from the content's weight under the Density rule in Content mapping — never shortcut content to keep the count down). If a path is missing, report which file was readable/missing and continue with what resolved. **Output location (mandatory):** the deck's deliverable HTML must be saved to `output_dir` from selection.json when present; otherwise use the folder of the first resolvable `content_files` path. Name the file after the source's own title (e.g. `Week-1-Notebook-deck.html` in that folder).
+Read every source: Flow B, each path in `content_files`; Flow A, each file or pasted block identified in Step 1A. Lines that start with `staged:` reference copies the picker GUI made via its native open-file dialog: resolve `staged:<name>` to `D:\Python\html-slides\picker\staged\<name>` and read that file. Read all other lines as absolute paths as-is. Organize slides from the source itself: one idea per slide; headlines presentation-ready and true to the source's titles; slide count and density from the JSON (`"auto"` → decide per slide from the content's weight under the Density rule in Content mapping — never shortcut content to keep the count down). If a path is missing, report which file was readable/missing and continue with what resolved. **Output location (mandatory):** Flow B saves to `output_dir` from selection.json when present, otherwise the folder of the first resolvable `content_files` path; Flow A saves to the folder of the first source file, or the working directory when the content was pasted. Name the file after the source's own title (e.g. `Week-1-Notebook-deck.html` in that folder).
 
 **Step 3 — Build the deck in the chosen template.**
-Import: `picker\repo` (refresh with `picker\install.ps1` ONLY if `templates.json` is older than the user wants or `repo` is missing). Locate `template`'s slug in `picker\templates.json`; if mapped to a missing slug, name the nearest equivalent based on scheme/density/formality and SAY you substituted. In the chosen template: follow the repo's own `AGENTS.md` §3–§5 — preserve fonts, palette, layout grid, slide-level CSS classes, decorative elements, and the navigation runtime; replace all placeholder content; duplicate the most appropriate layout for extra slides and update page-number labels (`NN / TT`); design missing layouts with the template's own design system — same fonts, colors, decor vocabulary, spacing rhythm, component grammar, chrome.
+Import: `picker\repo` (refresh with `picker\install.ps1` ONLY if `templates.json` is older than the user wants or `repo` is missing). Locate the chosen slug in `picker\templates.json` (Flow B: the `template` field; Flow A: the slug you picked in Step 1A); if mapped to a missing slug, name the nearest equivalent based on scheme/density/formality and SAY you substituted. In the chosen template: follow the repo's own `AGENTS.md` §3–§5 — preserve fonts, palette, layout grid, slide-level CSS classes, decorative elements, and the navigation runtime; replace all placeholder content; duplicate the most appropriate layout for extra slides and update page-number labels (`NN / TT`); design missing layouts with the template's own design system — same fonts, colors, decor vocabulary, spacing rhythm, component grammar, chrome.
 
 **Provenance block (REQUIRED):** the delivered HTML must begin its `<head>` with a provenance comment recording what produced it and from what source, so future debugging resolves provenance from the file itself:
 
@@ -72,22 +103,22 @@ Import: `picker\repo` (refresh with `picker\install.ps1` ONLY if `templates.json
   generator: html-slides skill (opencode)
   template: <slug from templates.json>
   source_files:
-    - <absolute path of each resolvable content_files entry, one per line; note staged: copies by their resolved staged path>
+    - <absolute path of each resolvable source, one per line (Flow B: `content_files` entries; Flow A: files read from the session; note `staged:` copies by their resolved staged path)>
   built_at: <ISO timestamp>
 -->
 ```
 
 If a content file could not be resolved (Step 2), list it under `unresolved:` with the reason. Never omit the block, even when the user doesn't ask for metadata.
 
-**Step 4 — Auto font-size fit pass.** The template renders a fixed 1920×1080 stage that the browser scales uniformly (it may letterbox or pillarbox; content never reflows). After building every slide:
-1. Check each slide for overflow — content clipped, text running past cards/columns, elements colliding with decor or the page-number chrome.
-2. Fix overflow WITHOUT restructuring the design: step font sizes down within the template's type scale (keep relative hierarchy, e.g. 32→28→24 px), tighten line-height or card padding, or shorten copy. Never move the stage scale itself.
-3. Re-space on the smallest display you expect (13-inch laptop) and confirm nothing clips on the largest (4K) — the uniform scale should handle both once the stage is clean at 1920×1080.
-4. If a slide still overflows, split it into two slides instead of shrinking further.
+**Step 4 — Self-check and correct (mandatory in both flows; the whole point of Flow A).** A deck is not done when it renders — it is done when audited. Run these checks on the built file, fix what fails, and run them again. Up to three passes; if a slide still fails, split it or cut copy — never shrink below the font floor.
 
-**USER RULE (persistent, overrides the ~14px default in point 4 of the original font-fit pass):** every deck built for this user must keep a **30px minimum font size for every text element** at the 1920×1080 stage — body copy, bullets, table cells, mono labels/tags/captions/source lines, chart axis text, timeline labels, page numbers, everything. Headings scale above it (34px+) so hierarchy survives. If content overflows at the floor, fix it by shortening copy, tightening padding/spacing, or splitting the slide — never step below 30px. Verify the floor with headless screenshots (e.g. `chrome.exe --headless --screenshot`) on the densest slides before delivering.
+1. **Source fidelity.** Re-open the source and walk it against the deck: every heading present with the source's own wording (Title fidelity), every definition attached to its term as a complete sentence (Definition preservation), every calculation present line by line with its actual numbers (Calculation preservation), nothing invented, nothing silently dropped.
+2. **Arithmetic.** Recompute every number independently. A mismatch between deck and source is a defect — fix the deck; if the source itself is wrong, say so instead of propagating it.
+3. **Render and look at every slide.** The template renders a fixed 1920×1080 stage that the browser scales uniformly (it may letterbox or pillarbox; content never reflows). Capture every slide with headless Chrome and read the PNGs: `chrome --headless --window-size=1920,1080 --screenshot=<png> "file:///.../deck.html#<n>"` for `deck-stage` decks (the `#N` hash is 1-indexed); for scroll decks, copy `install.ps1`'s technique (inject `scroll-snap-type:none` and set `.slides-container.scrollTop`). Inspect each capture for clipped text, text running past cards/columns, collisions with decor or the page-number chrome.
+4. **Font floor (USER RULE, persistent).** Every text element stays at **30px or larger** at the 1920×1080 stage — body copy, bullets, table cells, mono labels/tags/captions/source lines, chart axis text, timeline labels, page numbers, everything. Headings stay above it (34px+) so hierarchy survives. Fix overflow by tightening line-height/padding, shortening copy, or splitting the slide — never step below 30px and never move the stage scale itself.
+5. **Report what you caught.** Flow A's delivery message includes a short block listing the defects the audit found and what changed (e.g. "3 slides overflowed; 1 calculation mis-transcribed; 4 labels at 24px"). Never claim a clean build without having rendered and inspected the slides.
 
-**Step 5 — Deliver.** The deck file must already sit in the source folder (Step 2's output location — verify before delivering). Open the final deck in the browser (use `Start-Process` on Windows, never macOS `open`), send the absolute file path on its own line, plus one line on which template was picked and why, and any caveats (e.g. a template substitution or slides designed from scratch per §5).
+**Step 5 — Deliver.** The deck file must already sit in the source folder (Step 2's output location — verify before delivering). Open the final deck in the browser (use `Start-Process` on Windows, never macOS `open`), send the absolute file path on its own line, plus one line on which template was picked and why, and any caveats (e.g. a template substitution or slides designed from scratch per §5). Flow A: never mention the picker, the watcher, or a loading screen — there wasn't one.
 
 ## Content mapping
 
@@ -123,6 +154,9 @@ Decision: PI > 1, so the project is acceptable.
 
 - Skipping Step 0 — silently producing a .pptx when the user wanted HTML (or vice versa)
 - Asking any question the picker GUI already answered — `selection.json` is the source of truth
+- Running Flow A through the picker: launching the GUI, waiting on the watcher, reading a stale `selection.json`, or writing `status.js` when the user simply asked for slides in chat
+- Asking a questionnaire in Flow A when the conversation already contains the content — one consolidated question at most, and template choice is yours
+- Delivering a Flow A deck without rendering and inspecting every slide — the audit in Step 4 is the reason Flow A exists
 - Reading `selection.json` before the watcher exits 0 — a mid-write JSON is the classic failure mode
 - Substituting fonts ("Inter is similar enough") — the typography IS the design system
 - Recoloring or stripping decoration (grain, ribbons, stamps) to "simplify" — they are the identity
@@ -131,7 +165,7 @@ Decision: PI > 1, so the project is acceptable.
 - Letting any text element drop below the user's 30px floor — trim copy or split the slide instead
 - Using macOS `open` on Windows
 - Mashing two templates' slides together instead of extending one
-- Skipping the `picker\status.js` checkpoints — the user's loading screen stalls on the last known step; they may think the build hung
+- Skipping the `picker\status.js` checkpoints in Flow B — the user's loading screen stalls on the last known step; they may think the build hung
 - Delivering an HTML deck without the `deck-provenance` comment block — debugging later can't tell what skill produced it or from which sources
 - Dropping calculations from the source and just describing them in prose — the worked expression must be on the slide
 - Chaining a calculation into one line ("PI = 15,193,298 ÷ 12,000,000 = 1.2661") — every step gets its own labelled line

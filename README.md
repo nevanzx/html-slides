@@ -8,36 +8,32 @@ is asked anything.
 
 ## How it works
 
-Two ways in, one handoff artifact:
+Two ways in, two different routes:
 
 ```
-              +---------------------------+
-   Flow A     |  you ask opencode        |  Flow B
-   (in        |  for HTML slides         |  (standalone)
-   session)   +------------+--------------+  double-click the shortcut
-                           |                        |
-                           v                        v
-                 +---------------------------+
-                 |  picker.html (GUI)        |
-                 |  - template grid  x34     |
-                 |  - slide count / density  |
-                 |  - content file paths     |
-                 +------------+--------------+
-                              |
-                    writes selection.json
-                              |
-                              v
-                 +---------------------------+
-                 |  watcher.ps1 -> opencode  |
-                 |  builds the deck          |
-                 +---------------------------+
+   Flow A (in session)                     Flow B (standalone)
+   you ask opencode for slides            double-click the shortcut
+            |                                       |
+            |  agent reads the content              v
+            |  picks the template          picker.html (GUI)
+            |  builds the deck               - template grid x34
+            |  audits every slide            - slide count / density
+            |  fixes what it finds           - content file paths
+            v                                       |
+       deck.html                          writes selection.json
+   (no GUI, no watcher, no status)                |
+                                                  v
+                                        watcher.ps1 -> opencode
+                                          builds the deck + status
 ```
 
-- **Flow A:** opencode launches the GUI itself and waits for the watcher to
-  report that `selection.json` appeared/changed.
+- **Flow A:** no picker, no watcher, no `status.js`. opencode reads the
+  conversation, chooses the template itself, builds, then screenshots and
+  audits every slide (content fidelity, arithmetic, overflow, 30px floor),
+  corrects the defects, and delivers the file path.
 - **Flow B:** the desktop shortcut opens the GUI + a background watcher; when
-  you hit **BUILD DECK**, `opencode run` fires in a visible terminal and the
-  deck builds automatically.
+  you hit **BUILD DECK**, `opencode run` fires in a visible terminal, the deck
+  builds automatically, and the loading screen shows live progress.
 - Day-to-day context is fixed by the skill (classroom discussion decks) — the
   GUI only asks what actually varies: template, slide count, density, content
   files, notes.
@@ -81,20 +77,29 @@ installer and read its error.
 
 ## Using it day to day
 
-### From the desktop (no opencode open)
+### From an opencode session (Flow A — no GUI)
+
+Just ask: *"Make HTML slides from this lesson"* and point at the file. The skill
+reads the content, picks the template itself, builds the deck, then screenshots
+and audits every slide — content fidelity, arithmetic, overflow, 30px floor —
+fixes what it finds, and hands back the absolute path plus a short list of what
+it corrected.
+
+No picker window, no loading screen, no questions the chat already answers. Name
+a template (*"use paper-tiger"*) to override the auto-pick; otherwise the skill
+chooses one and tells you why in the delivery message.
+
+### From the desktop (Flow B — picker + watcher)
 
 1. Double-click **HTML Slides Picker**.
+
 2. Filter or search the grid, click a template, fill slide count / density /
    lesson file path(s) / notes.
+
 3. **BUILD DECK** (first run asks for the picker folder once, then writes
    silently forever after) → an opencode terminal opens and builds the deck.
-
-### From an opencode session
-
-Just ask: *"Make HTML slides from the picker."* The skill launches the GUI,
-waits for your submission, and builds with zero questions (the only fallback
-ask happens when the watcher genuinely times out). Rebuilding the same deck
-also works — each submission carries a timestamp so the watcher fires again.
+   Rebuilding the same deck also works — each submission carries a timestamp so
+   the watcher fires again.
 
 ## Tests
 
