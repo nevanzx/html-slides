@@ -88,7 +88,7 @@
   #statusScreen .step.failed { color:var(--bad); }
   #statusScreen .step.failed::before { content:"✕ "; }
   #statusMsg { margin-top:12px; font-size:13px; }
-  #statusScreen[data-status-state="error"] #statusMsg { color:var(--bad); }
+  #statusPanel[data-status-state="error"] #statusMsg { color:var(--bad); }
   .status-log { margin-top:10px; max-height:180px; overflow-y:auto; font:11px monospace;
                 color:var(--dim); border-top:1px solid var(--line); padding-top:8px; }
   .status-log div { padding:2px 0; overflow-wrap:anywhere; }
@@ -100,6 +100,10 @@
                             overflow-wrap:anywhere; }
   #statusHint { font-size:11px; color:var(--dim); margin-top:8px; }
   #statusBack { margin-top:14px; background:transparent; color:var(--dim); border:1px solid var(--line); }
+  #statusChip { position:fixed; top:10px; right:14px; z-index:800; display:none;
+                background:var(--panel); border:1px solid var(--line); color:var(--accent);
+                border-radius:20px; padding:5px 12px; font-size:12px; cursor:pointer; }
+  #statusChip.show { display:inline-block; }
 </style>
 </head>
 <body>
@@ -157,6 +161,7 @@
     <div class="shots-foot"><button id="modalSelect">SELECT</button></div>
   </div>
 </div>
+<button id="statusChip" class="chip-link" title="Back to build status">◐ build status</button>
 <section id="statusScreen">
   <div class="status-panel" id="statusPanel" data-status-state="idle">
     <h2>Generating your deck — live opencode status</h2>
@@ -378,6 +383,7 @@
     function finish() {
         subTs = Date.now();
         lastLogKey = '';
+        userDismissed = false;
         openStatus();
         renderStatus(null);      // waiting UI until opencode's first checkpoint lands
         startPolling();
@@ -409,20 +415,29 @@
                    ['build','Build template'], ['fit','Font fit'], ['deliver','Deliver']];
     let subTs = null;          // Date.now() of the last BUILD submission this session
     let statusOpen = false;
+    let userDismissed = false;
     let pollTimer = null;
     let lastLogKey = '';
 
+    function syncStatusChip() {
+        $('#statusChip').classList.toggle('show', userDismissed && !statusOpen);
+    }
     function openStatus() {
         statusOpen = true;
+        userDismissed = false;
         $('#statusScreen').style.display = 'flex';
+        syncStatusChip();
     }
     function closeStatus() {
         statusOpen = false;
+        userDismissed = true;
         $('#statusScreen').style.display = 'none';
+        syncStatusChip();
     }
     function stopPolling() { if (pollTimer) { clearInterval(pollTimer); pollTimer = null; } }
     function startPolling() { stopPolling(); pollTimer = setInterval(tickStatus, 1500); }
     $('#statusBack').onclick = closeStatus;
+    $('#statusChip').onclick = openStatus;
 
     function renderChecklist(activeIdx, phase) {
         const box = $('#statusSteps');
@@ -454,17 +469,19 @@
 
     function renderStatus(st) {
         if (!st) {
-            if (!statusOpen) return;
+            if (!statusOpen && !userDismissed) return;
             $('#statusPanel').dataset.statusState = 'running';
             renderChecklist(0, 'pending');
             $('#statusMsg').textContent = 'waiting for opencode to pick up…';
             $('#statusHint').textContent = (subTs && Date.now() - subTs > 120000)
                 ? 'opencode hasn\'t picked up yet — run picker\\watcher.ps1 or ask opencode to build picker\\selection.json'
                 : '';
+            syncStatusChip();
             return;
         }
         if (subTs && new Date(st.updated_at).getTime() < subTs - 2000) return renderStatus(null);
-        if (!statusOpen) openStatus();
+        const terminal = st.state === 'done' || st.state === 'error';
+        if (!statusOpen && (terminal || !userDismissed)) openStatus();   // dismissed stay closed unless terminal
         $('#statusHint').textContent = '';
         pushLog(st);
         const idx = Math.max(0, STEPS.findIndex(x => x[0] === st.step));
@@ -494,6 +511,7 @@
                 actions.appendChild(hint);
             }
             stopPolling();
+            syncStatusChip();
             return;
         }
         if (st.state === 'error') {
@@ -501,12 +519,14 @@
             renderChecklist(idx, 'error');
             $('#statusMsg').textContent = st.message || 'Build failed';
             stopPolling();
+            syncStatusChip();
             return;
         }
         $('#statusPanel').dataset.statusState = 'running';
         renderChecklist(st.state === 'waiting' ? 0 : idx, 'running');
         $('#statusMsg').textContent = st.message ||
             (st.state === 'waiting' ? 'opencode picked up selection.json' : 'working…');
+        syncStatusChip();
     }
 
     function tickStatus() {
