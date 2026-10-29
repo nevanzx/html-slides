@@ -13,6 +13,26 @@ Build presentation decks by **fully adapting the zarazhangrui/beautiful-html-tem
 
 If the user asks for "slides", "a deck", or "a presentation" without specifying the format, STOP and ask: "PowerPoint deck (docx-to-ppt) or HTML slides (html-slides)?" Proceed only after the answer. Do not infer from past projects.
 
+## Progress reporting (mandatory)
+
+While building — in ANY flow (this session, or a standalone `opencode run` spawned by `picker\watcher.ps1`) — overwrite `picker\status.js` (next to `picker.html`) at each checkpoint so the picker GUI's loading screen can show live progress. Overwrite the WHOLE file with the file-write tool (never a shell heredoc), as a single statement with exactly these fields:
+
+```js
+window.__DECK_STATUS = { state: "running", step: "build", message: "Building template <slug>", output: undefined, updated_at: "2026-01-01T00:00:00.000Z" };
+```
+
+- `state`: `"waiting"` (picked up selection.json, no step started yet) | `"running"` | `"done"` | `"error"`
+- `step`: `read-selection` | `extract` | `build` | `fit` | `deliver` (maps to the Workflow steps)
+- `message`: one short human-readable line (e.g. `Building template paper-tiger`)
+- `output`: absolute path to the deck — ONLY when `state` is `"done"`
+- `updated_at`: current ISO timestamp at write time
+
+Required checkpoints:
+1. **First write on pickup, before anything else:** `state:"waiting"`, `step:"read-selection"` — this overwrites any previous run's status; the page's stale-state guard depends on it.
+2. **Every workflow step boundary (Steps 1–5):** update `step` + `message`.
+3. **Step 5 completion:** `state:"done"`, `step:"deliver"`, `output` set to the deck's absolute path.
+4. **Any failure:** IMMEDIATELY, before exiting — `state:"error"`, `step` = failing step, `message` = one-line reason. Never exit silently while the user watches the loading screen.
+
 ## Workflow
 
 **Step 1 — Launch the picker and read selection.json.**
@@ -69,3 +89,4 @@ For lesson/document content, organize per-slide substance the same way a present
 - Letting any text element drop below the user's 30px floor — trim copy or split the slide instead
 - Using macOS `open` on Windows
 - Mashing two templates' slides together instead of extending one
+- Skipping the `picker\status.js` checkpoints — the user's loading screen stalls on the last known step; they may think the build hung
