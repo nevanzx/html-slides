@@ -1,0 +1,573 @@
+﻿{
+    "updated_at":  "2026-10-29T04:22:35.8765109Z",
+    "templates":  [
+                      {
+                          "slug":  "8-bit-orbit",
+                          "name":  "8-Bit Orbit",
+                          "tagline":  "Pixel-art neon arcade aesthetic on a deep navy void.",
+                          "scheme":  "dark",
+                          "formality":  "low",
+                          "density":  "medium",
+                          "slide_count":  10,
+                          "occasion":  [
+                                           "gaming pitch",
+                                           "hackathon demo",
+                                           "web3 / crypto deck",
+                                           "indie product launch",
+                                           "developer tools",
+                                           "synthwave brand"
+                                       ]
+                      },
+                      {
+                          "slug":  "biennale-yellow",
+                          "name":  "Biennale Yellow",
+                          "tagline":  "Solar yellow on warm parchment with deep indigo serif and atmospheric sun-glow gradients.",
+                          "scheme":  "light",
+                          "formality":  "high",
+                          "density":  "medium",
+                          "slide_count":  8,
+                          "occasion":  [
+                                           "exhibition or biennale",
+                                           "arts institution programme",
+                                           "design or typography conference",
+                                           "literary or curatorial publication",
+                                           "studio annual report",
+                                           "museum season announcement"
+                                       ]
+                      },
+                      {
+                          "slug":  "block-frame",
+                          "name":  "BlockFrame",
+                          "tagline":  "Neobrutalist deck with pastel-neon color blocks and chunky black borders.",
+                          "scheme":  "light",
+                          "formality":  "medium-low",
+                          "density":  "high",
+                          "slide_count":  10,
+                          "occasion":  [
+                                           "creative agency pitch",
+                                           "indie SaaS launch",
+                                           "designer portfolio",
+                                           "brand redesign",
+                                           "modern startup deck"
+                                       ]
+                      },
+                      {
+                          "slug":  "blue-professional",
+                          "name":  "Blue Professional",
+                          "tagline":  "Cream paper background with electric cobalt blue accents; clean modern professional.",
+                          "scheme":  "light",
+                          "formality":  "medium-high",
+                          "density":  "medium",
+                          "slide_count":  10,
+                          "occasion":  [
+                                           "B2B SaaS pitch",
+                                           "consulting deliverable",
+                                           "internal review",
+                                           "advisory pitch",
+                                           "investor update"
+                                       ]
+                      },
+                      {
+                          "slug":  "bold-poster",
+                          "name":  "Bold Poster",
+                          "tagline":  "Editorial poster aesthetic with massive Shrikhand display and a single fire-engine red accent.",
+                          "scheme":  "light",
+                          "formality":  "medium",
+                          "density":  "low",
+                          "slide_count":  10,
+                          "occasion":  [
+                                           "brand manifesto",
+                                           "creative-led pitch",
+                                           "magazine / editorial",
+                                           "founder vision deck",
+                                           "art / culture"
+                                       ]
+                      },
+                      {
+                          "slug":  "broadside",
+                          "name":  "Broadside",
+                          "tagline":  "Dark editorial canvas with a single fire orange accent and bilingual Latin/Chinese type stack.",
+                          "scheme":  "dark",
+                          "formality":  "medium-high",
+                          "density":  "medium",
+                          "slide_count":  20,
+                          "occasion":  [
+                                           "brand manifesto",
+                                           "founder vision deck",
+                                           "magazine / cultural pitch",
+                                           "design talk",
+                                           "bilingual EN/CN deck",
+                                           "campaign launch"
+                                       ]
+                      },
+                      {
+                          "slug":  "capsule",
+                          "name":  "Capsule",
+                          "tagline":  "Modular pill-shaped cards on warm bone with a full pastel-pop palette.",
+                          "scheme":  "light",
+                          "formality":  "medium-low",
+                          "density":  "medium",
+                          "slide_count":  10,
+                          "occasion":  [
+                                           "lifestyle brand",
+                                           "creator portfolio",
+                                           "DTC product launch",
+                                           "wellness or beauty pitch",
+                                           "Y2K-tinged brand work"
+                                       ]
+                      },
+                      {
+                          "slug":  "cartesian",
+                          "name":  "Cartesian",
+                          "tagline":  "Quiet warm-neutral palette with classical Playfair serifs; tasteful and unhurried.",
+                          "scheme":  "light",
+                          "formality":  "high",
+                          "density":  "low",
+                          "slide_count":  10,
+                          "occasion":  [
+                                           "investment thesis",
+                                           "white paper",
+                                           "advisory deliverable",
+                                           "research report",
+                                           "book / longform pitch",
+                                           "gallery / cultural"
+                                       ]
+                      },
+                      {
+                          "slug":  "cobalt-grid",
+                          "name":  "Cobalt Grid",
+                          "tagline":  "Electric cobalt serifs on a graph-paper canvas, anchored by stair-stepped pixel-glitch decorations and slim hairline rules.",
+                          "scheme":  "light",
+                          "formality":  "high",
+                          "density":  "medium",
+                          "slide_count":  8,
+                          "occasion":  [
+                                           "design trend or research report",
+                                           "studio annual or seasonal bulletin",
+                                           "creative agency capabilities deck",
+                                           "art or architecture publication",
+                                           "academic / curatorial publication",
+                                           "newsletter or zine pitch"
+                                       ]
+                      },
+                      {
+                          "slug":  "coral",
+                          "name":  "Coral",
+                          "tagline":  "Cream and coral on near-black, set in oversized Bebas Neue.",
+                          "scheme":  "mixed",
+                          "formality":  "medium",
+                          "density":  "medium",
+                          "slide_count":  10,
+                          "occasion":  [
+                                           "fashion / beauty pitch",
+                                           "fitness brand",
+                                           "F\u0026B brand deck",
+                                           "lifestyle launch",
+                                           "creative agency"
+                                       ]
+                      },
+                      {
+                          "slug":  "creative-mode",
+                          "name":  "Creative Mode",
+                          "tagline":  "Cream paper canvas with confident multi-color (green, pink, orange, yellow) accents and Archivo Black display.",
+                          "scheme":  "light",
+                          "formality":  "medium",
+                          "density":  "medium-high",
+                          "slide_count":  8,
+                          "occasion":  [
+                                           "creative agency pitch",
+                                           "design studio deck",
+                                           "ad shop credentials",
+                                           "brand creative review",
+                                           "concept presentation"
+                                       ]
+                      },
+                      {
+                          "slug":  "daisy-days",
+                          "name":  "Daisy Days",
+                          "tagline":  "Cheerful pastel deck with hand-drawn daisies, stars, and rainbows. Friendly, soft, and warm.",
+                          "scheme":  "light",
+                          "formality":  "low",
+                          "density":  "medium",
+                          "slide_count":  10,
+                          "occasion":  [
+                                           "education / classroom",
+                                           "kids product launch",
+                                           "wellness program",
+                                           "community workshop",
+                                           "creator portfolio (craft / illustration)",
+                                           "team kickoff",
+                                           "wedding / baby shower planning"
+                                       ]
+                      },
+                      {
+                          "slug":  "editorial-forest",
+                          "name":  "Editorial Forest",
+                          "tagline":  "Forest green, dusty pink, and warm cream meet Source Serif 4 in a quiet, intentional quarterly-review deck.",
+                          "scheme":  "mixed",
+                          "formality":  "medium",
+                          "density":  "medium",
+                          "slide_count":  8,
+                          "occasion":  [
+                                           "quarterly review",
+                                           "internal readout",
+                                           "studio update",
+                                           "creative agency deck",
+                                           "research recap"
+                                       ]
+                      },
+                      {
+                          "slug":  "editorial-tri-tone",
+                          "name":  "Editorial Tri-Tone",
+                          "tagline":  "Three-color editorial system: dusty pink, mustard cream, and deep burgundy, set in Bricolage + Instrument Serif.",
+                          "scheme":  "mixed",
+                          "formality":  "medium-high",
+                          "density":  "medium",
+                          "slide_count":  8,
+                          "occasion":  [
+                                           "editorial / magazine pitch",
+                                           "fashion brand deck",
+                                           "lifestyle media",
+                                           "literary / cultural",
+                                           "art direction review"
+                                       ]
+                      },
+                      {
+                          "slug":  "emerald-editorial",
+                          "name":  "Emerald Editorial",
+                          "tagline":  "A magazine-cover business deck: emerald + navy + paper, double-rule masthead ornaments, and a bold Bodoni-style display serif.",
+                          "scheme":  "mixed",
+                          "formality":  "medium-high",
+                          "density":  "medium",
+                          "slide_count":  8,
+                          "occasion":  [
+                                           "leadership presentation",
+                                           "quarterly review",
+                                           "strategy readout",
+                                           "planning office deck",
+                                           "executive briefing"
+                                       ]
+                      },
+                      {
+                          "slug":  "grove",
+                          "name":  "Grove",
+                          "tagline":  "Forest-green canvas with cream type, classical Playfair serifs, and a single rust accent.",
+                          "scheme":  "mixed",
+                          "formality":  "medium-high",
+                          "density":  "medium",
+                          "slide_count":  12,
+                          "occasion":  [
+                                           "sustainability brand",
+                                           "wellness brand",
+                                           "outdoor / nature product",
+                                           "winery or restaurant",
+                                           "literary or arts deck",
+                                           "advisory deliverable",
+                                           "bilingual EN/CN deck"
+                                       ]
+                      },
+                      {
+                          "slug":  "long-table",
+                          "name":  "Long Table",
+                          "tagline":  "Warm cream and rust-red supper-club aesthetic with bold uppercase grotesk headlines, Fraunces serifs, and pill-shaped outlined buttons.",
+                          "scheme":  "light",
+                          "formality":  "medium",
+                          "density":  "medium",
+                          "slide_count":  8,
+                          "occasion":  [
+                                           "supper club or dinner series",
+                                           "event or community gathering",
+                                           "small hospitality / restaurant brand",
+                                           "creative studio open house",
+                                           "membership or subscription pitch",
+                                           "wine or food brand catalogue",
+                                           "modern lifestyle brand"
+                                       ]
+                      },
+                      {
+                          "slug":  "mat",
+                          "name":  "Mat",
+                          "tagline":  "Dark sage canvas with bone paper and burnt-orange accent; mid-century modern with wood undertones.",
+                          "scheme":  "mixed",
+                          "formality":  "medium",
+                          "density":  "medium",
+                          "slide_count":  9,
+                          "occasion":  [
+                                           "design studio credentials",
+                                           "architecture / interior brand",
+                                           "ceramics or craft brand",
+                                           "furniture pitch",
+                                           "advisory deliverable",
+                                           "bilingual EN/CN deck"
+                                       ]
+                      },
+                      {
+                          "slug":  "monochrome",
+                          "name":  "Monochrome",
+                          "tagline":  "Ivory ledger paper with all-black type; Lora serif headlines, Jost body, no color at all.",
+                          "scheme":  "light",
+                          "formality":  "high",
+                          "density":  "high",
+                          "slide_count":  18,
+                          "occasion":  [
+                                           "user research synthesis",
+                                           "white paper",
+                                           "longform report",
+                                           "academic deck",
+                                           "policy brief",
+                                           "advisory deliverable",
+                                           "bilingual EN/CN deck"
+                                       ]
+                      },
+                      {
+                          "slug":  "neo-grid-bold",
+                          "name":  "Neo-Grid Bold",
+                          "tagline":  "Editorial neo-brutalism with a single neon yellow accent on off-white paper.",
+                          "scheme":  "light",
+                          "formality":  "medium",
+                          "density":  "high",
+                          "slide_count":  13,
+                          "occasion":  [
+                                           "product launch",
+                                           "design review",
+                                           "founder pitch",
+                                           "brand deck",
+                                           "consulting findings",
+                                           "conference talk"
+                                       ]
+                      },
+                      {
+                          "slug":  "peoples-platform",
+                          "name":  "People\u0027s Platform (Block \u0026 Bold)",
+                          "tagline":  "Activist poster energy: blue, orange, red on cream, with Alfa Slab + Caveat Brush.",
+                          "scheme":  "light",
+                          "formality":  "medium-low",
+                          "density":  "medium-high",
+                          "slide_count":  10,
+                          "occasion":  [
+                                           "cultural commentary",
+                                           "manifesto",
+                                           "community / civic deck",
+                                           "design talk",
+                                           "campaign pitch",
+                                           "founder vision"
+                                       ]
+                      },
+                      {
+                          "slug":  "pin-and-paper",
+                          "name":  "Pin \u0026 Paper",
+                          "tagline":  "Yellow paper with safety-pin illustrations, ink-blue handwritten Caveat, paper-grain texture.",
+                          "scheme":  "light",
+                          "formality":  "medium",
+                          "density":  "medium",
+                          "slide_count":  11,
+                          "occasion":  [
+                                           "research findings with personality",
+                                           "qualitative report",
+                                           "founder reflection",
+                                           "creator essay deck",
+                                           "workshop debrief"
+                                       ]
+                      },
+                      {
+                          "slug":  "pink-script",
+                          "name":  "Pink Script — After Hours",
+                          "tagline":  "Black canvas, hot pink accent, pearl-cream paper, Instrument Serif headlines: late-night editorial luxury.",
+                          "scheme":  "dark",
+                          "formality":  "medium-high",
+                          "density":  "low",
+                          "slide_count":  9,
+                          "occasion":  [
+                                           "fashion brand deck",
+                                           "creator personal brand",
+                                           "after-hours product (nightlife / dating / spirits)",
+                                           "luxury launch",
+                                           "editorial feature"
+                                       ]
+                      },
+                      {
+                          "slug":  "playful",
+                          "name":  "Playful",
+                          "tagline":  "Sun-warm peach background with Syne display: a friendly indie launch deck.",
+                          "scheme":  "light",
+                          "formality":  "low",
+                          "density":  "medium",
+                          "slide_count":  10,
+                          "occasion":  [
+                                           "creator portfolio",
+                                           "indie product launch",
+                                           "lifestyle brand",
+                                           "small-business pitch",
+                                           "newsletter / community"
+                                       ]
+                      },
+                      {
+                          "slug":  "raw-grid",
+                          "name":  "Raw Grid",
+                          "tagline":  "Neo-brutalist deck with thick borders, offset shadows, and a pink/sage/ink palette.",
+                          "scheme":  "light",
+                          "formality":  "medium-low",
+                          "density":  "high",
+                          "slide_count":  10,
+                          "occasion":  [
+                                           "startup pitch",
+                                           "accelerator demo day",
+                                           "founder pitch",
+                                           "indie product launch",
+                                           "brand deck",
+                                           "creator portfolio"
+                                       ]
+                      },
+                      {
+                          "slug":  "retro-windows",
+                          "name":  "Retro Windows",
+                          "tagline":  "Windows 95 chrome: gray title bars, MS Sans Serif, pixel typography, full nostalgia.",
+                          "scheme":  "light",
+                          "formality":  "low",
+                          "density":  "medium",
+                          "slide_count":  10,
+                          "occasion":  [
+                                           "retro gaming pitch",
+                                           "Y2K brand",
+                                           "creator portfolio (90s aesthetic)",
+                                           "tech-history talk",
+                                           "shitpost-but-make-it-fancy deck"
+                                       ]
+                      },
+                      {
+                          "slug":  "retro-zine",
+                          "name":  "Retro Zine",
+                          "tagline":  "Beige paper with green accent and Bebas Neue + Caveat: a riso-printed zine in HTML form.",
+                          "scheme":  "light",
+                          "formality":  "medium-low",
+                          "density":  "medium",
+                          "slide_count":  10,
+                          "occasion":  [
+                                           "indie zine / publication",
+                                           "music or arts brand",
+                                           "creator portfolio",
+                                           "small-batch / craft launch",
+                                           "cultural / community deck"
+                                       ]
+                      },
+                      {
+                          "slug":  "sakura-chroma",
+                          "name":  "Sakura Chroma",
+                          "tagline":  "Vintage Japanese cassette-package aesthetic: cream paper, diagonal rainbow ribbons, condensed bold type, JIS-style spec checkboxes.",
+                          "scheme":  "light",
+                          "formality":  "low",
+                          "density":  "medium",
+                          "slide_count":  8,
+                          "occasion":  [
+                                           "product launch or catalogue",
+                                           "indie hardware or analog studio brand",
+                                           "music label or release schedule",
+                                           "creative studio annual report",
+                                           "magazine or zine pitch",
+                                           "vintage-flavored brand campaign"
+                                       ]
+                      },
+                      {
+                          "slug":  "scatterbrain",
+                          "name":  "Scatterbrain",
+                          "tagline":  "Post-it inspired: pastel sticky notes, Caveat handwriting, Shrikhand and Zilla Slab type stack.",
+                          "scheme":  "light",
+                          "formality":  "low",
+                          "density":  "high",
+                          "slide_count":  10,
+                          "occasion":  [
+                                           "brainstorm / workshop",
+                                           "creative agency credentials",
+                                           "design-thinking session",
+                                           "ideation pitch",
+                                           "art-direction review"
+                                       ]
+                      },
+                      {
+                          "slug":  "signal",
+                          "name":  "Signal",
+                          "tagline":  "Deep navy canvas with bone paper and a single muted-gold accent; institutional with quiet weight.",
+                          "scheme":  "mixed",
+                          "formality":  "high",
+                          "density":  "high",
+                          "slide_count":  18,
+                          "occasion":  [
+                                           "investor deck",
+                                           "consulting deliverable",
+                                           "board presentation",
+                                           "legal / policy brief",
+                                           "academic deck",
+                                           "advisory pitch",
+                                           "bilingual EN/CN deck"
+                                       ]
+                      },
+                      {
+                          "slug":  "soft-editorial",
+                          "name":  "Soft Editorial",
+                          "tagline":  "Cormorant Garamond serif on warm paper with sage, blush, and lemon accents.",
+                          "scheme":  "light",
+                          "formality":  "high",
+                          "density":  "low",
+                          "slide_count":  12,
+                          "occasion":  [
+                                           "editorial feature",
+                                           "longform brand story",
+                                           "gallery or museum",
+                                           "literary pitch",
+                                           "advisory deliverable",
+                                           "wedding / lifestyle media"
+                                       ]
+                      },
+                      {
+                          "slug":  "stencil-tablet",
+                          "name":  "Stencil \u0026 Tablet",
+                          "tagline":  "Bone paper with stencil-cut headlines and a six-color earth palette: archaeology meets brand.",
+                          "scheme":  "light",
+                          "formality":  "medium-high",
+                          "density":  "medium",
+                          "slide_count":  11,
+                          "occasion":  [
+                                           "museum / cultural institution",
+                                           "art / architecture brand",
+                                           "longform research",
+                                           "heritage / craft brand",
+                                           "manifesto"
+                                       ]
+                      },
+                      {
+                          "slug":  "studio",
+                          "name":  "Studio",
+                          "tagline":  "Black canvas with electric-yellow type; high-voltage design studio aesthetic.",
+                          "scheme":  "dark",
+                          "formality":  "medium",
+                          "density":  "medium",
+                          "slide_count":  12,
+                          "occasion":  [
+                                           "design studio credentials",
+                                           "creative agency pitch",
+                                           "brand showcase",
+                                           "art-direction review",
+                                           "fashion / sneaker brand",
+                                           "bilingual EN/CN deck"
+                                       ]
+                      },
+                      {
+                          "slug":  "vellum",
+                          "name":  "Vellum",
+                          "tagline":  "Deep navy canvas with warm-yellow Cormorant serifs and a single dusty teal accent. A quiet, scholarly aesthetic.",
+                          "scheme":  "dark",
+                          "formality":  "high",
+                          "density":  "low",
+                          "slide_count":  9,
+                          "occasion":  [
+                                           "research findings",
+                                           "white paper or longform report",
+                                           "academic or university deck",
+                                           "advisory deliverable",
+                                           "literary or editorial pitch",
+                                           "founder reflection / vision deck",
+                                           "bilingual EN/CN deck"
+                                       ]
+                      }
+                  ]
+}
