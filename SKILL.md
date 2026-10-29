@@ -58,7 +58,7 @@ Expected schema (selection.json): `template`: slug from templates.json; `slide_c
 Fixed context (never asked, never surfaced): occasion = classroom discussion; audience = high school; mood is irrelevant (the template choice covers it); deck titles follow the source document titles; extra slides only when content earns them. Only if a required JSON field is missing/invalid: ask — otherwise trust the JSON.
 
 **Step 2 — Extract the content.**
-For every path in `content_files`, read the source. Lines that start with `staged:` reference copies the picker GUI made via its native open-file dialog: resolve `staged:<name>` to `C:\Users\aclco\.claude\skills\html-slides\picker\staged\<name>` and read that file. Read all other lines as absolute paths as-is. Organize slides from the source itself: one idea per slide; headlines presentation-ready and true to the source's titles; slide count and density from the JSON (`"auto"` → your call). If a path is missing, report which file was readable/missing and continue with what resolved. **Output location (mandatory):** the deck's deliverable HTML must be saved to `output_dir` from selection.json when present; otherwise use the folder of the first resolvable `content_files` path. Name the file after the source's own title (e.g. `Week-1-Notebook-deck.html` in that folder).
+For every path in `content_files`, read the source. Lines that start with `staged:` reference copies the picker GUI made via its native open-file dialog: resolve `staged:<name>` to `C:\Users\aclco\.claude\skills\html-slides\picker\staged\<name>` and read that file. Read all other lines as absolute paths as-is. Organize slides from the source itself: one idea per slide; headlines presentation-ready and true to the source's titles; slide count and density from the JSON (`"auto"` → decide per slide from the content's weight under the Density rule in Content mapping — never shortcut content to keep the count down). If a path is missing, report which file was readable/missing and continue with what resolved. **Output location (mandatory):** the deck's deliverable HTML must be saved to `output_dir` from selection.json when present; otherwise use the folder of the first resolvable `content_files` path. Name the file after the source's own title (e.g. `Week-1-Notebook-deck.html` in that folder).
 
 **Step 3 — Build the deck in the chosen template.**
 Import: `picker\repo` (refresh with `picker\install.ps1` ONLY if `templates.json` is older than the user wants or `repo` is missing). Locate `template`'s slug in `picker\templates.json`; if mapped to a missing slug, name the nearest equivalent based on scheme/density/formality and SAY you substituted. In the chosen template: follow the repo's own `AGENTS.md` §3–§5 — preserve fonts, palette, layout grid, slide-level CSS classes, decorative elements, and the navigation runtime; replace all placeholder content; duplicate the most appropriate layout for extra slides and update page-number labels (`NN / TT`); design missing layouts with the template's own design system — same fonts, colors, decor vocabulary, spacing rhythm, component grammar, chrome.
@@ -93,9 +93,31 @@ If a content file could not be resolved (Step 2), list it under `unresolved:` wi
 
 For lesson/document content, organize per-slide substance the same way a presenter needs it: one idea per slide, headlines presentation-ready, notes that don't belong on the slide stay out. If the user supplies a rich source and you need slide-by-slide derivation, the docx-to-ppt skill's Steps 1–3 describe content extraction; do NOT use its slidespec file.
 
-**Calculation preservation (REQUIRED):** every calculation, formula, or numeric computation that appears in the source content must appear on the slides too — never summarized away as "the formula applies here". Render it with the template's own component grammar (mono blocks, callout cards, or equation styling the template already provides), show the full worked expression (inputs → formula → substitution → result with units), and respect the 30px font floor. If a calculation drives a key takeaway, give it its own slide rather than a footnote.
+**Title fidelity (REQUIRED):** slide titles use the source's own titles, in the source's own wording. Do not replace a source title with a figure of speech, idiom, pun, slogan, or invented hook, and never compress headings into ambiguous shorthand (e.g. "Two Payback, One PI" or "PI at 2 payback"). If a source heading is too long for the layout, shorten only by dropping words the sentence can live without — never by renaming the concept, and never by substituting metaphor for the source's terms. If the source has no title for a block, title it with the source's own first sentence or key term.
 
-**Definition preservation (REQUIRED):** when a source introduces a new term, its definition must appear on the slide where the term first shows up — term + definition together, not the term alone or "see handout". Keep definitions verbatim or near-verbatim from the source; expanding them in your own words risks drift. If the source defines many terms per slide, move definitions to follow-up slides rather than dropping them.
+**Calculation preservation (REQUIRED):** every calculation, formula, or numeric computation that appears in the source content must appear on the slides too — never summarized away as "the formula applies here". Render it with the template's own component grammar (mono blocks, callout cards, or equation styling the template already provides) and respect the 30px font floor. Write it **line by line, one step per line, each line a complete labelled statement** — never a chained one-liner. For every step: label what it is, state the formula, substitute the actual numbers, then give the result with units. If a calculation drives a key takeaway, give it its own slide rather than a footnote.
+
+Wrong — everything crammed on one line:
+
+```text
+PI = 15,193,298 ÷ 12,000,000 = 1.2661
+```
+
+Right — one step per line, each step labelled:
+
+```text
+Profitability Index (PI)
+Step 1 — Present value of cash inflows: 15,193,298
+Step 2 — Initial investment: 12,000,000
+Step 3 — PI = PV of inflows ÷ Initial investment
+Step 4 — PI = 15,193,298 ÷ 12,000,000
+Step 5 — PI = 1.27
+Decision: PI > 1, so the project is acceptable.
+```
+
+**Definition preservation (REQUIRED):** when a source introduces a new term, its definition must appear on the slide where the term first shows up — term + definition together, not the term alone or "see handout". Write each definition as a proper, complete sentence that can stand on its own (subject, verb, full thought), not a fragment: not "PI: ratio of inflows to investment" but "The profitability index is the ratio of the present value of cash inflows to the initial investment." Keep the source's meaning verbatim or near-verbatim; expanding in your own words risks drift. If the source defines many terms per slide, move definitions to follow-up slides rather than dropping them.
+
+**Density (REQUIRED):** when density is `"auto"`, choose the density slide by slide from the content's own weight — do not default to sparse. Give each slide as much substance as it can hold cleanly at the template's type scale, and add a slide rather than compressing two ideas onto one or stripping detail to save slides. Shortcutting content to keep the slide count down is a failure, as is overflowing the stage; balance the two by letting the deck grow.
 
 ## Common Mistakes
 
@@ -112,4 +134,8 @@ For lesson/document content, organize per-slide substance the same way a present
 - Skipping the `picker\status.js` checkpoints — the user's loading screen stalls on the last known step; they may think the build hung
 - Delivering an HTML deck without the `deck-provenance` comment block — debugging later can't tell what skill produced it or from which sources
 - Dropping calculations from the source and just describing them in prose — the worked expression must be on the slide
+- Chaining a calculation into one line ("PI = 15,193,298 ÷ 12,000,000 = 1.2661") — every step gets its own labelled line
 - Showing a term without its definition when the source defines it — term and definition travel together
+- Writing a definition as a fragment ("PI: inflows ÷ investment") instead of a complete sentence
+- Renaming or "punching up" a source title with a figure of speech — titles keep the source's own wording
+- Cramming or stripping content to hit a slide count — auto density grows the deck instead
