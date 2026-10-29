@@ -74,6 +74,32 @@
   .shots-row img { width:32%; aspect-ratio:16/9; object-fit:cover; background:#000;
                    border-radius:8px; display:block; }
   .shots-foot { display:flex; justify-content:flex-end; margin-top:12px; }
+  #statusScreen { position:fixed; inset:0; background:var(--bg); display:none;
+                  align-items:center; justify-content:center; z-index:900; }
+  .status-panel { width:min(680px,90vw); background:var(--panel); border:1px solid var(--line);
+                  border-radius:12px; padding:22px 26px; }
+  .status-panel h2 { font-size:16px; margin-bottom:14px; }
+  #statusScreen .step { font-size:13px; padding:4px 0; color:var(--dim); }
+  #statusScreen .step::before { content:"○ "; }
+  #statusScreen .step.done { color:var(--ok); }
+  #statusScreen .step.done::before { content:"✓ "; }
+  #statusScreen .step.active { color:var(--text); }
+  #statusScreen .step.active::before { content:"◐ "; }
+  #statusScreen .step.failed { color:var(--bad); }
+  #statusScreen .step.failed::before { content:"✕ "; }
+  #statusMsg { margin-top:12px; font-size:13px; }
+  #statusScreen[data-status-state="error"] #statusMsg { color:var(--bad); }
+  .status-log { margin-top:10px; max-height:180px; overflow-y:auto; font:11px monospace;
+                color:var(--dim); border-top:1px solid var(--line); padding-top:8px; }
+  .status-log div { padding:2px 0; overflow-wrap:anywhere; }
+  #statusActions { margin-top:14px; }
+  #statusActions .openLink { display:inline-block; background:var(--accent); color:#0a0e18;
+                             padding:10px 18px; border-radius:8px; font-weight:600;
+                             text-decoration:none; font-size:13px; }
+  #statusActions .outHint { display:block; margin-top:8px; font-size:11px; color:var(--dim);
+                            overflow-wrap:anywhere; }
+  #statusHint { font-size:11px; color:var(--dim); margin-top:8px; }
+  #statusBack { margin-top:14px; background:transparent; color:var(--dim); border:1px solid var(--line); }
 </style>
 </head>
 <body>
@@ -131,6 +157,17 @@
     <div class="shots-foot"><button id="modalSelect">SELECT</button></div>
   </div>
 </div>
+<section id="statusScreen">
+  <div class="status-panel" id="statusPanel" data-status-state="idle">
+    <h2>Generating your deck — live opencode status</h2>
+    <div id="statusSteps"></div>
+    <div id="statusMsg"></div>
+    <div class="status-log" id="statusLog"></div>
+    <div id="statusActions"></div>
+    <div id="statusHint"></div>
+    <button id="statusBack" class="mini">‹ back to picker</button>
+  </div>
+</section>
 <div class="toast" id="toast"></div>
 <script src="library.json.js"></script>
 <script>
@@ -339,8 +376,11 @@
         toast('added ' + fresh.length + ' file path' + (fresh.length === 1 ? '' : 's'));
     }
     function finish() {
-        if (new URLSearchParams(location.search).get('from') === 'opencode')
-            toast('opencode is reading selection.json — you can keep this open or close it', true);
+        subTs = Date.now();
+        lastLogKey = '';
+        openStatus();
+        renderStatus(null);      // waiting UI until opencode's first checkpoint lands
+        startPolling();
     }
 
     function confirmSelect(slug) {
@@ -363,6 +403,147 @@
     $('#modalClose').onclick = closeShotModal;
     $('#shotModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeShotModal(); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeShotModal(); });
+
+    // ---- live build status (picker\status.js, written by opencode) ----
+    const STEPS = [['read-selection','Read selection'], ['extract','Extract content'],
+                   ['build','Build template'], ['fit','Font fit'], ['deliver','Deliver']];
+    let subTs = null;          // Date.now() of the last BUILD submission this session
+    let statusOpen = false;
+    let pollTimer = null;
+    let lastLogKey = '';
+
+    function openStatus() {
+        statusOpen = true;
+        $('#statusScreen').style.display = 'flex';
+    }
+    function closeStatus() {
+        statusOpen = false;
+        $('#statusScreen').style.display = 'none';
+    }
+    function stopPolling() { if (pollTimer) { clearInterval(pollTimer); pollTimer = null; } }
+    function startPolling() { stopPolling(); pollTimer = setInterval(tickStatus, 1500); }
+    $('#statusBack').onclick = closeStatus;
+
+    function renderChecklist(activeIdx, phase) {
+        const box = $('#statusSteps');
+        box.innerHTML = '';
+        STEPS.forEach((s, i) => {
+            const row = document.createElement('div');
+            row.className = 'step';
+            if (phase === 'done') row.classList.add('done');
+            else if (i < activeIdx) row.classList.add('done');
+            else if (phase === 'error' && i === activeIdx) row.classList.add('failed');
+            else if (i === activeIdx) row.classList.add('active');
+            row.textContent = s[1];
+            box.appendChild(row);
+        });
+    }
+
+    function pushLog(st) {
+        const key = st.updated_at + '|' + st.step + '|' + st.message;
+        if (key === lastLogKey) return;
+        lastLogKey = key;
+        const line = $('#statusLog');
+        const div = document.createElement('div');
+        div.textContent = new Date(st.updated_at).toLocaleTimeString() + '  ' +
+            st.state.toUpperCase() + '  ' + st.message;
+        line.appendChild(div);
+        while (line.children.length > 60) line.firstChild.remove();
+        line.scrollTop = line.scrollHeight;
+    }
+
+    function renderStatus(st) {
+        if (!st) {
+            if (!statusOpen) return;
+            $('#statusPanel').dataset.statusState = 'running';
+            renderChecklist(0, 'pending');
+            $('#statusMsg').textContent = 'waiting for opencode to pick up…';
+            $('#statusHint').textContent = (subTs && Date.now() - subTs > 120000)
+                ? 'opencode hasn\'t picked up yet — run picker\\watcher.ps1 or ask opencode to build picker\\selection.json'
+                : '';
+            return;
+        }
+        if (subTs && new Date(st.updated_at).getTime() < subTs - 2000) return renderStatus(null);
+        if (!statusOpen) openStatus();
+        $('#statusHint').textContent = '';
+        pushLog(st);
+        const idx = Math.max(0, STEPS.findIndex(x => x[0] === st.step));
+        const actions = $('#statusActions');
+        actions.innerHTML = '';
+        if (st.state === 'done') {
+            $('#statusPanel').dataset.statusState = 'done';
+            renderChecklist(STEPS.length - 1, 'done');
+            $('#statusMsg').textContent = st.message || 'Deck ready';
+            if (st.output) {
+                const a = document.createElement('a');
+                a.id = 'status' + 'OpenLink';   // split: --dump-dom also prints this script's text
+                a.href = 'file:///' + encodeURI(st.output.replace(/\\/g, '/'));
+                a.target = '_blank'; a.rel = 'noopener';
+                a.className = 'openLink';
+                a.textContent = 'Open deck';
+                a.onclick = stopPolling;
+                actions.appendChild(a);
+                const hint = document.createElement('span');
+                hint.className = 'outHint';
+                hint.textContent = st.output;
+                actions.appendChild(hint);
+            } else {
+                const hint = document.createElement('span');
+                hint.className = 'outHint';
+                hint.textContent = 'deck path not reported — check the opencode output';
+                actions.appendChild(hint);
+            }
+            stopPolling();
+            return;
+        }
+        if (st.state === 'error') {
+            $('#statusPanel').dataset.statusState = 'error';
+            renderChecklist(idx, 'error');
+            $('#statusMsg').textContent = st.message || 'Build failed';
+            stopPolling();
+            return;
+        }
+        $('#statusPanel').dataset.statusState = 'running';
+        renderChecklist(st.state === 'waiting' ? 0 : idx, 'running');
+        $('#statusMsg').textContent = st.message ||
+            (st.state === 'waiting' ? 'opencode picked up selection.json' : 'working…');
+    }
+
+    function tickStatus() {
+        const s = document.createElement('script');
+        s.src = 'status.js?ts=' + (subTs || 0) + '&n=' + Date.now();   // unique URL: fresh read every tick
+        window.__DECK_STATUS = null;
+        s.onerror = () => { s.remove(); if (statusOpen) renderStatus(null); };
+        s.onload = () => {
+            s.remove();
+            const st = window.__DECK_STATUS;
+            window.__DECK_STATUS = null;
+            renderStatus(st || null);
+            if (!st && !statusOpen) stopPolling();
+        };
+        document.head.appendChild(s);
+    }
+
+    // rejoin: on load, show the screen if a build is live or resolved recently (< 1h)
+    (function joinStatus() {
+        const s = document.createElement('script');
+        s.src = 'status.js?ts=0&n=' + Date.now();
+        window.__DECK_STATUS = null;
+        s.onerror = () => s.remove();
+        s.onload = () => {
+            s.remove();
+            const st = window.__DECK_STATUS;
+            window.__DECK_STATUS = null;
+            if (!st) return;
+            const age = Date.now() - new Date(st.updated_at).getTime();
+            if (st.state === 'running' || st.state === 'waiting' || age < 3600000) {
+                openStatus();
+                renderStatus(st);
+                if (st.state === 'running' || st.state === 'waiting') startPolling();
+            }
+        };
+        document.head.appendChild(s);
+    })();
 
     $('#buildBtn').onclick = writeJson;
     $('#browseBtn').onclick = browseFiles;
