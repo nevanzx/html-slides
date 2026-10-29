@@ -5,9 +5,15 @@ function Assert($cond, $name) {
     else       { Write-Host "FAIL: $name"; $script:fail++ }
 }
 $root = Split-Path (Split-Path $PSScriptRoot)
-$chromeKey = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe' -ErrorAction SilentlyContinue
-$chrome = $chromeKey.'(default)'
-Assert ($chrome -and (Test-Path $chrome)) 'Chrome resolved'
+# Chrome resolve must probe HKCU before HKLM (per-user installs)
+$chrome = $null
+foreach ($hive in 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe',
+                    'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe') {
+    $key = Get-ItemProperty $hive -ErrorAction SilentlyContinue
+    $exe = $key.'(default)'
+    if ($exe -and (Test-Path $exe)) { $chrome = $exe; break }
+}
+Assert ($chrome -and (Test-Path $chrome)) 'Chrome resolved (HKCU/HKLM)'
 $html = Join-Path $root 'picker\picker.html'
 Assert (Test-Path $html) 'picker.html exists'
 if ($fail -gt 0) { exit 1 }

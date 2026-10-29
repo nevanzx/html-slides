@@ -32,17 +32,27 @@ $payload = [ordered]@{
     templates  = $templates
 }
 $json = ConvertTo-Json $payload -Depth 5
-Set-Content (Join-Path $PSScriptRoot 'templates.json')   -Value $json -Encoding UTF8
-Set-Content (Join-Path $PSScriptRoot 'library.json.js')  -Value ('window.LIBRARY = ' + $json + ';' + [Environment]::NewLine) -Encoding UTF8
+# BOM-less UTF-8: picker.app's fetch and the for /f reader choke on a BOM; PS 5.1 Set-Content -Encoding UTF8 emits one
+[IO.File]::WriteAllText((Join-Path $PSScriptRoot 'templates.json'),  $json, (New-Object System.Text.UTF8Encoding $false))
+[IO.File]::WriteAllText((Join-Path $PSScriptRoot 'library.json.js'), ('window.LIBRARY = ' + $json + ';' + [Environment]::NewLine), (New-Object System.Text.UTF8Encoding $false))
 
 Write-Host 'install: sections 1-2 done (templates.json + library.json.js)'
 
 # ---------- section 3: title-slide screenshots via Chrome headless ----------
 $ssDir = Join-Path $PSScriptRoot 'screenshots'
 New-Item -ItemType Directory -Force -Path $ssDir | Out-Null
-$chromeKey = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe' -ErrorAction SilentlyContinue
-$chrome = $chromeKey.'(default)'
-if (-not $chrome -or -not (Test-Path $chrome)) { throw 'Chrome (chrome.exe) not found via App Paths registry key' }
+# probe HKCU BEFORE HKLM: per-user Chrome installs only register under HKCU
+function Resolve-Chrome {
+    foreach ($hive in 'HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe',
+                        'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe') {
+        $key = Get-ItemProperty $hive -ErrorAction SilentlyContinue
+        $exe = $key.'(default)'
+        if ($exe -and (Test-Path $exe)) { return $exe }
+    }
+    return $null
+}
+$chrome = Resolve-Chrome
+if (-not $chrome) { throw 'Chrome (chrome.exe) not found via App Paths registry keys (HKCU/HKLM)' }
 
 $bad = @()
 foreach ($t in $templates) {
@@ -68,10 +78,8 @@ if ($bad.Count -gt 0) { throw ($bad -join '; ') }
 Write-Host "screenshots: ready for $($templates.Count) templates"
 
 # ---------- section 4+5: browser resolve, web-browser.txt, shortcuts ----------
-$chromeKey = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe' -ErrorAction SilentlyContinue
-$chrome = if ($chromeKey) { $chromeKey.'(default)' } else { $null }
-$guiBrowser = if ($chrome -and (Test-Path $chrome)) { $chrome } else { $null }
-if (-not $guiBrowser) { throw 'Chrome (chrome.exe) not found via App Paths registry key' }
+$guiBrowser = Resolve-Chrome
+if (-not $guiBrowser) { throw 'Chrome (chrome.exe) not found via App Paths registry keys (HKCU/HKLM)' }
 # BOM-less UTF-8: picker.cmd's for /f is not BOM-aware (PS 5.1 Set-Content -Encoding UTF8 emits a BOM)
 $browserTxt = Join-Path $PSScriptRoot 'web-browser.txt'
 [IO.File]::WriteAllText($browserTxt, $guiBrowser + [Environment]::NewLine, (New-Object System.Text.UTF8Encoding $false))

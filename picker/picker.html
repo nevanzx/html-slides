@@ -196,10 +196,11 @@
     function payload() {
         return {
             template: recalled,
-            slide_count: $('#autoCount').checked ? 'auto' : (Number($('#countN').value) || 12),
+            slide_count: $('#autoCount').checked ? 'auto' : Math.min(30, Math.max(3, Number($('#countN').value) || 12)),
             density: $('#density').value,
             content_files: paths(),
-            notes: $('#notes').value.trim()
+            notes: $('#notes').value.trim(),
+            generated_at: new Date().toISOString()
         };
     }
     function toast(msg, long) {

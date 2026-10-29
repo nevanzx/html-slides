@@ -9,7 +9,7 @@ $created = $false
 $mtx = $null
 try {
     $mtx = New-Object System.Threading.Mutex($true, 'Global\html-slides-picker-watcher', [ref]$created)
-    if (-not $created) { exit 0 }   # a watcher is already on duty
+    if (-not $created) { exit 4 }   # exit 4 = another watcher already holds the mutex (retry from caller)
 } catch {
     Write-Warning "watcher: single-instance mutex unavailable ($($_.Exception.Message)); continuing WITHOUT single-instance guard."
 }

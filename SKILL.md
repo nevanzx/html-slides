@@ -7,7 +7,7 @@ description: Use when the user wants slides, a deck, or a presentation delivered
 
 ## Overview
 
-Build presentation decks by **fully adapting the zarazhangrui/beautiful-html-templates library**: clone the chosen template, replace placeholder content with real content, and deliver a standalone HTML file that looks exactly like the template — fonts, palette, every decorative element. The deliverable is HTML presented in a browser; never a .pptx.
+Build presentation decks by **fully adapting the zarazhangrui/beautiful-html-templates library**: build the chosen template from the LOCAL clone at `picker\repo` (created/refreshed by `picker\install.ps1`) — never re-clone from GitHub while the local clone exists — replace placeholder content with real content, and deliver a standalone HTML file that looks exactly like the template — fonts, palette, every decorative element. The deliverable is HTML presented in a browser; never a .pptx.
 
 ## Step 0 — Routing (mandatory)
 
@@ -21,11 +21,20 @@ If the user did not already come from the picker GUI:
 $browser = (Get-Content "C:\Users\aclco\.claude\skills\html-slides\picker\web-browser.txt" -Raw).Trim()
 Start-Process $browser -ArgumentList '--app=file:///C:/Users/aclco/.claude/skills/html-slides/picker/picker.html?from=opencode'
 ```
-Wait for the watcher to report the selection:
+Wait for the watcher to report the selection — bounded retry loop, NOT one blocking hour-long call:
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File "C:\Users\aclco\.claude\skills\html-slides\picker\watcher.ps1" -NotifyOnly -TimeoutSec 3600
+$watcher = "C:\Users\aclco\.claude\skills\html-slides\picker\watcher.ps1"
+$tries = 0
+while ($tries -lt 5) {
+    powershell -NoProfile -ExecutionPolicy Bypass -File $watcher -NotifyOnly -TimeoutSec 120
+    if ($LASTEXITCODE -eq 0) { break }          # selection.json changed -> read it now
+    if ($LASTEXITCODE -eq 3) { break }          # timeout, no selection -> ask the user (only allowed fallback ask)
+    if ($LASTEXITCODE -eq 4) { $tries++; Start-Sleep -Seconds 2; continue }   # another watcher holds the mutex -> retry
+    break                                        # unexpected exit -> ask in chat
+}
 ```
-Exit 0 → read `picker\selection.json` now. Exit 3 → timeout: ask the user in chat (this is the ONLY allowed fallback ask). Expected schema: `{"template","slide_count"|"auto","density"|"sparse"|"balanced"|"dense"|"auto","content_files":[],"notes"}`.
+Watcher exit codes: **0** = selection.json changed (read it), **3** = timeout cap reached with no change, **4** = another watcher instance already holds the mutex (retry shortly).
+Expected schema (selection.json): `template`: slug from templates.json; `slide_count`: number or `"auto"`; `density`: `"auto"`|`"sparse"`|`"balanced"`|`"dense"`; `content_files`: array of absolute paths; `notes`: free text; `generated_at`: watcher trigger field (not consumed by the build).
 Fixed context (never asked, never surfaced): occasion = classroom discussion; audience = high school; mood is irrelevant (the template choice covers it); deck titles follow the source document titles; extra slides only when content earns them. Only if a required JSON field is missing/invalid: ask — otherwise trust the JSON.
 
 **Step 2 — Extract the content.**

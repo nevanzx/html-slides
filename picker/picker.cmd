@@ -6,6 +6,11 @@ if not exist "%~dp0web-browser.txt" (
   exit /b 1
 )
 for /f "usebackq delims=" %%i in ("%~dp0web-browser.txt") do set "BROWSER=%%i"
+if not defined BROWSER (
+  echo web-browser.txt is empty - re-run picker\install.ps1.
+  pause
+  exit /b 1
+)
 set "U=%~dp0picker.html"
 set "U=!U:\=/!"
 start "" "%BROWSER%" --app="file:///!U!"
