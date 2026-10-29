@@ -62,9 +62,7 @@ foreach ($t in $templates) {
         if ((Test-Path $png) -and (Get-Item $png).Length -gt 20KB) { break }
         Start-Sleep -Milliseconds 500
     }
-    if (-not $upToDate) {
-        if ((-not (Test-Path $png)) -or (Get-Item $png).Length -le 20KB) { $bad += ('capture failed: ' + $t.slug) }
-    }
+    if ((-not (Test-Path $png)) -or (Get-Item $png).Length -le 20KB) { $bad += ('capture failed: ' + $t.slug) }
 }
 if ($bad.Count -gt 0) { throw ($bad -join '; ') }
 Write-Host "screenshots: ready for $($templates.Count) templates"
