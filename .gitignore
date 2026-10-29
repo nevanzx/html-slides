@@ -2,3 +2,6 @@ picker/repo/
 picker/screenshots/
 picker/web-browser.txt
 selection.json
+
+picker/dialog-result.json
+picker/dialog-last.txt

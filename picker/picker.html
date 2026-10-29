@@ -47,6 +47,11 @@
   #content_files { width:100%; height:64px; background:var(--bg); color:var(--text);
       border:1px solid var(--line); border-radius:6px; padding:6px 10px; font:12px monospace; }
   #content_files.bad { border-color:var(--bad); }
+  #content_files.drop-hover { border-color:var(--accent); box-shadow:0 0 0 2px rgba(110,168,255,.35); }
+  button.mini { margin-top:6px; padding:6px 12px; font-size:12px; background:transparent;
+                color:var(--accent); border:1px solid var(--line); }
+  button.mini:disabled { opacity:.4; cursor:not-allowed; }
+  .hint { font-size:11px; color:var(--dim); overflow-wrap:anywhere; }
   #notes { width:100%; background:var(--bg); color:var(--text);
            border:1px solid var(--line); border-radius:6px; padding:6px 10px; }
   button { border:0; border-radius:8px; padding:10px 18px; font-size:13px; font-weight:600; cursor:pointer; }
@@ -100,6 +105,8 @@
     </div>
     <div class="field" style="margin-top:8px"><span>Content files (one absolute path per line)</span>
       <textarea id="content_files" placeholder="D:\lessons\Week-1-Notebook.html"></textarea>
+      <button id="browseBtn" type="button" class="mini">Browse… (native dialog)</button>
+      <div id="outDir" class="hint"></div>
     </div>
     <div class="field" style="margin-top:8px"><span>Extra notes (optional)</span>
       <input id="notes" placeholder="e.g. keep section dividers minimal">
@@ -138,6 +145,11 @@
         $('#fromOpencode').style.display = 'inline-block';
 
     let recalled = localStorage.getItem('picker.lastTemplate') || '';
+    let lastOutputDir = null;
+
+    function updateOutDirUI() {
+        $('#outDir').textContent = lastOutputDir ? '.deck will be saved in: ' + lastOutputDir : '';
+    }
 
     // filters: value lists derived from data (occasion removed from UI, kept in data);
     // scheme/density/formality only
@@ -205,26 +217,56 @@
     }
 
     const PATH_RE = /^[a-zA-Z]:\\.*/;
-    const isPathLike = line => PATH_RE.test(line.trim()) || line.trim().startsWith('\\\\');
+    const isPathLike = line => PATH_RE.test(line.trim()) || line.trim().startsWith('\\\\') || line.trim().startsWith('staged:');
     function paths() { return $('#content_files').value.split(/\r?\n/).map(s => s.trim()).filter(Boolean); }
     function revalidate() {
         const list = paths();
         const bad = list.length > 0 && list.some(p => !isPathLike(p));
         $('#content_files').classList.toggle('bad', bad);
+        if (list.length === 0 && lastOutputDir) { lastOutputDir = null; updateOutDirUI(); }
         $('#buildBtn').disabled = !(recalled && list.length > 0 && !bad);
     }
     $('#content_files').addEventListener('input', revalidate);
+
+    // drag-and-drop: files dragged from Explorer arrive with file:// URIs -> absolute Windows paths
+    const PathDroppables = () => {
+        const el = $('#content_files');
+        el.parentElement.addEventListener('dragenter', e => { e.preventDefault(); el.classList.add('drop-hover'); });
+        el.parentElement.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drop-hover'); });
+        el.parentElement.addEventListener('dragleave', e => { if (e.target === el.parentElement) el.classList.remove('drop-hover'); });
+        el.parentElement.addEventListener('drop', e => {
+            e.preventDefault(); e.stopPropagation();
+            el.classList.remove('drop-hover');
+            const uris = (e.dataTransfer.getData('text/uri-list') || '').split(/\r?\n/).filter(u => u && u[0] !== '#');
+            const used = new Set(paths());
+            let added = 0;
+            for (const u of uris) {
+                if (!u.startsWith('file://')) continue;
+                let p = decodeURIComponent(u.slice(7)).replace(/^\/([A-Za-z]:)/, '$1').replace(/\/$/, '').replace(/\//g, '\\');
+                if (!p || used.has(p)) continue;
+                used.add(p); added++;
+                el.value += (el.value && !el.value.endsWith('\n') ? '\n' : '') + p;
+            }
+            if (added) { revalidate(); toast('added ' + (added === 1 ? 'file path' : added + ' file paths')); }
+            else if (e.dataTransfer.files.length) {
+                toast('browser hid the path for that drop — use the Browse button instead', true);
+            }
+        });
+    };
+    PathDroppables();
     $('#autoCount').onchange = () => { $('#countN').disabled = $('#autoCount').checked; };
 
     function payload() {
-        return {
+        const p = {
             template: recalled,
             slide_count: $('#autoCount').checked ? 'auto' : Math.min(30, Math.max(3, Number($('#countN').value) || 12)),
             density: $('#density').value,
             content_files: paths(),
-            notes: $('#notes').value.trim(),
-            generated_at: new Date().toISOString()
+            notes: $('#notes').value.trim()
         };
+        if (lastOutputDir) p.output_dir = lastOutputDir;
+        p.generated_at = new Date().toISOString();
+        return p;
     }
     function toast(msg, long) {
         const t = $('#toast');
@@ -233,46 +275,68 @@
         t._h = setTimeout(() => { t.style.display = 'none'; }, long ? 8000 : 3000);
     }
 
-    let dirDB = null;
-    function savedDir() {
-        return new Promise(res => {
-            const open = indexedDB.open('picker', 1);
-            open.onupgradeneeded = () => open.result.createObjectStore('kv');
-            open.onsuccess = () => {
-                dirDB = open.result;
-                const req = dirDB.transaction('kv').objectStore('kv').get('dir');
-                req.onsuccess = () => res(req.result || null);
-                req.onerror = () => res(null);
-            };
-            open.onerror = () => res(null);
+    function pollHelper(ts, maxTries) {
+        return new Promise(resolve => {
+            let tries = 0;
+            function retry() {
+                if (++tries >= maxTries) { resolve(null); return; }
+                setTimeout(tick, 800);
+            }
+            function tick() {
+                const s = document.createElement('script');
+                s.src = 'dialog-result.js?ts=' + ts + '&n=' + Date.now();   // unique URL: fresh file read every tick
+                window.DIALOG_RESULT = null;
+                s.onerror = () => { s.remove(); retry(); };
+                s.onload = () => {
+                    s.remove();
+                    const r = window.DIALOG_RESULT;
+                    window.DIALOG_RESULT = null;
+                    if (r && String(r.ts) === String(ts)) { resolve(r); return; }
+                    retry();
+                };
+                document.head.appendChild(s);
+            }
+            tick();
         });
-    }
-    function keepDir(dir) {
-        const tx = dirDB.transaction('kv', 'readwrite');
-        tx.objectStore('kv').put(dir, 'dir');
-    }
-    async function persist(dir, text) {
-        const perm = await dir.queryPermission({ mode: 'readwrite' });
-        if (perm !== 'granted' && (await dir.requestPermission({ mode: 'readwrite' })) !== 'granted') return false;
-        const file = await dir.getFileHandle('selection.json', { create: true });
-        const w = await file.createWritable();
-        await w.write(text); await w.close();
-        return true;
     }
     async function writeJson() {
         const text = JSON.stringify(payload(), null, 2);
+        const ts = Date.now();
         try {
-            const remembered = await savedDir();
-            if (remembered && await persist(remembered, text)) {
-                toast('✓ sent to selection.json'); finish(); return;
-            }
-            const granted = await window.showDirectoryPicker({ id: 'picker-out', mode: 'readwrite' });  // ONE-TIME folder grant
-            if (await persist(granted, text)) { keepDir(granted); toast('✓ sent to selection.json'); finish(); return; }
-            throw new Error('permission denied');
-        } catch (e) {
             await navigator.clipboard.writeText(text);
-            toast('silent save unavailable — JSON copied to clipboard instead', true);
+        } catch (e) {
+            toast('clipboard blocked — use COPY SELECTION and paste into picker\\selection.json', true);
+            return;
         }
+        try { location.href = 'slidespicker:save?ts=' + ts; } catch (e) { /* poll anyway */ }
+        const res = await pollHelper(ts, 100);
+        if (!res) { toast('helper did not answer — JSON is on the clipboard; paste it into picker\\selection.json', true); return; }
+        if (!res.saved) { toast('save failed: ' + (res.error || 'unknown reason') + ' — JSON is on the clipboard', true); return; }
+        toast('✓ sent to selection.json');
+        finish();
+    }
+    async function browseFiles() {
+        const btn = $('#browseBtn');
+        if (btn.disabled) return;
+        btn.disabled = true;
+        const ts = Date.now();
+        window.DIALOG_RESULT = null;
+        try { location.href = 'slidespicker:pick?ts=' + ts; } catch (e) { /* poll anyway */ }
+        const res = await pollHelper(ts, 150);
+        btn.disabled = false;
+        if (!res) { toast('no dialog answer — native helper not running; type or paste paths instead', true); return; }
+        if (res.cancelled) { toast('dialog closed without choosing files'); return; }
+        if (!(res.ok && res.paths && res.paths.length)) { toast('no files selected' + (res.error ? ' (' + res.error + ')' : ''), true); return; }
+        const el = $('#content_files');
+        const used = new Set(paths());
+        const fresh = res.paths.filter(p => !used.has(p));
+        if (fresh.length) {
+            if (el.value && !el.value.endsWith('\n')) el.value += '\n';
+            el.value += fresh.join('\n');
+        }
+        if (res.dir) { lastOutputDir = res.dir; updateOutDirUI(); }
+        revalidate();
+        toast('added ' + fresh.length + ' file path' + (fresh.length === 1 ? '' : 's'));
     }
     function finish() {
         if (new URLSearchParams(location.search).get('from') === 'opencode')
@@ -282,7 +346,7 @@
     function confirmSelect(slug) {
         recalled = slug;
         localStorage.setItem('picker.lastTemplate', slug);
-        cards(); ribbon(); revalidate();
+    cards(); ribbon(); revalidate(); updateOutDirUI();
     }
     function openShotModal(slug) {
         const t = T.find(x => x.slug === slug);
@@ -301,6 +365,7 @@
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeShotModal(); });
 
     $('#buildBtn').onclick = writeJson;
+    $('#browseBtn').onclick = browseFiles;
     $('#copyBtn').onclick = async () => {
         await navigator.clipboard.writeText(JSON.stringify(payload(), null, 2));
         toast('selection JSON copied');
