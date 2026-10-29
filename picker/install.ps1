@@ -37,12 +37,12 @@ Set-Content (Join-Path $PSScriptRoot 'library.json.js')  -Value ('window.LIBRARY
 
 Write-Host 'install: sections 1-2 done (templates.json + library.json.js)'
 
-# ---------- section 3: title-slide screenshots via Edge headless ----------
+# ---------- section 3: title-slide screenshots via Chrome headless ----------
 $ssDir = Join-Path $PSScriptRoot 'screenshots'
 New-Item -ItemType Directory -Force -Path $ssDir | Out-Null
-$edgeKey = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe' -ErrorAction SilentlyContinue
-$edge = $edgeKey.'(default)'
-if (-not $edge -or -not (Test-Path $edge)) { throw 'Edge (msedge.exe) not found via App Paths key' }
+$chromeKey = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe' -ErrorAction SilentlyContinue
+$chrome = $chromeKey.'(default)'
+if (-not $chrome -or -not (Test-Path $chrome)) { throw 'Chrome (chrome.exe) not found via App Paths registry key' }
 
 $bad = @()
 foreach ($t in $templates) {
@@ -53,9 +53,9 @@ foreach ($t in $templates) {
     if (-not (Test-Path $html)) { $bad += ('no template.html: ' + $t.slug); continue }
     $url = 'file:///' + ($html -replace '\\', '/')
     # PS 5.1: native stderr + $ErrorActionPreference='Stop' + 2>$null still throws;
-    # relax EAP across the Edge call only (benign Chromium stderr noise)
+    # relax EAP across the Chrome call only (benign Chromium stderr noise)
     $prevEap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
-    & $edge --headless --disable-gpu --hide-scrollbars --default-background-color=FFFFFFFF `
+    & $chrome --headless --disable-gpu --hide-scrollbars --default-background-color=FFFFFFFF `
         '--window-size=1920,1080' '--virtual-time-budget=15000' "--screenshot=$png" $url 2>$null | Out-Null
     $ErrorActionPreference = $prevEap
     for ($i = 0; $i -lt 20; $i++) {
@@ -66,3 +66,22 @@ foreach ($t in $templates) {
 }
 if ($bad.Count -gt 0) { throw ($bad -join '; ') }
 Write-Host "screenshots: ready for $($templates.Count) templates"
+
+# ---------- section 4+5: browser resolve, web-browser.txt, shortcuts ----------
+$chromeKey = Get-ItemProperty 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe' -ErrorAction SilentlyContinue
+$chrome = if ($chromeKey) { $chromeKey.'(default)' } else { $null }
+$guiBrowser = if ($chrome -and (Test-Path $chrome)) { $chrome } else { $null }
+if (-not $guiBrowser) { throw 'Chrome (chrome.exe) not found via App Paths registry key' }
+Set-Content (Join-Path $PSScriptRoot 'web-browser.txt') -Value $guiBrowser -Encoding UTF8
+if ($SkipShortcuts) { Write-Host 'shortcuts skipped (-SkipShortcuts)'; return }
+
+$ws = New-Object -ComObject WScript.Shell
+$target = Join-Path $PSScriptRoot 'picker.cmd'
+foreach ($loc in @([Environment]::GetFolderPath('Desktop'), [Environment]::GetFolderPath('Programs'))) {
+    $lnk = $ws.CreateShortcut((Join-Path $loc 'HTML Slides Picker.lnk'))
+    $lnk.TargetPath = $target
+    $lnk.WorkingDirectory = $PSScriptRoot
+    $lnk.IconLocation = "$guiBrowser,0"
+    $lnk.Save()
+    Write-Host "shortcut installed: $loc\HTML Slides Picker.lnk"
+}
