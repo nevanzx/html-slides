@@ -15,7 +15,7 @@ If the user asks for "slides", "a deck", or "a presentation" without specifying 
 
 ## Progress reporting (mandatory)
 
-While building — in ANY flow (this session, or a standalone `opencode run` spawned by `picker\watcher.ps1`) — overwrite `picker\status.js` (next to `picker.html`) at each checkpoint so the picker GUI's loading screen can show live progress. Overwrite the WHOLE file with the file-write tool (never a shell heredoc), as a single statement with exactly these fields:
+While building — in ANY flow (this session, or a standalone `opencode run` spawned by `picker\watcher.ps1`) — overwrite `C:\Users\aclco\.claude\skills\html-slides\picker\status.js` (the file next to picker.html — NOT relative to your current working directory) at each checkpoint so the picker GUI's loading screen can show live progress. Overwrite the WHOLE file with the file-write tool (never a shell heredoc), as a single statement with exactly these fields:
 
 ```js
 window.__DECK_STATUS = { state: "running", step: "build", message: "Building template <slug>", output: undefined, updated_at: "2026-01-01T00:00:00.000Z" };

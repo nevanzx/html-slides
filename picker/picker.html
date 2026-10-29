@@ -161,7 +161,7 @@
     <div class="shots-foot"><button id="modalSelect">SELECT</button></div>
   </div>
 </div>
-<button id="statusChip" class="chip-link" title="Back to build status">◐ build status</button>
+<button id="statusChip" title="Back to build status">◐ build status</button>
 <section id="statusScreen">
   <div class="status-panel" id="statusPanel" data-status-state="idle">
     <h2>Generating your deck — live opencode status</h2>
@@ -418,6 +418,7 @@
     let userDismissed = false;
     let pollTimer = null;
     let lastLogKey = '';
+    let lastChangeAt = null;   // Date of the last NEW status rendered (crash-stall detection)
 
     function syncStatusChip() {
         $('#statusChip').classList.toggle('show', userDismissed && !statusOpen);
@@ -426,6 +427,7 @@
         statusOpen = true;
         userDismissed = false;
         $('#statusScreen').style.display = 'flex';
+        startPolling();
         syncStatusChip();
     }
     function closeStatus() {
@@ -471,7 +473,7 @@
         if (!st) {
             if (!statusOpen && !userDismissed) return;
             $('#statusPanel').dataset.statusState = 'running';
-            renderChecklist(0, 'pending');
+            renderChecklist(-1, 'pending');
             $('#statusMsg').textContent = 'waiting for opencode to pick up…';
             $('#statusHint').textContent = (subTs && Date.now() - subTs > 120000)
                 ? 'opencode hasn\'t picked up yet — run picker\\watcher.ps1 or ask opencode to build picker\\selection.json'
@@ -483,7 +485,9 @@
         const terminal = st.state === 'done' || st.state === 'error';
         if (!statusOpen && (terminal || !userDismissed)) openStatus();   // dismissed stay closed unless terminal
         $('#statusHint').textContent = '';
+        const prevLogKey = lastLogKey;
         pushLog(st);
+        if (lastLogKey !== prevLogKey) lastChangeAt = new Date(st.updated_at).getTime();
         const idx = Math.max(0, STEPS.findIndex(x => x[0] === st.step));
         const actions = $('#statusActions');
         actions.innerHTML = '';
@@ -526,6 +530,9 @@
         renderChecklist(st.state === 'waiting' ? 0 : idx, 'running');
         $('#statusMsg').textContent = st.message ||
             (st.state === 'waiting' ? 'opencode picked up selection.json' : 'working…');
+        $('#statusHint').textContent = (lastChangeAt != null && Date.now() - lastChangeAt > 120000)
+            ? 'no change in 2 minutes (last: ' + st.step + ') — the build may be stuck; restart it from the picker or re-run picker\\watcher.ps1'
+            : '';
         syncStatusChip();
     }
 
