@@ -29,7 +29,9 @@ Two ways in, two different routes:
 
 - **Flow A:** no picker, no watcher, no `status.js`. opencode reads the
   conversation, chooses the template itself, builds, then screenshots and
-  audits every slide (content fidelity, arithmetic, overflow, 30px floor),
+  audits every slide (content fidelity, arithmetic, overflow), keeping the
+  30px font target — every deck embeds a mechanical autofit runtime that
+  shrinks an overflowing slide's text to fit at any monitor size,
   corrects the defects, and delivers the file path.
 - **Flow B:** the desktop shortcut opens the GUI + a background watcher; when
   you hit **BUILD DECK**, `opencode run` fires in a visible terminal, the deck
@@ -81,9 +83,10 @@ installer and read its error.
 
 Just ask: *"Make HTML slides from this lesson"* and point at the file. The skill
 reads the content, picks the template itself, builds the deck, then screenshots
-and audits every slide — content fidelity, arithmetic, overflow, 30px floor —
-fixes what it finds, and hands back the absolute path plus a short list of what
-it corrected.
+and audits every slide — content fidelity, arithmetic, overflow —
+fixes what it finds (font fit is guaranteed by the autofit runtime every
+deck embeds — no overflow at any resolution), and hands back the absolute
+path plus a short list of what it corrected.
 
 No picker window, no loading screen, no questions the chat already answers. Name
 a template (*"use paper-tiger"*) to override the auto-pick; otherwise the skill
