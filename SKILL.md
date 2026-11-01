@@ -187,6 +187,21 @@ Decision: PI > 1, so the project is acceptable.
 
 **Definition preservation (REQUIRED):** when a source introduces a new term, its definition must appear on the slide where the term first shows up — term + definition together, not the term alone or "see handout". Write each definition as a proper, complete sentence that can stand on its own (subject, verb, full thought), not a fragment: not "PI: ratio of inflows to investment" but "The profitability index is the ratio of the present value of cash inflows to the initial investment." Keep the source's meaning verbatim or near-verbatim; expanding in your own words risks drift. If the source defines many terms per slide, move definitions to follow-up slides rather than dropping them.
 
+**Every formula carries a `where:` block — one symbol per line (REQUIRED).** When a formula introduces symbols, the variables are listed under a `where:` label with **exactly one variable per line**, symbol first, definition after. Never chain them into a running sentence ("P_t is today's settlement price, P_t−1 the previous one, Q the multiplier, and N the contracts") — the reader cannot scan a sentence for a symbol mid-formula. Keep the formula's symbol order, style the symbol distinctly (accent, serif italic or mono), and set the definitions on a shared baseline so the `=` signs line up. A tight slide may run the list in two columns, but each variable still owns its line; a wide list goes in one column.
+
+```text
+where:
+NPV = net present value
+r   = the discount rate
+```
+
+Wrong:
+
+```text
+NPV = PV of inflows − initial investment, where NPV is the net present value
+and r is the discount rate applied to each period.
+```
+
 **Prose → hierarchical bullets (REQUIRED when the paragraph is a list in disguise).** A source paragraph that walks through scenario, action, condition, consequence and caveat is not prose — it is a two-level list wearing a paragraph's clothes. Render it in the template's own bullet grammar: level 1 states the claim on an accent em dash, level 2 carries the facts on a muted dot, lead-ins are bold, conditions read `If … → …` with the outcome after the arrow, and mechanisms are labelled `Consequence:`. Two tracks of the same decision go side by side (one panel each), never into one block.
 
 ```text
@@ -237,6 +252,8 @@ Bullets are for reasoning only: definitions stay complete sentences on their ter
 - Leaving a `vw`-based template at `100vw` — its slides never become `deck-stage` children, autofit finds no slide roots, and the type scale lands around 20px
 - Trusting autofit alone — it cannot see overflow inside a `1fr` body row, so content silently overlaps the footer chrome and a "fits" slide is still broken
 - Letting a formula wrap mid-expression instead of splitting it into formula line + result line
+- Chaining formula variables into a running sentence instead of one symbol per line under `where:`
+- Leaving a formula's symbols unexplained on the slide — every formula arrives with its `where:` block
 - Laying a numbered process out row-major, so the columns read 1, 3, 5, 7
 - Repeating the section name three times (top chrome, kicker, headline) — keep two
 - Leaving white nav dots or a white page counter on light slides — they vanish on cream or white
