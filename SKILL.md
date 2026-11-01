@@ -97,6 +97,23 @@ Import: `picker\repo` (refresh with `picker\install.ps1` ONLY if `templates.json
 
 **Autofit runtime (REQUIRED in every deck):** inline the contents of `C:\Users\aclco\.claude\skills\html-slides\runtime\autofit.js` in a `<script>` tag immediately before `</body>` (copy the file in — decks stay standalone, never `src`-referencing the skill folder). This is the deck's built-in font-fit guarantee: after webfonts load it measures every slide in design-canvas coordinates and mechanically scales any overflowing slide's text down uniformly (hierarchy preserved) until it fits — and relaxes fixed boxes that would clip their own text. It works at any resolution and monitor size. Author to the 30px target; the runtime only shrinks slides that actually overflow. Never hand-tune font sizes "to be safe" — the runtime is the fit.
 
+**Some templates are viewport decks — port them onto the fixed stage first.** Templates such as `signal` and `monochrome` lay slides out at `100vw × 100vh` with `vw`-based type, under a `#deck` strip. Their slides are neither `deck-stage` children nor `.slides-container` children, so the autofit runtime finds zero slide roots and silently does nothing, and their type scale (≈`1.05vw` ≈ 20px at 1920) sits below the 30px floor. Port them before writing content, preserving fonts, palette, class names, decoration and navigation:
+
+```html
+<div id="scaler">            <!-- position:fixed; transform-origin: 0 0 -->
+  <deck-stage id="deck">     <!-- flex strip; slides are DIRECT children -->
+    <section class="slide dark">…</section>
+  </deck-stage>
+  <nav id="nav-dots"></nav>
+</div>
+```
+
+- **Resolve the units, don't reflow.** `vw × 19.2` and `vh × 10.8` at the 1920×1080 canvas: `7.5vw` → `144px`, `5.5vh` → `60px`, `1.05vw` → `20px`.
+- **Raise the type tokens to the 30px floor.** label/caption `30`, body `30–32`, lead `34–36`, h3 `40–42`, h2 `~58`, h1 `~84`, display `~130`. The layout grid, spacing rhythm and decoration stay exactly as the template drew them.
+- **Scale the stage, never the slide.** `scale = min(innerWidth/1920, innerHeight/1080)` with `transform: translate(x, y) scale(s)` on `#scaler`; advance slides with `translateX(-index * 1920px)` on `deck-stage`.
+- **Keep the template's own navigation** (keyboard, wheel, swipe, dots) and add `#N` deep links — on init match `/^#(\d+)$/` and jump instantly. The audit in Step 4 needs them.
+- **Add a capture switch.** Entrance animations start at `opacity: 0` until the slide is active, so headless screenshots come back blank. Toggle a class when `location.search` contains `capture`, and force `[data-anim]{opacity:1; animation:none; transform:none}` plus `deck-stage{transition:none}`, then shoot `?capture=1#N`.
+
 **Provenance block (REQUIRED):** the delivered HTML must begin its `<head>` with a provenance comment recording what produced it and from what source, so future debugging resolves provenance from the file itself:
 
 ```html
@@ -120,6 +137,25 @@ If a content file could not be resolved (Step 2), list it under `unresolved:` wi
 3. **Render and look at every slide.** The template renders a fixed 1920×1080 stage that the browser scales uniformly (it may letterbox or pillarbox; content never reflows). Capture every slide with headless Chrome and read the PNGs: `chrome --headless --window-size=1920,1080 --screenshot=<png> "file:///.../deck.html#<n>"` for `deck-stage` decks (the `#N` hash is 1-indexed); for scroll decks, copy `install.ps1`'s technique (inject `scroll-snap-type:none` and set `.slides-container.scrollTop`). Inspect each capture for clipped text, text running past cards/columns, collisions with decor or the page-number chrome.
 4. **Dynamic font fit — mechanical, not manual (USER RULE, persistent).** Author every text element to the **30px target** at the 1920×1080 design canvas — body copy, bullets, table cells, mono labels/tags/captions/source lines, chart axis text, timeline labels, page numbers, everything — with headings at 34px+ so hierarchy survives. The fit itself is the deck's own guarantee: the inline autofit runtime from Step 3 auto-shrinks any overflowing slide's text uniformly until it fits, in the browser, at any resolution or monitor size. Never shrink text by hand during the build or audit, never treat screenshots as the overflow gate, and never scale the `#stage`/`.deck-stage` wrapper or the browser-level scaling. The render check (item 3) may still flag a slide whose fitted text is unreadably small — the fix there is layout: split or restructure the slide, don't pre-shrink its fonts.
 5. **Report what you caught.** Flow A's delivery message includes a short block listing the defects the audit found and what changed (e.g. "3 slides overflowed; 1 calculation mis-transcribed; 4 labels at 24px"). Never claim a clean build without having rendered and inspected the slides.
+
+**Fit measurement — run this probe before you render.** Autofit only rescues a slide whose own `scrollHeight` exceeds its box. Content that overflows an inner `1fr` grid row (a `.slide-body`) inside an `overflow: hidden` slide reports as "fits" while the text lands on top of the footer chrome — the runtime's shrink is tiny or absent and the screenshot shows the collision. So measure first, then look:
+
+1. Copy the deck to a scratch file and strip the inlined autofit `<script>` block.
+2. Append a probe that writes every slide's numbers into `document.title`:
+
+```js
+window.addEventListener('load', () => setTimeout(() => {
+  const out = [...document.querySelectorAll('deck-stage > .slide')].map((s, i) => {
+    const b = s.querySelector('.slide-body');
+    return `S${i + 1} ${s.scrollHeight}/${s.clientHeight} body ${b ? b.scrollHeight + '/' + b.clientHeight : '-'}`;
+  });
+  document.title = 'M ' + out.join(' | ');
+}, 1200));
+```
+
+3. `chrome --headless --dump-dom "file:///…/probe.html?capture=1#1"` and read the `<title>`.
+4. **Equal numerator and denominator on every slide = it fits at authored size.** A larger numerator is the exact excess in px to remove from that slide — cut or reshape content, never the font.
+5. Re-render the real deck and read every PNG: the probe proves fit, the render proves legibility. A report that says "all 19 slides 796/796" is the evidence a clean fit claim needs.
 
 **Step 5 — Deliver.** The deck file must already sit in the source folder (Step 2's output location — verify before delivering). Open the final deck in the browser (use `Start-Process` on Windows, never macOS `open`), send the absolute file path on its own line, plus one line on which template was picked and why, and any caveats (e.g. a template substitution or slides designed from scratch per §5). Flow A: never mention the picker, the watcher, or a loading screen — there wasn't one.
 
@@ -151,6 +187,27 @@ Decision: PI > 1, so the project is acceptable.
 
 **Definition preservation (REQUIRED):** when a source introduces a new term, its definition must appear on the slide where the term first shows up — term + definition together, not the term alone or "see handout". Write each definition as a proper, complete sentence that can stand on its own (subject, verb, full thought), not a fragment: not "PI: ratio of inflows to investment" but "The profitability index is the ratio of the present value of cash inflows to the initial investment." Keep the source's meaning verbatim or near-verbatim; expanding in your own words risks drift. If the source defines many terms per slide, move definitions to follow-up slides rather than dropping them.
 
+**Prose → hierarchical bullets (REQUIRED when the paragraph is a list in disguise).** A source paragraph that walks through scenario, action, condition, consequence and caveat is not prose — it is a two-level list wearing a paragraph's clothes. Render it in the template's own bullet grammar: level 1 states the claim on an accent em dash, level 2 carries the facts on a muted dot, lead-ins are bold, conditions read `If … → …` with the outcome after the arrow, and mechanisms are labelled `Consequence:`. Two tracks of the same decision go side by side (one panel each), never into one block.
+
+```text
+Forward · cooperative deal
+— The miller negotiates quantity and price today with a local cooperative.
+   · Price is fixed now; settlement is in full at delivery.
+   · If palay prices rise sharply → the cooperative may default.
+   · Consequence: the miller bears the credit risk itself.
+```
+
+Bullets are for reasoning only: definitions stay complete sentences on their term, calculations stay one step per line.
+
+**Keep every calculation on one line.** At the 30px target mono text is ≈18px per character, so a ~750px column holds ≈41 characters: `Day 2 VM = (6,420 − 6,540) × 1,000 × 1 = −₱120,000` wraps mid-expression and the formula breaks across two lines. Split it into a formula line and an indented result line — the source's own formula-then-result pattern — using an empty step-number cell for the continuation:
+
+```text
+3  Day 2 VM = (6,420 − 6,540) × 1,000 × 1
+   Day 2 VM = −₱120,000
+```
+
+**Numbered processes flow by column.** A CSS grid fills row-major, so a 7-step process in two columns reads 1, 3, 5, 7 down the left. For a process use `grid-auto-flow: column; grid-template-rows: repeat(4, auto)` so each column holds a contiguous run.
+
 **Density (REQUIRED):** when density is `"auto"`, choose the density slide by slide from the content's own weight — do not default to sparse. Give each slide as much substance as it can hold cleanly at the template's type scale, and add a slide rather than compressing two ideas onto one or stripping detail to save slides. Shortcutting content to keep the slide count down is a failure, as is overflowing the stage; balance the two by letting the deck grow.
 
 ## Common Mistakes
@@ -162,10 +219,10 @@ Decision: PI > 1, so the project is acceptable.
 - Delivering a Flow A deck without rendering and inspecting every slide — the audit in Step 4 is the reason Flow A exists
 - Reading `selection.json` before the watcher exits 0 — a mid-write JSON is the classic failure mode
 - Substituting fonts ("Inter is similar enough") — the typography IS the design system
-- Recoloring or stripping decoration (grain, ribbons, stamps) to "simplify" — they are the identity
+- Recoloring or stripping decoration (grain, ribbons, stamps) to "simplify" — they are the identity. The one exception: the user explicitly asks for a new background or palette — then change the token itself (`--c-bg-light`, not scattered hex values), re-render the affected slides, and confirm hairlines and accents still read against the new surface
 - Mixing components from two templates — each template is a closed visual system
-- Letting content overflow the 1920×1080 stage instead of embedding the autofit runtime (Step 3)
-- Hand-shrinking font sizes to "fix" overflow during the build or audit — author to the 30px target and let the embedded autofit runtime shrink overflowing slides mechanically
+- Letting content overflow the 1920×1080 stage — the embedded autofit runtime is the safety net, the Step 4 probe is the repair; ship neither one alone
+- Hand-shrinking font sizes to "fix" overflow during the build or audit — author to the 30px target, then cut or reshape the content
 - Shipping a deck without the inline autofit runtime — a standalone deck must self-fit in any browser, at any monitor size, without AI involvement
 - Using macOS `open` on Windows
 - Mashing two templates' slides together instead of extending one
@@ -177,3 +234,10 @@ Decision: PI > 1, so the project is acceptable.
 - Writing a definition as a fragment ("PI: inflows ÷ investment") instead of a complete sentence
 - Renaming or "punching up" a source title with a figure of speech — titles keep the source's own wording
 - Cramming or stripping content to hit a slide count — auto density grows the deck instead
+- Leaving a `vw`-based template at `100vw` — its slides never become `deck-stage` children, autofit finds no slide roots, and the type scale lands around 20px
+- Trusting autofit alone — it cannot see overflow inside a `1fr` body row, so content silently overlaps the footer chrome and a "fits" slide is still broken
+- Letting a formula wrap mid-expression instead of splitting it into formula line + result line
+- Laying a numbered process out row-major, so the columns read 1, 3, 5, 7
+- Repeating the section name three times (top chrome, kicker, headline) — keep two
+- Leaving white nav dots or a white page counter on light slides — they vanish on cream or white
+- Converting definitions or calculations into bullets — bullets carry reasoning; definitions stay sentences and calculations stay one per line
