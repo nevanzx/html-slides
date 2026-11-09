@@ -1,6 +1,6 @@
 ---
 name: html-slides
-version: 1.0.0
+version: 1.1.0
 description: Use for ANY request involving slides, a deck, a presentation, or slide content — "make slides", "build a deck", "presentation for class", "turn this lesson into slides", "HTML slides", or naming a template from beautiful-html-templates. This skill is the single destination for all slide work; it always produces browser HTML, never .pptx, unless the user explicitly asks for an editable PowerPoint file.
 ---
 
@@ -53,6 +53,23 @@ Required checkpoints:
 
 ## Workflow
 
+**Step 0 — Refresh to the latest version before building (Flow A only).**
+
+Flow A always starts by checking GitHub for a newer skill and template set, applies it, and only then reads a template or the content. Flow B never runs this: the picker owns its own install, and the watcher calls it.
+
+```powershell
+$skill = "D:\Python\html-slides"
+git -C $skill fetch origin
+if (git -C $skill status -sb | Select-String -Quiet 'behind') { git -C $skill pull --ff-only }
+powershell -NoProfile -ExecutionPolicy Bypass -File "$skill\picker\install.ps1"
+```
+
+- **Pull first, then install.** The pull updates SKILL.md and the picker; `install.ps1` then re-clones the template library to its newest state, re-applies `picker\local-templates`, and regenerates `templates.json` — that regenerated file is the one Step 1A reads, so never pick a template before this finishes.
+- **Check what changed, and say it in one line.** `git -C $skill log --oneline HEAD@{1}..HEAD` lists the incoming commits; compare `templates.json`'s template count before and after for new templates. Report e.g. "updated to 1.1.0 (+2 commits, 38 → 40 templates)"; say nothing more than that.
+- **Fast-forward only — never rewrite local history.** Use `pull --ff-only`. If the machine is ahead (or diverged) with its own commits, the pull refuses; leave those commits alone, run `install.ps1` anyway, and continue.
+- **A failed refresh never blocks the deck.** Offline, no remote, a dirty tree — report the one-line reason and build with the copy already on disk. The update is an optimization, not a gate.
+- Run it once per session; do not re-check between slides or before delivery.
+
 **Step 1A — Flow A: intake from the session.**
 
 No picker, no watcher, no status file. Gather the source material from the conversation, in this order:
@@ -93,7 +110,7 @@ Fixed context (never asked, never surfaced): occasion = classroom discussion; au
 Read every source: Flow B, each path in `content_files`; Flow A, each file or pasted block identified in Step 1A. Lines that start with `staged:` reference copies the picker GUI made via its native open-file dialog: resolve `staged:<name>` to `D:\Python\html-slides\picker\staged\<name>` and read that file. Read all other lines as absolute paths as-is. Organize slides from the source itself: one idea per slide; headlines presentation-ready and true to the source's titles; slide count and density from the JSON (`"auto"` → decide per slide from the content's weight under the Density rule in Content mapping — never shortcut content to keep the count down). If a path is missing, report which file was readable/missing and continue with what resolved. **Output location (mandatory):** Flow B saves to `output_dir` from selection.json when present, otherwise the folder of the first resolvable `content_files` path; Flow A saves to the folder of the first source file, or the working directory when the content was pasted. Name the file after the source's own title (e.g. `Week-1-Notebook-deck.html` in that folder).
 
 **Step 3 — Build the deck in the chosen template.**
-Import: `picker\repo` (refresh with `picker\install.ps1` ONLY if `templates.json` is older than the user wants or `repo` is missing). Locate the chosen slug in `picker\templates.json` (Flow B: the `template` field; Flow A: the slug you picked in Step 1A); if mapped to a missing slug, name the nearest equivalent based on scheme/density/formality and SAY you substituted. In the chosen template: follow the repo's own `AGENTS.md` §3–§5 — preserve fonts, palette, layout grid, slide-level CSS classes, decorative elements, and the navigation runtime; replace all placeholder content; duplicate the most appropriate layout for extra slides and update page-number labels (`NN / TT`); design missing layouts with the template's own design system — same fonts, colors, decor vocabulary, spacing rhythm, component grammar, chrome.
+Import: `picker\repo` (Flow A: already refreshed in Step 0 — never re-run the install here; Flow B: refresh with `picker\install.ps1` ONLY if `templates.json` is older than the user wants or `repo` is missing). Locate the chosen slug in `picker\templates.json` (Flow B: the `template` field; Flow A: the slug you picked in Step 1A); if mapped to a missing slug, name the nearest equivalent based on scheme/density/formality and SAY you substituted. In the chosen template: follow the repo's own `AGENTS.md` §3–§5 — preserve fonts, palette, layout grid, slide-level CSS classes, decorative elements, and the navigation runtime; replace all placeholder content; duplicate the most appropriate layout for extra slides and update page-number labels (`NN / TT`); design missing layouts with the template's own design system — same fonts, colors, decor vocabulary, spacing rhythm, component grammar, chrome.
 
 **Autofit runtime (REQUIRED in every deck):** inline the contents of `D:\Python\html-slides\runtime\autofit.js` in a `<script>` tag immediately before `</body>` (copy the file in — decks stay standalone, never `src`-referencing the skill folder). This is the deck's built-in font-fit guarantee: after webfonts load it measures every slide in design-canvas coordinates and mechanically scales any overflowing slide's text down uniformly (hierarchy preserved) until it fits — and relaxes fixed boxes that would clip their own text. It works at any resolution and monitor size. Author to the 30px target; the runtime only shrinks slides that actually overflow. Never hand-tune font sizes "to be safe" — the runtime is the fit.
 
