@@ -1,0 +1,1252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--
+  deck-provenance
+  generator: html-slides skill (opencode)
+  template: study-hall
+  source_files: authored from scratch for this library
+  built_at: 2026-11-08T20:27:52+08:00
+-->
+<meta charset="utf-8" />
+<title>Study Hall — Slide Template</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Nunito:wght@400;600;700;800&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet" />
+<script src="deck-stage.js"></script>
+<style>
+  :root {
+    --white: #FFFFFF;
+    --ink: #1F1F1F;
+    --muted: #6B6B6B;
+    --yellow: #FFF3A3;
+    --pink: #FFD6E8;
+    --blue: #D6ECFF;
+    --mint: #D9F2E6;
+    --shadow-lg: 0 24px 60px rgba(31, 31, 31, 0.13);
+    --shadow-md: 0 16px 36px rgba(31, 31, 31, 0.09);
+    --shadow-sm: 0 8px 20px rgba(31, 31, 31, 0.08);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #161616; }
+  body { font-family: "Nunito", "Helvetica Neue", Arial, sans-serif; color: var(--ink); }
+  deck-stage { background: #161616; }
+
+  h1, h2, h3, h4 { margin: 0; font-family: "Archivo", "Helvetica Neue", Arial, sans-serif; color: inherit; }
+  p { margin: 0; }
+
+  section.slide {
+    position: relative;
+    background: var(--white);
+    color: var(--ink);
+    overflow: hidden;
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transform: scale(0.98);
+  }
+  section.slide[data-deck-active] { transform: scale(1); }
+
+  section.slide::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(760px 620px at 2% -4%, rgba(255, 214, 232, 0.92) 0%, rgba(255, 214, 232, 0) 68%),
+      radial-gradient(760px 620px at 98% -4%, rgba(214, 236, 255, 0.95) 0%, rgba(214, 236, 255, 0) 68%),
+      radial-gradient(820px 640px at -4% 104%, rgba(255, 243, 163, 0.90) 0%, rgba(255, 243, 163, 0) 70%),
+      radial-gradient(820px 640px at 104% 104%, rgba(217, 242, 230, 0.95) 0%, rgba(217, 242, 230, 0) 70%);
+  }
+
+  .wrap {
+    position: absolute;
+    inset: 150px 80px 64px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .chrome {
+    position: absolute;
+    top: 40px;
+    left: 80px;
+    right: 80px;
+    z-index: 6;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .chrome .left { display: flex; align-items: center; gap: 16px; }
+  .chrome .brand {
+    font-family: "Archivo", sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    letter-spacing: 0.18em;
+    color: var(--ink);
+  }
+  .chrome .swatches-mini { display: inline-flex; gap: 5px; }
+  .chrome .swatches-mini i { width: 11px; height: 11px; border-radius: 3px; display: block; }
+  .chrome .swatches-mini i:nth-child(1) { background: var(--pink); }
+  .chrome .swatches-mini i:nth-child(2) { background: var(--yellow); }
+  .chrome .swatches-mini i:nth-child(3) { background: var(--mint); }
+  .chrome .sec {
+    font-family: "Nunito", sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-left: 18px;
+    border-left: 2px solid rgba(31, 31, 31, 0.14);
+  }
+  .chrome .pageno {
+    font-family: "Archivo", sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    background: var(--white);
+    border-radius: 999px;
+    padding: 10px 22px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: "Nunito", sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .kicker::before {
+    content: "";
+    width: 40px;
+    height: 5px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--pink), var(--yellow));
+  }
+
+  .hand { font-family: "Caveat", cursive; font-weight: 600; color: var(--ink); }
+
+  .marker {
+    padding: 0 0.06em;
+    background-image: linear-gradient(180deg, transparent 50%, var(--yellow) 50%, var(--yellow) 93%, transparent 93%);
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: 0% 100%;
+    transition: background-size 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.15s;
+  }
+  section.slide[data-deck-active] .marker { background-size: 100% 100%; }
+
+  .note {
+    position: relative;
+    background: var(--yellow);
+    border-radius: 8px;
+    padding: 24px 28px;
+    box-shadow: 0 16px 30px rgba(31, 31, 31, 0.13);
+    transform: rotate(var(--rot, 0deg));
+  }
+  .note.mint { background: var(--mint); }
+  .note .pin {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 34% 28%, #FF9AB2 0%, #E2566F 62%, #B93B55 100%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.18);
+  }
+  .note.tilt-l { --rot: -2.6deg; }
+  .note.tilt-r { --rot: 2.2deg; }
+  .note.tilt-c { --rot: 0.6deg; }
+
+  @keyframes notePop {
+    0% { opacity: 0; transform: rotate(calc(var(--rot, 0deg) - 6deg)) scale(0.82) translateY(18px); }
+    55% { opacity: 1; transform: rotate(calc(var(--rot, 0deg) + 1deg)) scale(1.03) translateY(0); }
+    100% { opacity: 1; transform: rotate(var(--rot, 0deg)) scale(1) translateY(0); }
+  }
+  section.slide[data-deck-active] .note {
+    animation: notePop 0.62s cubic-bezier(0.3, 0.9, 0.35, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: "Nunito", sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    padding: 9px 18px;
+    border-radius: 999px;
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ---- 1. Cover ---- */
+  .s-cover .wrap { display: grid; grid-template-columns: 1.08fr 0.92fr; gap: 56px; align-items: center; }
+  .cover-copy .kicker { margin-bottom: 26px; }
+  .cover-title { font-weight: 900; font-size: 132px; line-height: 0.90; letter-spacing: -0.035em; }
+  .cover-sub { margin-top: 30px; font-size: 34px; line-height: 1.42; font-weight: 600; color: #3A3A3A; max-width: 24ch; }
+  .cover-meta { margin-top: 46px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .cover-meta .pill { font-size: 28px; font-weight: 800; letter-spacing: 0.04em; background: var(--white); border-radius: 999px; padding: 12px 22px; box-shadow: var(--shadow-sm); }
+  .cover-meta .who { font-size: 30px; font-weight: 700; color: var(--ink); }
+  .cover-meta .who span { display: block; font-size: 24px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+
+  .board { position: relative; height: 660px; }
+  .board .panel {
+    position: absolute;
+    inset: 0 0 78px 46px;
+    background: var(--white);
+    border-radius: 34px;
+    box-shadow: var(--shadow-lg);
+    padding: 36px 40px 160px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .panel-top { display: flex; justify-content: space-between; font-size: 22px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+  .swatches { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .swatch {
+    height: 118px;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 12px;
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+  }
+  .swatch b { display: block; font-size: 17px; font-weight: 700; color: rgba(31, 31, 31, 0.62); margin-top: 3px; }
+  .panel-quote { font-family: "Caveat", cursive; font-size: 40px; line-height: 1.02; font-weight: 600; max-width: 20ch; }
+  .panel-rows { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
+  .panel-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 26px;
+    font-weight: 700;
+    border-top: 1px dashed rgba(31, 31, 31, 0.18);
+    padding-top: 8px;
+  }
+  .panel-row i { width: 16px; height: 16px; border-radius: 50%; background: var(--pink); flex-shrink: 0; }
+  .panel-row:nth-child(2) i { background: var(--yellow); }
+  .panel-row:nth-child(3) i { background: var(--mint); }
+  .board .note {
+    position: absolute;
+    left: -8px;
+    bottom: 0;
+    width: 340px;
+    font-family: "Caveat", cursive;
+    font-size: 36px;
+    line-height: 1.08;
+    padding: 26px 30px 28px;
+  }
+  .board .doodle { position: absolute; right: 16px; bottom: 18px; width: 120px; height: 100px; color: var(--ink); opacity: 0.62; }
+
+  /* ---- 2. Agenda ---- */
+  .s-agenda .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; margin-bottom: 34px; }
+  .s-agenda h2 { font-size: 82px; line-height: 0.94; letter-spacing: -0.025em; font-weight: 800; }
+  .s-agenda .head-note { width: 300px; font-family: "Caveat", cursive; font-size: 36px; line-height: 1.08; padding: 22px 26px; }
+  .agenda-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .agenda-item {
+    display: flex;
+    gap: 22px;
+    align-items: center;
+    min-height: 160px;
+    background: rgba(255, 255, 255, 0.88);
+    border-radius: 22px;
+    padding: 24px 26px;
+    box-shadow: 0 10px 24px rgba(31, 31, 31, 0.07);
+  }
+  .agenda-item .idx {
+    flex: 0 0 60px;
+    height: 60px;
+    border-radius: 16px;
+    display: grid;
+    place-items: center;
+    font-family: "Archivo", sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    background: var(--pink);
+  }
+  .agenda-item:nth-child(2) .idx { background: var(--blue); }
+  .agenda-item:nth-child(3) .idx { background: var(--yellow); }
+  .agenda-item:nth-child(4) .idx { background: var(--mint); }
+  .agenda-item:nth-child(5) .idx { background: var(--blue); }
+  .agenda-item:nth-child(6) .idx { background: var(--pink); }
+  .agenda-item h3 { font-size: 36px; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 6px; }
+  .agenda-item p { font-size: 30px; line-height: 1.35; font-weight: 600; color: var(--muted); }
+  .s-agenda .foot { margin-top: auto; display: flex; align-items: center; gap: 14px; font-size: 30px; font-weight: 600; color: var(--muted); }
+  .s-agenda .foot i { width: 12px; height: 12px; border-radius: 50%; background: var(--mint); display: block; }
+
+  /* ---- 3. Section divider ---- */
+  .s-divider .wrap { display: grid; grid-template-columns: 1fr 0.82fr; gap: 64px; align-items: center; }
+  .s-divider h2 { font-size: 104px; line-height: 0.92; letter-spacing: -0.03em; font-weight: 900; margin: 18px 0 28px; }
+  .s-divider p { font-size: 34px; line-height: 1.5; font-weight: 600; color: #3D3D3D; max-width: 36ch; }
+  .divider-topics { display: flex; gap: 14px; margin-top: 40px; flex-wrap: wrap; }
+  .topic { font-size: 26px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; padding: 10px 18px; border-radius: 999px; background: var(--white); box-shadow: var(--shadow-sm); }
+  .divider-card {
+    position: relative;
+    height: 640px;
+    background: var(--white);
+    border-radius: 40px;
+    box-shadow: var(--shadow-lg);
+    padding: 42px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+  .divider-art { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; pointer-events: none; z-index: 0; }
+  .divider-card .circle { position: absolute; border-radius: 50%; }
+  .divider-card .circle.pink { width: 500px; height: 500px; right: -150px; top: -150px; background: var(--pink); }
+  .divider-card .circle.blue { width: 300px; height: 300px; left: -90px; bottom: -110px; background: var(--blue); }
+  .big-num { position: relative; z-index: 1; font-family: "Archivo", sans-serif; font-weight: 900; font-size: 280px; line-height: 0.78; letter-spacing: -0.06em; }
+  .divider-card .hand { position: relative; z-index: 1; font-size: 44px; line-height: 1.05; }
+  .mini-tags { position: relative; z-index: 1; display: flex; gap: 10px; flex-wrap: wrap; }
+  .mini-tags span { font-size: 22px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; padding: 8px 13px; background: var(--mint); border-radius: 999px; }
+
+  /* ---- 4. Key points ---- */
+  .s-points .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; margin-bottom: 30px; }
+  .s-points h2 { font-size: 74px; line-height: 0.96; letter-spacing: -0.025em; font-weight: 800; max-width: 20ch; }
+  .s-points .head-note { width: 320px; font-family: "Caveat", cursive; font-size: 36px; line-height: 1.08; padding: 22px 26px; }
+  .rules { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .rule {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    background: rgba(255, 255, 255, 0.88);
+    border-radius: 22px;
+    padding: 24px 26px;
+    box-shadow: 0 12px 28px rgba(31, 31, 31, 0.08);
+  }
+  .rule .dot {
+    flex: 0 0 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: "Archivo", sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    background: var(--yellow);
+  }
+  .rule:nth-child(2) .dot { background: var(--pink); }
+  .rule:nth-child(3) .dot { background: var(--blue); }
+  .rule:nth-child(4) .dot { background: var(--mint); }
+  .rule:nth-child(5) .dot { background: var(--yellow); }
+  .rule h3 { font-size: 34px; font-weight: 800; line-height: 1.05; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .rule p { font-size: 30px; line-height: 1.4; font-weight: 600; color: #444444; }
+  .rule-note {
+    display: flex;
+    align-items: center;
+    font-family: "Caveat", cursive;
+    font-size: 38px;
+    line-height: 1.08;
+    padding: 26px 30px;
+  }
+
+  /* ---- 5. Two-column color ---- */
+  .s-color .wrap { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 56px; align-items: center; }
+  .s-color h2 { font-size: 82px; line-height: 0.94; letter-spacing: -0.03em; font-weight: 900; margin: 16px 0 24px; }
+  .s-color .lead { font-size: 32px; line-height: 1.5; font-weight: 600; color: #3D3D3D; max-width: 34ch; }
+  .color-list { list-style: none; margin: 32px 0 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
+  .color-list li { display: flex; align-items: center; gap: 16px; font-size: 30px; font-weight: 700; }
+  .color-list .sw { width: 34px; height: 34px; border-radius: 10px; box-shadow: inset 0 0 0 2px rgba(31, 31, 31, 0.08); flex-shrink: 0; }
+  .palette-board {
+    background: var(--white);
+    border-radius: 34px;
+    box-shadow: var(--shadow-lg);
+    padding: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr auto;
+    gap: 16px;
+  }
+  .sw-card { border-radius: 22px; padding: 22px; display: flex; flex-direction: column; justify-content: flex-end; min-height: 190px; }
+  .sw-card b { font-family: "Archivo", sans-serif; font-weight: 800; font-size: 34px; letter-spacing: -0.01em; display: block; }
+  .sw-card span { font-size: 22px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(31, 31, 31, 0.62); margin-top: 4px; }
+  .palette-board .caption { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; font-size: 24px; font-weight: 800; letter-spacing: 0.10em; text-transform: uppercase; color: var(--muted); padding: 4px 6px 0; }
+  .palette-board .caption .hand { font-family: "Caveat", cursive; font-size: 32px; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--ink); }
+
+  /* ---- 6. Stat grid ---- */
+  .s-stats .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; margin-bottom: 34px; }
+  .s-stats h2 { font-size: 82px; line-height: 0.94; letter-spacing: -0.03em; font-weight: 900; }
+  .s-stats .sub { font-size: 30px; line-height: 1.45; font-weight: 600; color: var(--muted); max-width: 38ch; text-align: right; }
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; flex: 1; min-height: 0; }
+  .stat-card {
+    border-radius: 26px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card.pink { background: var(--pink); }
+  .stat-card.blue { background: var(--blue); }
+  .stat-card.yellow { background: var(--yellow); }
+  .stat-card.mint { background: var(--mint); }
+  .stat-card .num { font-family: "Archivo", sans-serif; font-weight: 900; font-size: 146px; line-height: 0.80; letter-spacing: -0.05em; }
+  .stat-card .num .unit { font-size: 62px; font-weight: 800; letter-spacing: 0; }
+  .stat-card .lbl { font-size: 30px; font-weight: 800; line-height: 1.15; }
+  .stat-card p { font-size: 30px; line-height: 1.4; font-weight: 600; color: rgba(31, 31, 31, 0.72); margin-top: 12px; }
+
+  /* ---- 7. Process ---- */
+  .s-process .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; margin-bottom: 32px; }
+  .s-process h2 { font-size: 74px; line-height: 0.95; letter-spacing: -0.03em; font-weight: 900; max-width: 22ch; }
+  .s-process .head-note { width: 300px; font-family: "Caveat", cursive; font-size: 36px; line-height: 1.08; padding: 22px 26px; }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; flex: 1; min-height: 0; }
+  .step {
+    position: relative;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 26px;
+    padding: 30px;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .step .num {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display: grid;
+    place-items: center;
+    font-family: "Archivo", sans-serif;
+    font-weight: 800;
+    font-size: 28px;
+    background: var(--pink);
+  }
+  .step:nth-child(2) .num { background: var(--blue); }
+  .step:nth-child(3) .num { background: var(--yellow); }
+  .step:nth-child(4) .num { background: var(--mint); }
+  .step h3 { font-size: 40px; line-height: 1.02; font-weight: 800; letter-spacing: -0.02em; }
+  .step p { font-size: 30px; line-height: 1.45; font-weight: 600; color: #444444; }
+  .step .mini { margin-top: auto; font-family: "Caveat", cursive; font-size: 34px; line-height: 1; color: var(--ink); }
+  .step .arrow { position: absolute; right: -25px; top: 54px; width: 26px; height: 26px; color: var(--muted); z-index: 3; }
+  .step:last-child .arrow { display: none; }
+
+  /* ---- 8. Timeline ---- */
+  .s-timeline .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; margin-bottom: 6px; }
+  .s-timeline h2 { font-size: 78px; line-height: 0.94; letter-spacing: -0.03em; font-weight: 900; }
+  .s-timeline .head-note { width: 320px; font-family: "Caveat", cursive; font-size: 36px; line-height: 1.08; padding: 22px 26px; }
+  .timeline { position: relative; flex: 1; min-height: 0; margin-top: 10px; }
+  .tl-line { position: absolute; left: 0; right: 0; top: 50%; height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--pink), var(--blue), var(--yellow), var(--mint)); }
+  .tl-dot { position: absolute; top: 50%; width: 24px; height: 24px; border-radius: 50%; background: var(--white); border: 5px solid var(--ink); transform: translate(-50%, -50%); z-index: 2; }
+  .tl-item { position: absolute; width: 300px; transform: translateX(-50%); }
+  .tl-item.up { top: calc(50% - 40px); transform: translate(-50%, -100%); }
+  .tl-item.down { top: calc(50% + 40px); }
+  .tl-card { background: var(--white); border-radius: 22px; padding: 24px; box-shadow: var(--shadow-md); }
+  .tl-card .week { display: inline-block; font-size: 24px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; background: var(--yellow); border-radius: 999px; padding: 6px 13px; margin-bottom: 12px; }
+  .tl-item:nth-of-type(2) .week { background: var(--pink); }
+  .tl-item:nth-of-type(3) .week { background: var(--blue); }
+  .tl-item:nth-of-type(4) .week { background: var(--mint); }
+  .tl-item:nth-of-type(5) .week { background: var(--yellow); }
+  .tl-card h3 { font-size: 34px; font-weight: 800; line-height: 1.05; letter-spacing: -0.01em; margin-bottom: 8px; }
+  .tl-card p { font-size: 30px; line-height: 1.35; font-weight: 600; color: var(--muted); }
+
+  /* ---- 9. Comparison ---- */
+  .s-compare .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; margin-bottom: 28px; }
+  .s-compare h2 { font-size: 80px; line-height: 0.94; letter-spacing: -0.03em; font-weight: 900; }
+  .s-compare .sub { font-size: 30px; line-height: 1.45; font-weight: 600; color: var(--muted); max-width: 34ch; text-align: right; }
+  .compare {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr 1fr;
+    grid-template-rows: auto repeat(5, 1fr);
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(31, 31, 31, 0.12);
+    background: var(--white);
+    flex: 1;
+    min-height: 0;
+  }
+  .cmp-head { padding: 22px 30px; font-family: "Archivo", sans-serif; font-weight: 800; font-size: 30px; letter-spacing: 0.01em; display: flex; align-items: center; }
+  .cmp-head.label { font-family: "Nunito", sans-serif; font-size: 24px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); background: var(--white); }
+  .cmp-head.before { background: var(--ink); color: var(--white); }
+  .cmp-head.after { background: var(--mint); color: var(--ink); }
+  .cmp-cell { padding: 20px 30px; font-size: 30px; line-height: 1.35; font-weight: 600; display: flex; align-items: center; border-top: 1px solid rgba(31, 31, 31, 0.10); }
+  .cmp-cell.rowlab { font-family: "Archivo", sans-serif; font-weight: 800; font-size: 32px; letter-spacing: -0.01em; background: var(--white); }
+  .cmp-cell.before { color: var(--muted); background: rgba(31, 31, 31, 0.025); }
+  .cmp-cell.after { background: rgba(217, 242, 230, 0.38); font-weight: 700; }
+
+  /* ---- 10. Pull quote ---- */
+  .s-quote .wrap { justify-content: center; align-items: center; text-align: center; }
+  .qmark { font-family: "Caveat", cursive; font-weight: 700; font-size: 180px; line-height: 0.55; color: var(--pink); height: 110px; }
+  .s-quote blockquote { margin: 0; max-width: 1300px; font-family: "Archivo", sans-serif; font-weight: 800; font-size: 64px; line-height: 1.16; letter-spacing: -0.025em; }
+  .quote-attr { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 44px; }
+  .quote-attr .avatar { width: 74px; height: 74px; border-radius: 50%; background: var(--blue); display: grid; place-items: center; font-family: "Archivo", sans-serif; font-weight: 800; font-size: 26px; }
+  .quote-attr .who { text-align: left; font-size: 32px; font-weight: 800; line-height: 1.2; }
+  .quote-attr .role { display: block; font-size: 30px; font-weight: 600; color: var(--muted); }
+  .s-quote .note-l { position: absolute; left: 56px; bottom: 70px; width: 250px; font-family: "Caveat", cursive; font-size: 34px; line-height: 1.08; z-index: 3; }
+  .s-quote .note-r { position: absolute; right: 56px; top: 168px; width: 250px; font-family: "Caveat", cursive; font-size: 34px; line-height: 1.08; z-index: 3; }
+
+  /* ---- 11. Figure ---- */
+  .s-figure .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; margin-bottom: 26px; }
+  .s-figure h2 { font-size: 74px; line-height: 0.95; letter-spacing: -0.03em; font-weight: 900; }
+  .s-figure .head-note { width: 300px; font-family: "Caveat", cursive; font-size: 36px; line-height: 1.08; padding: 22px 26px; }
+  .figure {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    background: var(--white);
+    border-radius: 30px;
+    box-shadow: var(--shadow-lg);
+    padding: 22px;
+    display: grid;
+    grid-template-columns: 1.45fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 16px;
+  }
+  .fig-tile { border-radius: 20px; position: relative; overflow: hidden; }
+  .fig-art { position: absolute; inset: 0; overflow: hidden; border-radius: inherit; pointer-events: none; }
+  .fig-tile.big { grid-row: 1 / span 2; background: radial-gradient(120% 100% at 20% 10%, #FFF0F6 0%, #FFD6E8 45%, #F7BDD5 100%); }
+  .fig-tile.b { background: linear-gradient(140deg, #EAF6FF, #D6ECFF); }
+  .fig-tile.c { background: linear-gradient(140deg, #FFFBDF, #FFF3A3); }
+  .fig-tile .orb { position: absolute; border-radius: 50%; }
+  .fig-tile.big .orb.a { width: 260px; height: 260px; right: -50px; bottom: -60px; background: rgba(255, 255, 255, 0.55); }
+  .fig-tile.big .orb.b { width: 150px; height: 150px; left: 60px; top: 90px; background: rgba(217, 242, 230, 0.8); }
+  .fig-tile.big .bar { position: absolute; left: 70px; top: 50%; width: 380px; height: 26px; border-radius: 999px; background: rgba(255, 255, 255, 0.7); }
+  .fig-tile .fig-label { position: absolute; left: 22px; bottom: 20px; font-size: 22px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(31, 31, 31, 0.55); }
+  .figure .note { position: absolute; right: 26px; top: 26px; width: 250px; font-family: "Caveat", cursive; font-size: 32px; line-height: 1.08; z-index: 3; }
+  .s-figure .caption { display: flex; justify-content: space-between; align-items: center; gap: 30px; margin-top: 20px; font-size: 30px; font-weight: 600; color: var(--muted); }
+  .s-figure .caption .hand { font-family: "Caveat", cursive; font-size: 34px; color: var(--ink); }
+
+  /* ---- 12. Team ---- */
+  .s-team .head { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; margin-bottom: 32px; }
+  .s-team h2 { font-size: 76px; line-height: 0.95; letter-spacing: -0.03em; font-weight: 900; }
+  .s-team .head-note { width: 320px; font-family: "Caveat", cursive; font-size: 36px; line-height: 1.08; padding: 22px 26px; }
+  .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; flex: 1; min-height: 0; }
+  .person {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 26px;
+    box-shadow: var(--shadow-md);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 14px;
+  }
+  .person .avatar { width: 140px; height: 140px; border-radius: 50%; display: grid; place-items: center; font-family: "Archivo", sans-serif; font-weight: 900; font-size: 48px; letter-spacing: -0.02em; background: var(--pink); flex-shrink: 0; }
+  .person:nth-child(2) .avatar { background: var(--blue); }
+  .person:nth-child(3) .avatar { background: var(--yellow); }
+  .person:nth-child(4) .avatar { background: var(--mint); }
+  .person h3 { font-size: 36px; font-weight: 800; letter-spacing: -0.01em; line-height: 1.05; }
+  .person .role { font-size: 24px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .person p { font-size: 30px; line-height: 1.4; font-weight: 600; color: #444444; margin-top: auto; }
+
+  /* ---- 13. Closing ---- */
+  .s-closing .wrap { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 60px; align-items: center; }
+  .s-closing h2 { font-size: 108px; line-height: 0.92; letter-spacing: -0.035em; font-weight: 900; margin: 16px 0 26px; }
+  .s-closing .lead { font-size: 34px; line-height: 1.45; font-weight: 600; color: #3D3D3D; max-width: 30ch; }
+  .cta-row { display: flex; gap: 16px; margin-top: 38px; flex-wrap: wrap; align-items: center; }
+  .cta { font-size: 30px; font-weight: 800; padding: 18px 30px; border-radius: 999px; background: var(--ink); color: var(--white); box-shadow: 0 14px 30px rgba(31, 31, 31, 0.20); }
+  .cta.ghost { background: var(--white); color: var(--ink); box-shadow: var(--shadow-sm); }
+  .contact { margin-top: 30px; font-size: 30px; font-weight: 600; color: var(--muted); }
+  .contact b { color: var(--ink); }
+  .closing-board {
+    position: relative;
+    background: var(--white);
+    border-radius: 34px;
+    box-shadow: var(--shadow-lg);
+    padding: 38px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .closing-board h3 { font-size: 34px; font-weight: 800; letter-spacing: 0.01em; margin-bottom: 4px; }
+  .next-row { display: flex; gap: 16px; align-items: flex-start; border-top: 1px dashed rgba(31, 31, 31, 0.18); padding-top: 16px; }
+  .next-row .n { flex: 0 0 44px; height: 44px; border-radius: 50%; background: var(--pink); display: grid; place-items: center; font-family: "Archivo", sans-serif; font-weight: 800; font-size: 22px; }
+  .next-row:nth-of-type(3) .n { background: var(--blue); }
+  .next-row:nth-of-type(4) .n { background: var(--yellow); }
+  .next-row .t { font-size: 30px; font-weight: 700; line-height: 1.35; }
+  .closing-board .board-foot { margin-top: auto; display: flex; align-items: center; gap: 12px; font-size: 30px; font-weight: 600; color: var(--muted); padding-top: 6px; }
+  .closing-board .board-foot i { width: 12px; height: 12px; border-radius: 50%; background: var(--mint); display: block; flex-shrink: 0; }
+  .closing-board .note { position: absolute; right: -14px; bottom: -18px; width: 280px; font-family: "Caveat", cursive; font-size: 36px; line-height: 1.05; }
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+  <section class="slide s-cover" data-label="01 Cover">
+    <div class="chrome">
+      <div class="left">
+        <span class="brand">STUDY HALL</span>
+        <span class="swatches-mini" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="sec">Welcome</span>
+      </div>
+      <span class="pageno">01 / 13</span>
+    </div>
+    <div class="wrap">
+      <div class="cover-copy">
+        <div class="kicker">A design system for modern brands</div>
+        <h1 class="cover-title">The <span class="marker">Pastel</span><br />Playbook</h1>
+        <p class="cover-sub">A calmer way to build brands that feel warm, clear, and human.</p>
+        <div class="cover-meta">
+          <span class="pill">Spring 2026</span>
+          <span class="who">Study Hall<span>Session 01 · Brand foundations</span></span>
+        </div>
+      </div>
+      <div class="board" aria-hidden="true">
+        <div class="panel">
+          <div class="panel-top"><span>Field notes</span><span>Vol. 01</span></div>
+          <div class="swatches">
+            <div class="swatch" style="background: var(--pink)">Blush<b>#FFD6E8</b></div>
+            <div class="swatch" style="background: var(--blue)">Study<b>#D6ECFF</b></div>
+            <div class="swatch" style="background: var(--yellow)">Highlighter<b>#FFF3A3</b></div>
+            <div class="swatch" style="background: var(--mint)">Mint<b>#D9F2E6</b></div>
+          </div>
+          <div class="panel-quote">“Soft colors, clear thinking.”</div>
+          <div class="panel-rows">
+            <div class="panel-row"><i></i>Foundation</div>
+            <div class="panel-row"><i></i>Flexible</div>
+            <div class="panel-row"><i></i>Friendly</div>
+          </div>
+        </div>
+        <div class="note tilt-l" style="--d: 0.15s"><span class="pin"></span>Start with the base, then add the warmth.</div>
+        <svg class="doodle" viewBox="0 0 120 100" fill="none" aria-hidden="true">
+          <path d="M108 16 C 98 60, 74 82, 34 74" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" />
+          <path d="M48 60 L32 75 L52 82" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-agenda" data-label="02 Agenda">
+    <div class="chrome">
+      <div class="left">
+        <span class="brand">STUDY HALL</span>
+        <span class="swatches-mini" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="sec">Agenda</span>
+      </div>
+      <span class="pageno">02 / 13</span>
+    </div>
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <div class="kicker" style="margin-bottom: 16px">Today’s plan</div>
+          <h2>What’s on<br />the desk</h2>
+        </div>
+        <div class="note mint tilt-r head-note" style="--d: 0.12s"><span class="pin"></span>six stops, one hour</div>
+      </div>
+      <div class="agenda-grid">
+        <div class="agenda-item">
+          <div class="idx">01</div>
+          <div><h3>The foundation</h3><p>Why a softer system works.</p></div>
+        </div>
+        <div class="agenda-item">
+          <div class="idx">02</div>
+          <div><h3>Color with feeling</h3><p>A palette that carries mood.</p></div>
+        </div>
+        <div class="agenda-item">
+          <div class="idx">03</div>
+          <div><h3>Type that talks</h3><p>Three voices, one hierarchy.</p></div>
+        </div>
+        <div class="agenda-item">
+          <div class="idx">04</div>
+          <div><h3>The system in numbers</h3><p>Rules you can count on.</p></div>
+        </div>
+        <div class="agenda-item">
+          <div class="idx">05</div>
+          <div><h3>From brief to board</h3><p>A four-step working rhythm.</p></div>
+        </div>
+        <div class="agenda-item">
+          <div class="idx">06</div>
+          <div><h3>Making it yours</h3><p>Taking the playbook home.</p></div>
+        </div>
+      </div>
+      <div class="foot"><i></i>One hour, six stops, a pocket-sized system.</div>
+    </div>
+  </section>
+
+  <section class="slide s-divider" data-label="03 Section · Foundation">
+    <div class="chrome">
+      <div class="left">
+        <span class="brand">STUDY HALL</span>
+        <span class="swatches-mini" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="sec">Section 01</span>
+      </div>
+      <span class="pageno">03 / 13</span>
+    </div>
+    <div class="wrap">
+      <div>
+        <div class="kicker">Unit 01 · Foundation</div>
+        <h2>Build on a<br /><span class="marker">softer</span> base</h2>
+        <p>Before the logo or the launch, decide how the brand should feel in the room. Everything else follows from that one decision.</p>
+        <div class="divider-topics">
+          <span class="topic">Color</span>
+          <span class="topic">Type</span>
+          <span class="topic">Tone</span>
+          <span class="topic">Rhythm</span>
+        </div>
+      </div>
+      <div class="divider-card">
+        <div class="divider-art" aria-hidden="true"><span class="circle pink"></span><span class="circle blue"></span></div>
+        <div class="big-num">01</div>
+        <div class="hand">start here —<br />everything else<br />gets easier.</div>
+        <div class="mini-tags">
+          <span>Slow down</span>
+          <span>Choose warm</span>
+          <span>Leave space</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-points" data-label="04 Principles">
+    <div class="chrome">
+      <div class="left">
+        <span class="brand">STUDY HALL</span>
+        <span class="swatches-mini" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="sec">Principles</span>
+      </div>
+      <span class="pageno">04 / 13</span>
+    </div>
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <div class="kicker" style="margin-bottom: 16px">Five small rules</div>
+          <h2>Five rules for a calmer system</h2>
+        </div>
+        <div class="note tilt-r head-note" style="--d: 0.12s"><span class="pin"></span>keep it gentle, keep it clear</div>
+      </div>
+      <div class="rules">
+        <div class="rule">
+          <div class="dot">01</div>
+          <div><h3>One idea per slide</h3><p>If it needs a second headline, it needs a second slide.</p></div>
+        </div>
+        <div class="rule">
+          <div class="dot">02</div>
+          <div><h3>White space is a feature</h3><p>Let the pastel wash and the margins do the decorating.</p></div>
+        </div>
+        <div class="rule">
+          <div class="dot">03</div>
+          <div><h3>Speak like a person</h3><p>Warm verbs, short sentences, no jargon fog.</p></div>
+        </div>
+        <div class="rule">
+          <div class="dot">04</div>
+          <div><h3>Highlight one thing</h3><p>A single marker stroke per idea, never three.</p></div>
+        </div>
+        <div class="rule">
+          <div class="dot">05</div>
+          <div><h3>Keep the rhythm</h3><p>24px steps, 30px body, 34px and up for headings.</p></div>
+        </div>
+        <div class="note mint tilt-c rule-note" style="--d: 0.22s"><span class="pin"></span>If in doubt, add white space.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-color" data-label="05 Color">
+    <div class="chrome">
+      <div class="left">
+        <span class="brand">STUDY HALL</span>
+        <span class="swatches-mini" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="sec">Color</span>
+      </div>
+      <span class="pageno">05 / 13</span>
+    </div>
+    <div class="wrap">
+      <div>
+        <div class="kicker">Core palette</div>
+        <h2>The palette<br />does the talking</h2>
+        <p>Four pastels, one ink, and plenty of white. Each color has a job, so nothing has to shout to be noticed.</p>
+        <ul class="color-list">
+          <li><span class="sw" style="background: var(--pink)"></span>Blush for warmth and welcome</li>
+          <li><span class="sw" style="background: var(--blue)"></span>Study blue for focus and calm</li>
+          <li><span class="sw" style="background: var(--yellow)"></span>Highlighter for one key idea</li>
+          <li><span class="sw" style="background: var(--mint)"></span>Mint for progress and rest</li>
+        </ul>
+      </div>
+      <div class="palette-board" aria-hidden="true">
+        <div class="sw-card" style="background: var(--pink)"><b>Blush</b><span>#FFD6E8</span></div>
+        <div class="sw-card" style="background: var(--blue)"><b>Study Blue</b><span>#D6ECFF</span></div>
+        <div class="sw-card" style="background: var(--mint)"><b>Mint</b><span>#D9F2E6</span></div>
+        <div class="sw-card" style="background: var(--yellow)"><b>Highlighter</b><span>#FFF3A3</span></div>
+        <div class="caption"><span>Core palette · 04</span><span class="hand">soft, never sleepy</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-stats" data-label="06 By the Numbers">
+    <div class="chrome">
+      <div class="left">
+        <span class="brand">STUDY HALL</span>
+        <span class="swatches-mini" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="sec">By the numbers</span>
+      </div>
+      <span class="pageno">06 / 13</span>
+    </div>
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <div class="kicker" style="margin-bottom: 16px">The short version</div>
+          <h2>The playbook<br />in numbers</h2>
+        </div>
+        <p class="sub">Four counts that keep every decision small, repeatable, and easy to share with a team.</p>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card pink">
+          <div class="num">12</div>
+          <div><div class="lbl">Core colors</div><p>Four pastels, one ink, and the tints between them.</p></div>
+        </div>
+        <div class="stat-card blue">
+          <div class="num">3</div>
+          <div><div class="lbl">Typefaces</div><p>Archivo for headlines, Nunito for reading, Caveat for asides.</p></div>
+        </div>
+        <div class="stat-card yellow">
+          <div class="num">24<span class="unit">px</span></div>
+          <div><div class="lbl">Spacing unit</div><p>Every margin and gap steps up in clean 24px increments.</p></div>
+        </div>
+        <div class="stat-card mint">
+          <div class="num">9</div>
+          <div><div class="lbl">Brand rules</div><p>Small commitments that keep the system feeling calm.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-process" data-label="07 Process">
+    <div class="chrome">
+      <div class="left">
+        <span class="brand">STUDY HALL</span>
+        <span class="swatches-mini" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="sec">Process</span>
+      </div>
+      <span class="pageno">07 / 13</span>
+    </div>
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <div class="kicker" style="margin-bottom: 16px">Working rhythm</div>
+          <h2>From brief to board<br />in four steps</h2>
+        </div>
+        <div class="note tilt-r head-note" style="--d: 0.12s"><span class="pin"></span>no step skipping</div>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="num">01</div>
+          <h3>Listen</h3>
+          <p>Collect the brief, the worries, and the words people already use.</p>
+          <div class="mini">Day 1</div>
+          <svg class="arrow" viewBox="0 0 26 26" fill="none" aria-hidden="true"><path d="M4 13 H22 M15 6 L22 13 L15 20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </div>
+        <div class="step">
+          <div class="num">02</div>
+          <h3>Sketch</h3>
+          <p>Rough the type, color, and rhythm on paper before opening a tool.</p>
+          <div class="mini">Days 2–3</div>
+          <svg class="arrow" viewBox="0 0 26 26" fill="none" aria-hidden="true"><path d="M4 13 H22 M15 6 L22 13 L15 20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </div>
+        <div class="step">
+          <div class="num">03</div>
+          <h3>Build</h3>
+          <p>Turn the sketch into two or three tidy, testable pieces.</p>
+          <div class="mini">Days 4–6</div>
+          <svg class="arrow" viewBox="0 0 26 26" fill="none" aria-hidden="true"><path d="M4 13 H22 M15 6 L22 13 L15 20" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </div>
+        <div class="step">
+          <div class="num">04</div>
+          <h3>Share</h3>
+          <p>Put the work in front of real people and keep what feels warm.</p>
+          <div class="mini">Day 7</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-timeline" data-label="08 Timeline">
+    <div class="chrome">
+      <div class="left">
+        <span class="brand">STUDY HALL</span>
+        <span class="swatches-mini" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="sec">Timeline</span>
+      </div>
+      <span class="pageno">08 / 13</span>
+    </div>
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <div class="kicker" style="margin-bottom: 16px">Nine weeks</div>
+          <h2>A season of making</h2>
+        </div>
+        <div class="note mint tilt-r head-note" style="--d: 0.12s"><span class="pin"></span>slow is steady, steady is fast</div>
+      </div>
+      <div class="timeline">
+        <div class="tl-line"></div>
+        <span class="tl-dot" style="left: 10%"></span>
+        <span class="tl-dot" style="left: 30%"></span>
+        <span class="tl-dot" style="left: 50%"></span>
+        <span class="tl-dot" style="left: 70%"></span>
+        <span class="tl-dot" style="left: 90%"></span>
+        <div class="tl-item up" style="left: 10%">
+          <div class="tl-card"><span class="week">Weeks 1–2</span><h3>Gather</h3><p>Audit what exists; interview three people who use it.</p></div>
+        </div>
+        <div class="tl-item down" style="left: 30%">
+          <div class="tl-card"><span class="week">Weeks 3–4</span><h3>Define</h3><p>Agree on the one feeling the brand should leave behind.</p></div>
+        </div>
+        <div class="tl-item up" style="left: 50%">
+          <div class="tl-card"><span class="week">Weeks 5–6</span><h3>Design</h3><p>Build the color, type, and component basics.</p></div>
+        </div>
+        <div class="tl-item down" style="left: 70%">
+          <div class="tl-card"><span class="week">Weeks 7–8</span><h3>Test</h3><p>Try it on a real deck, a real page, a real room.</p></div>
+        </div>
+        <div class="tl-item up" style="left: 90%">
+          <div class="tl-card"><span class="week">Week 9</span><h3>Handover</h3><p>Document the rules and teach the team to break them well.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-compare" data-label="09 Comparison">
+    <div class="chrome">
+      <div class="left">
+        <span class="brand">STUDY HALL</span>
+        <span class="swatches-mini" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="sec">Comparison</span>
+      </div>
+      <span class="pageno">09 / 13</span>
+    </div>
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <div class="kicker" style="margin-bottom: 16px">The shift</div>
+          <h2>Old system<br />vs. Study Hall</h2>
+        </div>
+        <p class="sub">Same job, softer delivery. The work still has to be clear — it just does not have to be cold.</p>
+      </div>
+      <div class="compare">
+        <div class="cmp-head label">What changes</div>
+        <div class="cmp-head before">Old system</div>
+        <div class="cmp-head after">Study Hall</div>
+
+        <div class="cmp-cell rowlab">Palette</div>
+        <div class="cmp-cell before">Fixed corporate blue</div>
+        <div class="cmp-cell after">Soft, mood-led pastels</div>
+
+        <div class="cmp-cell rowlab">Type</div>
+        <div class="cmp-cell before">One loud headline face</div>
+        <div class="cmp-cell after">Three voices, one hierarchy</div>
+
+        <div class="cmp-cell rowlab">Layout</div>
+        <div class="cmp-cell before">Dense, edge to edge</div>
+        <div class="cmp-cell after">Open, with room to breathe</div>
+
+        <div class="cmp-cell rowlab">Tone</div>
+        <div class="cmp-cell before">Formal and distant</div>
+        <div class="cmp-cell after">Warm and encouraging</div>
+
+        <div class="cmp-cell rowlab">Best for</div>
+        <div class="cmp-cell before">Annual reports</div>
+        <div class="cmp-cell after">Lessons, workshops, teams</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-quote" data-label="10 Pull Quote">
+    <div class="chrome">
+      <div class="left">
+        <span class="brand">STUDY HALL</span>
+        <span class="swatches-mini" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="sec">In their words</span>
+      </div>
+      <span class="pageno">10 / 13</span>
+    </div>
+    <div class="note tilt-l note-l" style="--d: 0.2s"><span class="pin"></span>Say it out loud before you ship it.</div>
+    <div class="note mint tilt-r note-r" style="--d: 0.3s"><span class="pin"></span>If it sounds stiff, soften it.</div>
+    <div class="wrap">
+      <div class="qmark">“</div>
+      <blockquote>A brand should feel like a <span class="marker">good classroom</span>: clear, kind, and quietly confident.</blockquote>
+      <div class="quote-attr">
+        <div class="avatar">MS</div>
+        <div class="who">Maya Santos<span class="role">Brand Director · Fieldwork Studio</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-figure" data-label="11 Moodboard">
+    <div class="chrome">
+      <div class="left">
+        <span class="brand">STUDY HALL</span>
+        <span class="swatches-mini" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="sec">Moodboard</span>
+      </div>
+      <span class="pageno">11 / 13</span>
+    </div>
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <div class="kicker" style="margin-bottom: 16px">Figure 01</div>
+          <h2>Spring campaign moodboard</h2>
+        </div>
+        <div class="note tilt-r head-note" style="--d: 0.12s"><span class="pin"></span>more hand, less polish</div>
+      </div>
+      <div class="figure">
+        <div class="fig-tile big">
+          <div class="fig-art"><span class="orb a"></span><span class="orb b"></span><span class="bar"></span></div>
+          <span class="fig-label">Image placeholder · 01</span>
+        </div>
+        <div class="fig-tile b"><span class="fig-label">Image placeholder · 02</span></div>
+        <div class="fig-tile c"><span class="fig-label">Image placeholder · 03</span></div>
+        <div class="note mint tilt-r" style="--d: 0.2s"><span class="pin"></span>soft daylight, real hands</div>
+      </div>
+      <div class="caption">
+        <span>Replace the tiles with campaign photography at the same 3:2 ratio.</span>
+        <span class="hand">no stock smiles, please</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-team" data-label="12 Team">
+    <div class="chrome">
+      <div class="left">
+        <span class="brand">STUDY HALL</span>
+        <span class="swatches-mini" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="sec">The team</span>
+      </div>
+      <span class="pageno">12 / 13</span>
+    </div>
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <div class="kicker" style="margin-bottom: 16px">Four good humans</div>
+          <h2>The people behind<br />the pastel</h2>
+        </div>
+        <div class="note mint tilt-r head-note" style="--d: 0.12s"><span class="pin"></span>ask us anything, really</div>
+      </div>
+      <div class="team-grid">
+        <div class="person">
+          <div class="avatar">MS</div>
+          <h3>Maya Santos</h3>
+          <div class="role">Creative Lead</div>
+          <p>Keeps the palette honest and the room calm.</p>
+        </div>
+        <div class="person">
+          <div class="avatar">TL</div>
+          <h3>Theo Lim</h3>
+          <div class="role">Type &amp; Color</div>
+          <p>Sets the hierarchy, then takes one thing away.</p>
+        </div>
+        <div class="person">
+          <div class="avatar">JP</div>
+          <h3>June Park</h3>
+          <div class="role">Content Design</div>
+          <p>Writes like a person and edits like a teacher.</p>
+        </div>
+        <div class="person">
+          <div class="avatar">SR</div>
+          <h3>Sam Rivera</h3>
+          <div class="role">Workshop Host</div>
+          <p>Turns the playbook into an hour people enjoy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-closing" data-label="13 Closing">
+    <div class="chrome">
+      <div class="left">
+        <span class="brand">STUDY HALL</span>
+        <span class="swatches-mini" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="sec">Next steps</span>
+      </div>
+      <span class="pageno">13 / 13</span>
+    </div>
+    <div class="wrap">
+      <div>
+        <div class="kicker">Thank you</div>
+        <h2>Take the<br />playbook<br /><span class="marker">with you</span></h2>
+        <p class="lead">Use what fits, leave what does not, and keep the parts that make your work feel more human.</p>
+        <div class="cta-row">
+          <span class="cta">Download the kit</span>
+          <span class="cta ghost">Book a workshop</span>
+        </div>
+        <div class="contact">Questions? <b>hello@studyhall.studio</b></div>
+      </div>
+      <div class="closing-board">
+        <h3>Three small next steps</h3>
+        <div class="next-row"><div class="n">01</div><div class="t">Download the kit and open the color file.</div></div>
+        <div class="next-row"><div class="n">02</div><div class="t">Rebuild one slide you already own.</div></div>
+        <div class="next-row"><div class="n">03</div><div class="t">Bring it back to the next session.</div></div>
+        <div class="board-foot"><i></i>Next session · Thursday, 4pm</div>
+        <div class="note mint tilt-r" style="--d: 0.22s"><span class="pin"></span>See you next Thursday.</div>
+      </div>
+    </div>
+  </section>
+
+</deck-stage>
+
+<script>
+/*! autofit.js — html-slides mechanical font-fit runtime
+ *
+ * Embedded inline in every deck built by the html-slides skill. Its job:
+ * guarantee that no slide's text overflows the fixed design canvas, no
+ * matter the resolution or monitor size, WITHOUT any AI auditing.
+ *
+ * How it works (fully deterministic):
+ *  1. Finds the deck's slide elements — direct light-DOM children of
+ *     <deck-stage>, or the children of a `.slides-container` for scroll
+ *     decks. Hidden slides are still measurable (visibility:hidden keeps
+ *     layout), so ALL slides are fitted at load, not just the visible one.
+ *  2. Relaxes nested text-clipping containers once (a fixed-height card
+ *     with `overflow:hidden` that clips its own flowing text grows to fit)
+ *     — font shrinking alone cannot beat pinned px margins inside a
+ *     fixed box.
+ *  3. Measures each slide in design-canvas coordinates — ancestor
+ *     transforms (the stage's uniform scale) do not affect
+ *     scroll/client metrics, so this is resolution-independent.
+ *  4. For any slide whose content exceeds its box, scales ALL text on
+ *     that slide (font-size + px line-heights) down uniformly — hierarchy
+ *     preserved — toward the measured overflow factor, re-measuring after
+ *     each pass until it fits, bottoms out at MIN_SCALE, or hits
+ *     MAX_ITER. Fixed px margins make small under-shrinks converge rather
+ *     than overshoot.
+ *
+ * Idempotent, dependency-free, safe to include once per page.
+ */
+(() => {
+  if (window.__deckAutofit) return;
+  window.__deckAutofit = true;
+
+  const TOL = 1;         // px tolerance on both axes
+  const MIN_SCALE = 0.4; // never shrink text below 40% of authored size
+  const MAX_ITER = 12;   // per-slide convergence passes
+
+  /** Slides already fitted — guards against accidental double-runs. */
+  const processed = new WeakSet();
+
+  const slideRoots = () => {
+    const stage = document.querySelector('deck-stage');
+    if (stage) {
+      return Array.from(stage.children)
+        .filter((el) => !/^(SCRIPT|STYLE|TEMPLATE)$/.test(el.tagName));
+    }
+    const container = document.querySelector('.slides-container');
+    if (container) {
+      return Array.from(container.children)
+        .filter((el) => !/^(SCRIPT|STYLE|TEMPLATE)$/.test(el.tagName));
+    }
+    return [];
+  };
+
+  /** Snapshot authored font metrics of every descendant (+ the slide root)
+   *  once, so repeated passes scale from the ORIGINAL values, not from the
+   *  previously shrunk ones (prevents compounding drift). */
+  const snapshot = (slide) => {
+    const els = [slide].concat(Array.from(slide.querySelectorAll('*')));
+    const sizes = [];
+    const lineHeights = [];
+    els.forEach((el) => {
+      const cs = getComputedStyle(el);
+      const fs = parseFloat(cs.fontSize);
+      if (fs > 0) sizes.push([el, fs]);
+      if (cs.lineHeight.endsWith('px')) lineHeights.push([el, parseFloat(cs.lineHeight)]);
+    });
+    return { sizes, lineHeights, k: 1 };
+  };
+
+  const applyScale = (snap, k) => {
+    for (const [el, fs] of snap.sizes) el.style.fontSize = (fs * k) + 'px';
+    for (const [el, lh] of snap.lineHeights) el.style.lineHeight = (lh * k) + 'px';
+    snap.k = k;
+  };
+
+  /** A hidden-overflow (or max-height) container that clips its own
+   *  flowing text is a layout defect in itself: reveal it instead of
+   *  fighting it with infinite font shrink. Decorative clamps (image
+   *  masks, grain overlays) hold no text and are left untouched. */
+  const relaxClippedText = (slide) => {
+    for (const el of slide.querySelectorAll('*')) {
+      const cs = getComputedStyle(el);
+      const clipped =
+        /(hidden|clip)/.test(cs.overflowY) || /(hidden|clip)/.test(cs.overflowX);
+      const maxPinned = cs.maxHeight !== 'none';
+      if (!clipped && !maxPinned) continue;
+      const limit = maxPinned ? parseFloat(cs.maxHeight) || 0 : el.clientHeight;
+      if (el.scrollHeight > limit + TOL && el.textContent.trim()) {
+        if (clipped) el.style.overflow = 'visible';
+        if (maxPinned) el.style.maxHeight = 'none';
+        const fixedPxHeight = /\d+(\.\d+)?px/.test(cs.height) &&
+          parseFloat(cs.height) < el.scrollHeight;
+        if (fixedPxHeight) el.style.height = 'auto';
+      }
+    }
+  };
+
+  const slideOverflowFactor = (slide) => Math.max(
+    slide.scrollWidth / (slide.clientWidth || 1),
+    slide.scrollHeight / (slide.clientHeight || 1)
+  );
+
+  /** Fit one slide. Returns the applied scale factor, or null if nothing
+   *  was changed (it already fit, or there was nothing measurable).
+   *  Failures are isolated: one bad slide must never abort the deck. */
+  const fitSlide = (slide) => {
+    if (processed.has(slide)) return null;
+    try {
+      relaxClippedText(slide);
+      if (slideOverflowFactor(slide) <= 1.0001) return null; // slide fits
+      const snap = snapshot(slide);
+      if (!snap.sizes.length) return null;
+      let k = 1;
+      for (let i = 0; i < MAX_ITER && k > MIN_SCALE; i++) {
+        const over = slideOverflowFactor(slide);
+        if (over <= 1.0001) break;
+        // Move toward the measured need, but never more than ~12% per pass.
+        k = Math.max(MIN_SCALE, k * Math.max(1 / over, 0.88) * 0.995);
+        applyScale(snap, k);
+      }
+      processed.add(slide);
+      return k < 1 ? k : null;
+    } catch (err) {
+      console.warn('[autofit] could not fit a slide:', err);
+      return null;
+    }
+  };
+
+  const run = () => {
+    const scaled = [];
+    for (const slide of slideRoots()) {
+      const k = fitSlide(slide);
+      if (k != null) scaled.push(k.toFixed(2));
+    }
+    if (scaled.length) {
+      console.info('[autofit] text scaled to fit on slides at factors:', scaled.join(', '));
+    }
+  };
+
+  const start = () => {
+    if (document.readyState === 'loading') {
+      addEventListener('DOMContentLoaded', start);
+      return;
+    }
+    // Webfonts change text metrics — measure once they are ready (or if
+    // they stall/reject, measure anyway). No frame-waiting: rAF can be
+    // starved under some headless/virtual-time environments.
+    const fontsReady = document.fonts && document.fonts.ready
+      ? document.fonts.ready
+      : Promise.resolve();
+    fontsReady.then(run, run);
+  };
+
+  start();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- deck-provenance / generator: html-slides skill (opencode) / template: porcelain / source_files: authored from scratch for this library / built_at: 2026-11-08T20:29:01+08:00 -->
+<meta charset="utf-8" />
+<title>Porcelain — Slide Template</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="deck-stage.js"></script>
+<style>
+  :root {
+    --white: #FFFFFF;
+    --ink: #161616;
+    --muted: #6B6B6B;
+    --blush: #F6D5DC;
+    --mint: #D6EFDD;
+    --butter: #FFF1C9;
+    --peri: #DCE4FF;
+    --hairline: rgba(22, 22, 22, .12);
+    --ease: cubic-bezier(.22, .61, .36, 1);
+    --radius: 26px;
+    --shadow: 0 30px 70px -40px rgba(22, 22, 22, .32), 0 2px 8px rgba(22, 22, 22, .04);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #E9E7E2;
+    color: var(--ink);
+    font-family: "Manrope", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  deck-stage { background: #E9E7E2; }
+
+  /* ── Slide shell + calm cross-fade / rise ─────────────────────────── */
+  section.slide {
+    background: var(--white);
+    color: var(--ink);
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 600ms var(--ease), transform 600ms var(--ease);
+  }
+  section.slide[data-deck-active] { opacity: 1; transform: translateY(0); }
+
+  [data-rise] { opacity: 0; transform: translateY(16px); }
+  section.slide[data-deck-active] [data-rise] {
+    animation: pp-rise 780ms var(--ease) forwards;
+  }
+  section.slide[data-deck-active] [data-rise="2"] { animation-delay: 90ms; }
+  section.slide[data-deck-active] [data-rise="3"] { animation-delay: 180ms; }
+  section.slide[data-deck-active] [data-rise="4"] { animation-delay: 270ms; }
+  section.slide[data-deck-active] [data-rise="5"] { animation-delay: 360ms; }
+  @keyframes pp-rise {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Shared chrome ────────────────────────────────────────────────── */
+  .chrome {
+    position: absolute;
+    left: 72px; right: 72px; top: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--hairline);
+    font-size: 14px;
+    letter-spacing: .26em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .chrome .l { display: flex; align-items: center; gap: 18px; }
+  .chrome .brand { font-weight: 700; color: var(--ink); letter-spacing: .3em; }
+  .chrome .dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--ink); opacity: .35; display: inline-block;
+  }
+  .chrome .sect { font-weight: 500; letter-spacing: .24em; }
+  .chrome .r { letter-spacing: .16em; font-variant-numeric: tabular-nums; }
+  .chrome .r b { color: var(--ink); font-weight: 600; }
+
+  /* ── Body canvas ──────────────────────────────────────────────────── */
+  .body { position: absolute; left: 72px; right: 72px; top: 130px; bottom: 64px; }
+
+  h1, h2, h3, p, blockquote, ul { margin: 0; }
+
+  .display, .h2, .h3 {
+    font-family: "Fraunces", Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    font-variation-settings: "opsz" 144;
+    letter-spacing: -.018em;
+  }
+  .display { font-size: 132px; line-height: .98; }
+  .h2 { font-size: 76px; line-height: 1.02; letter-spacing: -.016em; }
+  .p {
+    font-size: 30px;
+    line-height: 1.55;
+    color: rgba(22, 22, 22, .78);
+    max-width: 62ch;
+  }
+  .p.muted { color: var(--muted); }
+  .eyebrow {
+    display: flex; align-items: center; gap: 14px;
+    font-size: 14px; font-weight: 600;
+    letter-spacing: .24em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .eyebrow::before {
+    content: ""; width: 24px; height: 1px;
+    background: var(--ink); opacity: .35;
+  }
+  em { font-style: italic; }
+
+  .card { border-radius: var(--radius); box-shadow: var(--shadow); position: relative; overflow: hidden; }
+  .dotgrid::after {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(22, 22, 22, .18) 1.5px, transparent 1.6px);
+    background-size: 24px 24px;
+    pointer-events: none;
+  }
+
+  /* ── 1. COVER ─────────────────────────────────────────────────────── */
+  .s-cover .body {
+    display: grid;
+    grid-template-columns: 1fr 560px;
+    gap: 56px;
+    align-items: stretch;
+  }
+  .cover-copy { display: flex; flex-direction: column; padding-top: 20px; }
+  .cover-title { font-size: 136px; line-height: .97; margin-top: 34px; letter-spacing: -.026em; }
+  .cover-sub { font-size: 30px; line-height: 1.5; max-width: 620px; margin-top: 40px; color: rgba(22,22,22,.74); }
+  .cover-meta {
+    margin-top: auto; display: flex; gap: 88px;
+    padding-top: 30px; border-top: 1px solid var(--hairline);
+  }
+  .cover-meta .k {
+    display: block; font-size: 13px; letter-spacing: .22em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+  }
+  .cover-meta .v { font-size: 24px; font-weight: 600; color: var(--ink); }
+
+  .cover-visual { position: relative; }
+  .cv-main {
+    position: absolute; top: 24px; right: 0;
+    width: 500px; height: 620px;
+    background: var(--peri);
+    border-radius: 30px;
+    padding: 48px;
+    display: flex; flex-direction: column; justify-content: center;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .cv-main::after {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(22,22,22,.16) 1.5px, transparent 1.6px);
+    background-size: 24px 24px; pointer-events: none;
+  }
+  .cv-tag {
+    position: absolute; top: 32px; left: 38px; z-index: 1;
+    font-size: 12px; letter-spacing: .24em; text-transform: uppercase;
+    color: rgba(22,22,22,.55);
+  }
+  .swatches { display: flex; flex-direction: column; gap: 16px; position: relative; z-index: 1; }
+  .swatches span { height: 96px; border-radius: 16px; box-shadow: 0 10px 24px -18px rgba(22,22,22,.5); }
+  .swatches .w { background: #fff; border: 1px solid var(--hairline); }
+  .cv-aa {
+    position: absolute; left: 0; bottom: 96px;
+    width: 280px; height: 280px;
+    background: var(--blush);
+    border-radius: 26px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px;
+    box-shadow: var(--shadow);
+  }
+  .cv-aa span { font-family: "Fraunces", serif; font-style: italic; font-size: 148px; line-height: 1; letter-spacing: -.04em; }
+  .cv-aa small { font-size: 12px; letter-spacing: .26em; text-transform: uppercase; color: rgba(22,22,22,.6); }
+  .cv-pill {
+    position: absolute; right: 36px; bottom: 0;
+    width: 300px; height: 118px;
+    background: var(--butter);
+    border-radius: 22px;
+    padding: 26px 30px;
+    display: flex; flex-direction: column; justify-content: center; gap: 14px;
+    box-shadow: var(--shadow);
+  }
+  .cv-line { height: 2px; background: var(--ink); opacity: .7; width: 100%; }
+  .cv-line.short { width: 58%; opacity: .32; }
+
+  /* ── 2. AGENDA ────────────────────────────────────────────────────── */
+  .agenda-head {
+    display: grid; grid-template-columns: 1fr 520px;
+    gap: 64px; align-items: end; padding-bottom: 32px;
+  }
+  .agenda-head .h2 { font-size: 72px; margin-top: 22px; }
+  .agenda-lede { font-size: 30px; line-height: 1.5; color: var(--muted); }
+  .s-agenda .body { display: flex; flex-direction: column; }
+  .agenda-list { margin-top: 6px; flex: 1; display: flex; flex-direction: column; }
+  .arow {
+    display: grid; grid-template-columns: 80px 1fr 1.15fr 60px;
+    gap: 24px; align-items: center; flex: 1;
+    padding: 21px 0;
+    border-top: 1px solid var(--hairline);
+  }
+  .arow:last-child { border-bottom: 1px solid var(--hairline); }
+  .arow .n { font-family: "Fraunces", serif; font-style: italic; font-size: 30px; color: var(--muted); }
+  .arow h3 { font-family: "Fraunces", serif; font-weight: 400; font-size: 36px; letter-spacing: -.012em; }
+  .arow p { font-size: 30px; line-height: 1.4; color: var(--muted); }
+  .arow .pg { font-size: 13px; letter-spacing: .2em; color: var(--muted); text-align: right; }
+
+  /* ── 3. SECTION DIVIDER ───────────────────────────────────────────── */
+  .s-divider .body {
+    display: grid; grid-template-columns: 1fr 600px;
+    gap: 72px; align-items: stretch;
+  }
+  .div-copy { display: flex; flex-direction: column; padding-top: 34px; }
+  .div-title { font-size: 126px; line-height: .96; margin-top: 36px; letter-spacing: -.025em; }
+  .div-copy .p { margin-top: 40px; max-width: 560px; }
+  .div-panel {
+    background: var(--mint);
+    border-radius: 32px;
+    padding: 56px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    box-shadow: var(--shadow);
+    position: relative; overflow: hidden;
+  }
+  .div-panel::after {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(22,22,22,.15) 1.5px, transparent 1.6px);
+    background-size: 24px 24px; pointer-events: none;
+  }
+  .div-num {
+    font-family: "Fraunces", serif; font-style: italic;
+    font-size: 260px; line-height: .85; letter-spacing: -.05em;
+    position: relative; z-index: 1;
+  }
+  .div-chips { display: flex; gap: 14px; position: relative; z-index: 1; }
+  .div-chips i { width: 64px; height: 64px; border-radius: 50%; box-shadow: 0 10px 22px -14px rgba(22,22,22,.45); }
+  .div-chips i:last-child { background: #fff; border: 1px solid var(--hairline); }
+  .div-panel-label {
+    font-size: 13px; letter-spacing: .24em; text-transform: uppercase;
+    color: rgba(22,22,22,.6); position: relative; z-index: 1;
+  }
+
+  /* ── 4. KEY POINTS ────────────────────────────────────────────────── */
+  .points-head {
+    display: grid; grid-template-columns: 1fr 520px;
+    gap: 64px; align-items: end; padding-bottom: 40px;
+  }
+  .points-head .h2 { font-size: 74px; margin-top: 22px; }
+  .points-head .p { color: var(--muted); }
+  .s-points .body { display: flex; flex-direction: column; }
+  .points-list { flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; gap: 0 72px; }
+  .point {
+    border-top: 1px solid var(--hairline);
+    padding: 26px 0 32px;
+    display: grid; grid-template-columns: 62px 1fr; gap: 18px;
+    align-content: center;
+  }
+  .point .pn { font-family: "Fraunces", serif; font-style: italic; font-size: 28px; color: var(--muted); padding-top: 5px; }
+  .point h3 { font-family: "Fraunces", serif; font-weight: 400; font-size: 36px; letter-spacing: -.012em; margin-bottom: 12px; }
+  .point p { font-size: 30px; line-height: 1.45; color: rgba(22,22,22,.7); }
+
+  /* ── 5. TWO COLUMN ────────────────────────────────────────────────── */
+  .s-two .body {
+    display: grid; grid-template-columns: 1fr 720px;
+    gap: 72px; align-items: stretch;
+  }
+  .two-copy { display: flex; flex-direction: column; padding-top: 14px; }
+  .two-copy .h2 { font-size: 66px; margin: 26px 0 30px; }
+  .two-copy .p { max-width: 560px; margin-bottom: 22px; }
+  .ticks { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
+  .ticks li { position: relative; padding-left: 38px; font-size: 30px; font-weight: 500; line-height: 1.35; }
+  .ticks li::before {
+    content: ""; position: absolute; left: 0; top: 11px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--blush); box-shadow: 0 0 0 4px rgba(246,213,220,.4);
+  }
+  .two-visual {
+    background: var(--peri);
+    border-radius: 28px;
+    padding: 40px;
+    display: flex; flex-direction: column; justify-content: center; gap: 16px;
+    box-shadow: var(--shadow);
+  }
+  .bar-row {
+    display: grid; grid-template-columns: 72px 1fr;
+    gap: 24px; align-items: center;
+    background: #fff; border-radius: 16px;
+    padding: 18px 24px;
+  }
+  .bar-row .chip { width: 64px; height: 64px; border-radius: 14px; }
+  .bar-row b { display: block; font-size: 34px; font-weight: 700; letter-spacing: -.01em; }
+  .bar-row small { display: block; margin-top: 4px; font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+
+  /* ── 6. STAT GRID ─────────────────────────────────────────────────── */
+  .stats-head { padding-bottom: 36px; }
+  .stats-head .h2 { font-size: 64px; margin-top: 20px; }
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .stat {
+    background: var(--blush);
+    border-radius: 24px;
+    padding: 34px 32px;
+    height: 556px;
+    display: flex; flex-direction: column;
+    box-shadow: var(--shadow);
+    position: relative; overflow: hidden;
+  }
+  .stat.mint { background: var(--mint); }
+  .stat.butter { background: var(--butter); }
+  .stat.peri { background: var(--peri); }
+  .stat .k { font-size: 13px; letter-spacing: .22em; text-transform: uppercase; color: rgba(22,22,22,.6); }
+  .stat .num {
+    font-family: "Fraunces", serif;
+    font-size: 104px; line-height: .95; letter-spacing: -.035em;
+    margin-top: auto;
+  }
+  .stat .desc { font-size: 30px; line-height: 1.35; color: rgba(22,22,22,.72); margin-top: 18px; }
+
+  /* ── 7. PROCESS ───────────────────────────────────────────────────── */
+  .proc-head {
+    display: grid; grid-template-columns: 1fr 520px;
+    gap: 64px; align-items: end; padding-bottom: 44px;
+  }
+  .proc-head .h2 { font-size: 72px; margin-top: 22px; }
+  .proc-head .p { color: var(--muted); }
+  .s-process .body { display: flex; flex-direction: column; }
+  .steps { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--hairline); }
+  .step { padding: 44px 40px 44px 0; display: flex; flex-direction: column; gap: 16px; }
+  .step + .step { padding-left: 40px; border-left: 1px solid var(--hairline); }
+  .step .dot {
+    width: 58px; height: 58px; border-radius: 50%;
+    background: var(--blush);
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Fraunces", serif; font-style: italic; font-size: 22px;
+    margin-bottom: 6px;
+  }
+  .step:nth-child(2) .dot { background: var(--mint); }
+  .step:nth-child(3) .dot { background: var(--butter); }
+  .step:nth-child(4) .dot { background: var(--peri); }
+  .step h3 { font-family: "Fraunces", serif; font-weight: 400; font-size: 38px; line-height: 1.1; letter-spacing: -.012em; }
+  .step p { font-size: 30px; line-height: 1.5; color: rgba(22,22,22,.7); }
+  .step .tag { margin-top: auto; padding-top: 26px; font-size: 13px; letter-spacing: .22em; text-transform: uppercase; color: var(--muted); }
+
+  /* ── 8. TIMELINE ──────────────────────────────────────────────────── */
+  .tl-head { display: grid; grid-template-columns: 1fr 520px; gap: 64px; align-items: end; padding-bottom: 40px; }
+  .tl-head .h2 { font-size: 66px; margin-top: 20px; }
+  .tl-head .p { color: var(--muted); }
+  .s-timeline .body { display: flex; flex-direction: column; }
+  .tl { margin-top: auto; margin-bottom: auto; position: relative; display: grid; grid-template-columns: repeat(5, 1fr); }
+  .tl::before { content: ""; position: absolute; left: 0; right: 0; top: 64px; height: 1px; background: var(--hairline); }
+  .tl-item { position: relative; padding: 96px 48px 0 0; }
+  .tl-item::before {
+    content: ""; position: absolute; top: 58px; left: 0;
+    width: 13px; height: 13px; border-radius: 50%; background: var(--ink);
+  }
+  .tl-item .year { position: absolute; top: 0; left: 0; font-family: "Fraunces", serif; font-style: italic; font-size: 40px; letter-spacing: -.02em; }
+  .tl-item h3 { font-family: "Fraunces", serif; font-weight: 400; font-size: 34px; line-height: 1.15; margin-bottom: 12px; }
+  .tl-item p { font-size: 30px; line-height: 1.45; color: var(--muted); }
+
+  /* ── 9. COMPARISON ────────────────────────────────────────────────── */
+  .cmp-head {
+    display: grid; grid-template-columns: 1fr 520px;
+    gap: 64px; align-items: end; padding-bottom: 40px;
+  }
+  .cmp-head .h2 { font-size: 66px; margin-top: 20px; }
+  .cmp-head .p { color: var(--muted); }
+  .s-compare .body { display: flex; flex-direction: column; }
+  .cmp { flex: 1; display: flex; flex-direction: column; border-radius: 22px; overflow: hidden; box-shadow: var(--shadow); }
+  .cmp-row {
+    display: grid; grid-template-columns: .9fr 1.5fr 1.5fr; flex: 1;
+    padding: 0 40px;
+    border-bottom: 1px solid var(--hairline);
+    background: #fff;
+  }
+  .cmp-row.h { flex: 0 0 auto; background: var(--butter); border-bottom: 0; }
+  .cmp-row.last { border-bottom: 0; }
+  .cmp-row > div { padding: 24px 0; display: flex; align-items: center; }
+  .cmp-row.h > div {
+    font-size: 13px; letter-spacing: .22em; text-transform: uppercase;
+    font-weight: 700; color: rgba(22,22,22,.72);
+  }
+  .cmp-row .lbl { font-family: "Fraunces", serif; font-size: 34px; letter-spacing: -.01em; }
+  .cmp-row .a { font-size: 30px; line-height: 1.3; color: var(--muted); }
+  .cmp-row .b { font-size: 30px; line-height: 1.3; font-weight: 600; color: var(--ink); }
+  .cmp-row .b i { width: 9px; height: 9px; border-radius: 50%; background: var(--blush); margin-right: 14px; display: inline-block; }
+
+  /* ── 10. PULL QUOTE ───────────────────────────────────────────────── */
+  .s-quote .body { display: grid; grid-template-columns: 1fr 420px; gap: 72px; }
+  .quote-wrap { display: flex; flex-direction: column; justify-content: center; padding-right: 24px; }
+  .quote-mark {
+    font-family: "Fraunces", serif; font-style: italic;
+    font-size: 200px; line-height: .55; color: var(--blush);
+    margin-bottom: 12px;
+  }
+  .quote-text {
+    font-family: "Fraunces", serif; font-weight: 400;
+    font-size: 64px; line-height: 1.14; letter-spacing: -.014em;
+  }
+  .quote-attr { display: flex; align-items: center; gap: 26px; margin-top: 56px; }
+  .quote-attr .line { width: 76px; height: 1px; background: rgba(22,22,22,.35); flex-shrink: 0; }
+  .quote-attr b { display: block; font-size: 30px; font-weight: 700; }
+  .quote-attr small { display: block; margin-top: 4px; font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+  .quote-accent {
+    background: var(--blush); border-radius: 32px;
+    box-shadow: var(--shadow); position: relative; overflow: hidden;
+  }
+  .quote-accent::after {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(22,22,22,.16) 1.5px, transparent 1.6px);
+    background-size: 24px 24px; pointer-events: none;
+  }
+  .quote-accent .qlabel {
+    position: absolute; left: 42px; bottom: 42px; z-index: 1;
+    font-size: 13px; letter-spacing: .24em; text-transform: uppercase;
+    color: rgba(22,22,22,.6);
+  }
+  .quote-accent .qmark2 {
+    position: absolute; right: 36px; top: 24px; z-index: 1;
+    font-family: "Fraunces", serif; font-style: italic;
+    font-size: 190px; line-height: 1; color: rgba(22,22,22,.22);
+  }
+
+  /* ── 11. FIGURE ───────────────────────────────────────────────────── */
+  .s-figure .body { display: grid; grid-template-columns: 1.35fr .85fr; gap: 72px; }
+  .fig-visual {
+    border-radius: 30px; position: relative; overflow: hidden;
+    background: linear-gradient(135deg, var(--blush) 0%, var(--butter) 44%, var(--mint) 76%, var(--peri) 100%);
+    box-shadow: var(--shadow);
+  }
+  .fig-visual::after {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(22,22,22,.14) 1.5px, transparent 1.6px);
+    background-size: 26px 26px; pointer-events: none;
+  }
+  .fig-chip {
+    position: absolute; left: 36px; top: 36px; z-index: 1;
+    background: #fff; border-radius: 999px; padding: 12px 22px;
+    font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
+    color: rgba(22,22,22,.7);
+  }
+  .fig-frame {
+    position: absolute; inset: 128px; z-index: 1;
+    border: 1px solid rgba(255,255,255,.75);
+    border-radius: 20px;
+    background: rgba(255,255,255,.26);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .fig-frame span { font-size: 14px; letter-spacing: .3em; text-transform: uppercase; color: rgba(22,22,22,.55); }
+  .fig-copy { display: flex; flex-direction: column; justify-content: center; }
+  .fig-copy .h2 { font-size: 58px; margin: 24px 0 26px; }
+  .fig-legend {
+    display: flex; flex-direction: column; gap: 14px;
+    margin-top: 34px; padding-top: 26px;
+    border-top: 1px solid var(--hairline);
+  }
+  .leg { display: flex; align-items: center; gap: 16px; font-size: 14px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  .leg i { width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0; }
+
+  /* ── 12. TEAM ─────────────────────────────────────────────────────── */
+  .team-head { padding-bottom: 38px; }
+  .team-head .h2 { font-size: 58px; margin-top: 20px; }
+  .s-team .body { display: flex; flex-direction: column; }
+  .team { flex: 0 0 auto; margin-top: auto; margin-bottom: auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .person {
+    background: #fff; border: 1px solid var(--hairline);
+    border-radius: 22px; padding: 32px;
+    min-height: 552px;
+    display: flex; flex-direction: column;
+  }
+  .avatar {
+    width: 118px; height: 118px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Fraunces", serif; font-style: italic; font-size: 40px;
+    letter-spacing: -.02em; flex-shrink: 0;
+  }
+  .person:nth-child(1) .avatar { background: var(--blush); }
+  .person:nth-child(2) .avatar { background: var(--mint); }
+  .person:nth-child(3) .avatar { background: var(--butter); }
+  .person:nth-child(4) .avatar { background: var(--peri); }
+  .person h3 { font-family: "Fraunces", serif; font-weight: 400; font-size: 34px; letter-spacing: -.012em; margin-top: 26px; }
+  .person .role { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+  .person p { font-size: 30px; line-height: 1.5; color: rgba(22,22,22,.68); margin-top: auto; padding-top: 24px; }
+
+  /* ── 13. CLOSING ──────────────────────────────────────────────────── */
+  .s-closing .body { display: grid; grid-template-columns: 1fr 620px; gap: 72px; }
+  .closing-copy { display: flex; flex-direction: column; padding-top: 24px; }
+  .closing-title { font-size: 118px; line-height: .98; margin-top: 32px; letter-spacing: -.025em; }
+  .closing-copy .p { margin-top: 34px; max-width: 560px; }
+  .cta {
+    margin-top: auto; padding-top: 36px;
+    border-top: 1px solid var(--hairline);
+    display: flex; align-items: center; gap: 34px;
+  }
+  .cta-pill {
+    background: var(--ink); color: #fff;
+    border-radius: 999px; padding: 18px 34px;
+    font-size: 14px; letter-spacing: .16em; text-transform: uppercase; font-weight: 600;
+    white-space: nowrap;
+  }
+  .cta-mail { font-size: 30px; font-weight: 600; letter-spacing: -.01em; }
+  .closing-panel {
+    background: var(--peri); border-radius: 32px;
+    box-shadow: var(--shadow); position: relative; overflow: hidden;
+    padding: 56px;
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .closing-panel::after {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(22,22,22,.15) 1.5px, transparent 1.6px);
+    background-size: 24px 24px; pointer-events: none;
+  }
+  .cp-k { font-size: 13px; letter-spacing: .3em; text-transform: uppercase; color: rgba(22,22,22,.65); position: relative; z-index: 1; }
+  .cp-big {
+    font-family: "Fraunces", serif; font-style: italic;
+    font-size: 300px; line-height: .8; letter-spacing: -.05em;
+    position: relative; z-index: 1;
+  }
+  .cp-meta { font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: rgba(22,22,22,.6); position: relative; z-index: 1; }
+
+  /* ── Print safety ─────────────────────────────────────────────────── */
+  @media print {
+    section.slide { opacity: 1 !important; transform: none !important; }
+    [data-rise] { opacity: 1 !important; transform: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+  <!-- ============== 1. COVER ================================== -->
+  <section class="slide s-cover" data-label="01 Cover">
+    <div class="chrome">
+      <div class="l"><span class="brand">Porcelain</span><span class="dot"></span><span class="sect">The Pastel Playbook</span></div>
+      <div class="r"><b>01</b> / 13</div>
+    </div>
+    <div class="body">
+      <div class="cover-copy">
+        <div class="eyebrow" data-rise>Design system · Vol. 01</div>
+        <h1 class="display cover-title" data-rise="2">The Pastel<br><em>Playbook</em></h1>
+        <p class="cover-sub" data-rise="3">A design system for modern brands — soft color, sharp structure, and the confidence to leave space.</p>
+        <div class="cover-meta" data-rise="4">
+          <div><span class="k">Prepared for</span><span class="v">Brand &amp; product teams</span></div>
+          <div><span class="k">Edition</span><span class="v">Spring 2026</span></div>
+        </div>
+      </div>
+      <div class="cover-visual" aria-hidden="true">
+        <div class="cv-main">
+          <div class="cv-tag">Palette / 04</div>
+          <div class="swatches">
+            <span style="background:var(--blush)"></span>
+            <span style="background:var(--mint)"></span>
+            <span style="background:var(--butter)"></span>
+            <span class="w"></span>
+          </div>
+        </div>
+        <div class="cv-aa">
+          <span>Aa</span>
+          <small>Fraunces</small>
+        </div>
+        <div class="cv-pill">
+          <span class="cv-line"></span>
+          <span class="cv-line short"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 2. AGENDA ================================= -->
+  <section class="slide s-agenda" data-label="02 Agenda">
+    <div class="chrome">
+      <div class="l"><span class="brand">Porcelain</span><span class="dot"></span><span class="sect">Contents</span></div>
+      <div class="r"><b>02</b> / 13</div>
+    </div>
+    <div class="body">
+      <div class="agenda-head">
+        <div>
+          <div class="eyebrow" data-rise>Agenda</div>
+          <h2 class="h2" data-rise="2">Five short chapters,<br>one quiet system.</h2>
+        </div>
+        <p class="p agenda-lede" data-rise="3">A walk through the palette, the typography, and the small decisions that make both feel effortless.</p>
+      </div>
+      <div class="agenda-list" data-rise="4">
+        <div class="arow">
+          <span class="n">01</span>
+          <h3>Color as structure</h3>
+          <p>Pastel blocks carry hierarchy without weight.</p>
+          <span class="pg">P. 03</span>
+        </div>
+        <div class="arow">
+          <span class="n">02</span>
+          <h3>A palette of four</h3>
+          <p>Blush, mint, butter, periwinkle — and one ink.</p>
+          <span class="pg">P. 06</span>
+        </div>
+        <div class="arow">
+          <span class="n">03</span>
+          <h3>Type with air</h3>
+          <p>Fraunces for voice, Manrope for information.</p>
+          <span class="pg">P. 05</span>
+        </div>
+        <div class="arow">
+          <span class="n">04</span>
+          <h3>Components &amp; rhythm</h3>
+          <p>Soft radii, hairline rules, generous margins.</p>
+          <span class="pg">P. 08</span>
+        </div>
+        <div class="arow">
+          <span class="n">05</span>
+          <h3>In practice</h3>
+          <p>How the system behaves across real surfaces.</p>
+          <span class="pg">P. 11</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 3. SECTION DIVIDER ======================== -->
+  <section class="slide s-divider" data-label="03 Section · The Palette">
+    <div class="chrome">
+      <div class="l"><span class="brand">Porcelain</span><span class="dot"></span><span class="sect">Section 02 · The Palette</span></div>
+      <div class="r"><b>03</b> / 13</div>
+    </div>
+    <div class="body">
+      <div class="div-copy">
+        <div class="eyebrow" data-rise>Section 02 — The palette</div>
+        <h2 class="display div-title" data-rise="2">Color,<br>with a<br><em>whisper.</em></h2>
+        <p class="p" data-rise="3">Four pastels, one ink, and a great deal of white. The palette is designed to support the words — never to shout over them.</p>
+      </div>
+      <div class="div-panel" data-rise="4">
+        <div class="div-num">02</div>
+        <div class="div-chips" aria-hidden="true">
+          <i style="background:var(--blush)"></i>
+          <i style="background:var(--mint)"></i>
+          <i style="background:var(--butter)"></i>
+          <i style="background:var(--peri)"></i>
+        </div>
+        <div class="div-panel-label">Palette / four pastel fills</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 4. KEY POINTS ============================= -->
+  <section class="slide s-points" data-label="04 Principles">
+    <div class="chrome">
+      <div class="l"><span class="brand">Porcelain</span><span class="dot"></span><span class="sect">Principles</span></div>
+      <div class="r"><b>04</b> / 13</div>
+    </div>
+    <div class="body">
+      <div class="points-head">
+        <div>
+          <div class="eyebrow" data-rise>Principles</div>
+          <h2 class="h2" data-rise="2">Four rules we<br>design by.</h2>
+        </div>
+        <p class="p" data-rise="3">Every screen in the system can be traced back to one of these four commitments.</p>
+      </div>
+      <div class="points-list" data-rise="4">
+        <div class="point">
+          <span class="pn">01</span>
+          <div>
+            <h3>Let white space lead</h3>
+            <p>Space is the primary material. If a slide feels busy, remove a layer before adding one.</p>
+          </div>
+        </div>
+        <div class="point">
+          <span class="pn">02</span>
+          <div>
+            <h3>Color is structure</h3>
+            <p>Pastel fields mark hierarchy and grouping. They replace borders, not meaning.</p>
+          </div>
+        </div>
+        <div class="point">
+          <span class="pn">03</span>
+          <div>
+            <h3>One ink, four fills</h3>
+            <p>All type and rules stay in the same ink. Color lives in fills, never in text.</p>
+          </div>
+        </div>
+        <div class="point">
+          <span class="pn">04</span>
+          <div>
+            <h3>Quiet motion</h3>
+            <p>Fades and gentle rises only. Movement should feel like breathing, not performing.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 5. TWO COLUMN ============================= -->
+  <section class="slide s-two" data-label="05 The System">
+    <div class="chrome">
+      <div class="l"><span class="brand">Porcelain</span><span class="dot"></span><span class="sect">The System</span></div>
+      <div class="r"><b>05</b> / 13</div>
+    </div>
+    <div class="body">
+      <div class="two-copy">
+        <div class="eyebrow" data-rise>The system</div>
+        <h2 class="h2" data-rise="2">A palette that behaves like a grid.</h2>
+        <p class="p" data-rise="3">Each color has a job: blush for emphasis, mint for confirmation, butter for attention, periwinkle for context.</p>
+        <p class="p muted" data-rise="4">Used together, they create rhythm without noise — and keep the page legible at a glance.</p>
+        <ul class="ticks" data-rise="5">
+          <li>One ink, four pastel fills</li>
+          <li>Soft radii with hairline rules</li>
+          <li>Never more than two pastels per view</li>
+        </ul>
+      </div>
+      <div class="two-visual" data-rise="4">
+        <div class="bar-row"><span class="chip" style="background:var(--blush)"></span><div><b>Blush</b><small>Emphasis</small></div></div>
+        <div class="bar-row"><span class="chip" style="background:var(--mint)"></span><div><b>Mint</b><small>Confirmation</small></div></div>
+        <div class="bar-row"><span class="chip" style="background:var(--butter)"></span><div><b>Butter</b><small>Attention</small></div></div>
+        <div class="bar-row"><span class="chip" style="background:var(--peri)"></span><div><b>Periwinkle</b><small>Context</small></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 6. STAT GRID ============================== -->
+  <section class="slide s-stats" data-label="06 Measures">
+    <div class="chrome">
+      <div class="l"><span class="brand">Porcelain</span><span class="dot"></span><span class="sect">Measures</span></div>
+      <div class="r"><b>06</b> / 13</div>
+    </div>
+    <div class="body">
+      <div class="stats-head">
+        <div class="eyebrow" data-rise>The playbook in numbers</div>
+        <h2 class="h2" data-rise="2">Small system,<br>measured well.</h2>
+      </div>
+      <div class="stat-grid">
+        <div class="stat" data-rise="3">
+          <div class="k">Palette</div>
+          <div class="num">04</div>
+          <div class="desc">pastel fills, one ink</div>
+        </div>
+        <div class="stat mint" data-rise="3">
+          <div class="k">Typefaces</div>
+          <div class="num">02</div>
+          <div class="desc">a serif and a sans</div>
+        </div>
+        <div class="stat butter" data-rise="4">
+          <div class="k">Radius</div>
+          <div class="num">28</div>
+          <div class="desc">pixels on every card</div>
+        </div>
+        <div class="stat peri" data-rise="4">
+          <div class="k">Motion</div>
+          <div class="num">600</div>
+          <div class="desc">milliseconds, eased</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 7. PROCESS ================================ -->
+  <section class="slide s-process" data-label="07 Process">
+    <div class="chrome">
+      <div class="l"><span class="brand">Porcelain</span><span class="dot"></span><span class="sect">Process</span></div>
+      <div class="r"><b>07</b> / 13</div>
+    </div>
+    <div class="body">
+      <div class="proc-head">
+        <div>
+          <div class="eyebrow" data-rise>Process</div>
+          <h2 class="h2" data-rise="2">From audit to<br>launch, in four moves.</h2>
+        </div>
+        <p class="p" data-rise="3">A repeatable path for teams adopting the system on a live brand.</p>
+      </div>
+      <div class="steps">
+        <div class="step" data-rise="3">
+          <div class="dot">01</div>
+          <h3>Audit the surface</h3>
+          <p>Collect every screen, label, and margin currently in play.</p>
+          <div class="tag">Week 01</div>
+        </div>
+        <div class="step" data-rise="4">
+          <div class="dot">02</div>
+          <h3>Compose the palette</h3>
+          <p>Assign each pastel a job and retire the colors that compete.</p>
+          <div class="tag">Week 02</div>
+        </div>
+        <div class="step" data-rise="5">
+          <div class="dot">03</div>
+          <h3>Specify the type</h3>
+          <p>Set the scale, the weights, and the rhythm of every headline.</p>
+          <div class="tag">Week 03</div>
+        </div>
+        <div class="step" data-rise="5">
+          <div class="dot">04</div>
+          <h3>Ship one deck</h3>
+          <p>Prove the system on a single deliverable before scaling it.</p>
+          <div class="tag">Week 04</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 8. TIMELINE =============================== -->
+  <section class="slide s-timeline" data-label="08 Timeline">
+    <div class="chrome">
+      <div class="l"><span class="brand">Porcelain</span><span class="dot"></span><span class="sect">Timeline</span></div>
+      <div class="r"><b>08</b> / 13</div>
+    </div>
+    <div class="body">
+      <div class="tl-head">
+        <div>
+          <div class="eyebrow" data-rise>Timeline</div>
+          <h2 class="h2" data-rise="2">A year, quietly rebuilt.</h2>
+        </div>
+        <p class="p" data-rise="3">Five moments that moved the system from audit to launch — and the quiet work between them.</p>
+      </div>
+      <div class="tl" data-rise="4">
+        <div class="tl-item">
+          <div class="year">Q1</div>
+          <h3>Audit</h3>
+          <p>Inventory every existing touchpoint and agree on the gaps.</p>
+        </div>
+        <div class="tl-item">
+          <div class="year">Q2</div>
+          <h3>Palette</h3>
+          <p>Lock the four pastels, the ink, and the hairline rules.</p>
+        </div>
+        <div class="tl-item">
+          <div class="year">Q3</div>
+          <h3>Build</h3>
+          <p>Ship the first component library and a sample deck.</p>
+        </div>
+        <div class="tl-item">
+          <div class="year">Q4</div>
+          <h3>Launch</h3>
+          <p>Roll out to three teams and publish the guidelines.</p>
+        </div>
+        <div class="tl-item">
+          <div class="year">2027</div>
+          <h3>Scale</h3>
+          <p>Extend the system to product surfaces and motion.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 9. COMPARISON ============================= -->
+  <section class="slide s-compare" data-label="09 Comparison">
+    <div class="chrome">
+      <div class="l"><span class="brand">Porcelain</span><span class="dot"></span><span class="sect">Comparison</span></div>
+      <div class="r"><b>09</b> / 13</div>
+    </div>
+    <div class="body">
+      <div class="cmp-head">
+        <div>
+          <div class="eyebrow" data-rise>Comparison</div>
+          <h2 class="h2" data-rise="2">A softer system,<br>a sharper result.</h2>
+        </div>
+        <p class="p" data-rise="3">What changes when the palette carries the hierarchy instead of heavy rules and borders.</p>
+      </div>
+      <div class="cmp" data-rise="4">
+        <div class="cmp-row h">
+          <div>Layer</div>
+          <div>Conventional system</div>
+          <div>The Pastel Playbook</div>
+        </div>
+        <div class="cmp-row">
+          <div class="lbl">Color</div>
+          <div class="a">Accent used for alarms and badges</div>
+          <div class="b"><i></i>Pastel fields carry hierarchy</div>
+        </div>
+        <div class="cmp-row">
+          <div class="lbl">Type</div>
+          <div class="a">One sans, many weights</div>
+          <div class="b"><i></i>Serif voice, sans information</div>
+        </div>
+        <div class="cmp-row">
+          <div class="lbl">Space</div>
+          <div class="a">Full-width, edge to edge</div>
+          <div class="b"><i></i>Generous margins and air</div>
+        </div>
+        <div class="cmp-row">
+          <div class="lbl">Motion</div>
+          <div class="a">Fast, attention-seeking</div>
+          <div class="b"><i></i>Slow fades and gentle rises</div>
+        </div>
+        <div class="cmp-row last">
+          <div class="lbl">Voice</div>
+          <div class="a">Urgent, persuasive</div>
+          <div class="b"><i></i>Poised and understated</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 10. PULL QUOTE ============================ -->
+  <section class="slide s-quote" data-label="10 Pull Quote">
+    <div class="chrome">
+      <div class="l"><span class="brand">Porcelain</span><span class="dot"></span><span class="sect">In Their Words</span></div>
+      <div class="r"><b>10</b> / 13</div>
+    </div>
+    <div class="body">
+      <div class="quote-wrap">
+        <div class="quote-mark" data-rise aria-hidden="true">“</div>
+        <blockquote class="quote-text" data-rise="2">Whitespace is not the absence of design. It is the part that lets the design <em>breathe.</em></blockquote>
+        <div class="quote-attr" data-rise="3">
+          <span class="line"></span>
+          <div>
+            <b>Mara Ellison</b>
+            <small>Creative Director · Studio Fold</small>
+          </div>
+        </div>
+      </div>
+      <div class="quote-accent" data-rise="4" aria-hidden="true">
+        <div class="qmark2">”</div>
+        <div class="qlabel">Field notes / 2026</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 11. FIGURE ================================ -->
+  <section class="slide s-figure" data-label="11 Figure">
+    <div class="chrome">
+      <div class="l"><span class="brand">Porcelain</span><span class="dot"></span><span class="sect">Figure</span></div>
+      <div class="r"><b>11</b> / 13</div>
+    </div>
+    <div class="body">
+      <div class="fig-visual" data-rise>
+        <div class="fig-chip">Figure 01</div>
+        <div class="fig-frame"><span>Image placeholder</span></div>
+      </div>
+      <div class="fig-copy">
+        <div class="eyebrow" data-rise="2">Figure 01</div>
+        <h2 class="h2" data-rise="3">The palette<br>in situ.</h2>
+        <p class="p" data-rise="4">A sample surface where all four pastels meet: blush for emphasis, mint for confirmation, butter for attention, and periwinkle for context.</p>
+        <div class="fig-legend" data-rise="5">
+          <div class="leg"><i style="background:var(--blush)"></i>Blush · emphasis</div>
+          <div class="leg"><i style="background:var(--mint)"></i>Mint · confirmation</div>
+          <div class="leg"><i style="background:var(--butter)"></i>Butter · attention</div>
+          <div class="leg"><i style="background:var(--peri)"></i>Periwinkle · context</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 12. TEAM ================================== -->
+  <section class="slide s-team" data-label="12 People">
+    <div class="chrome">
+      <div class="l"><span class="brand">Porcelain</span><span class="dot"></span><span class="sect">People</span></div>
+      <div class="r"><b>12</b> / 13</div>
+    </div>
+    <div class="body">
+      <div class="team-head">
+        <div class="eyebrow" data-rise>The studio</div>
+        <h2 class="h2" data-rise="2">The people behind the palette.</h2>
+      </div>
+      <div class="team">
+        <div class="person" data-rise="3">
+          <div class="avatar">ME</div>
+          <h3>Mara Ellison</h3>
+          <div class="role">Creative Director</div>
+          <p>Keeps the visual language honest and the palette calm.</p>
+        </div>
+        <div class="person" data-rise="3">
+          <div class="avatar">JO</div>
+          <h3>Jonah Okafor</h3>
+          <div class="role">Design Lead</div>
+          <p>Turns the system into components teams actually use.</p>
+        </div>
+        <div class="person" data-rise="4">
+          <div class="avatar">RS</div>
+          <h3>Rhea Santos</h3>
+          <div class="role">Type Designer</div>
+          <p>Sets the scale, the spacing, and the quiet in between.</p>
+        </div>
+        <div class="person" data-rise="4">
+          <div class="avatar">TL</div>
+          <h3>Theo Lindqvist</h3>
+          <div class="role">Strategy Partner</div>
+          <p>Makes sure the softness never costs the message clarity.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 13. CLOSING =============================== -->
+  <section class="slide s-closing" data-label="13 Closing">
+    <div class="chrome">
+      <div class="l"><span class="brand">Porcelain</span><span class="dot"></span><span class="sect">Closing</span></div>
+      <div class="r"><b>13</b> / 13</div>
+    </div>
+    <div class="body">
+      <div class="closing-copy">
+        <div class="eyebrow" data-rise>Closing</div>
+        <h2 class="display closing-title" data-rise="2">Bring the<br><em>softness.</em></h2>
+        <p class="p" data-rise="3">Start with one page. We will bring the palette, the type, and the quiet.</p>
+        <div class="cta" data-rise="4">
+          <span class="cta-pill">Start a project</span>
+          <span class="cta-mail">hello@porcelain.studio</span>
+        </div>
+      </div>
+      <div class="closing-panel" data-rise="4" aria-hidden="true">
+        <div class="cp-k">Porcelain</div>
+        <div class="cp-big">P.</div>
+        <div class="cp-meta">The Pastel Playbook · 2026</div>
+      </div>
+    </div>
+  </section>
+
+</deck-stage>
+
+<script>
+/*! autofit.js — html-slides mechanical font-fit runtime
+ *
+ * Embedded inline in every deck built by the html-slides skill. Its job:
+ * guarantee that no slide's text overflows the fixed design canvas, no
+ * matter the resolution or monitor size, WITHOUT any AI auditing.
+ *
+ * How it works (fully deterministic):
+ *  1. Finds the deck's slide elements — direct light-DOM children of
+ *     <deck-stage>, or the children of a `.slides-container` for scroll
+ *     decks. Hidden slides are still measurable (visibility:hidden keeps
+ *     layout), so ALL slides are fitted at load, not just the visible one.
+ *  2. Relaxes nested text-clipping containers once (a fixed-height card
+ *     with `overflow:hidden` that clips its own flowing text grows to fit)
+ *     — font shrinking alone cannot beat pinned px margins inside a
+ *     fixed box.
+ *  3. Measures each slide in design-canvas coordinates — ancestor
+ *     transforms (the stage's uniform scale) do not affect
+ *     scroll/client metrics, so this is resolution-independent.
+ *  4. For any slide whose content exceeds its box, scales ALL text on
+ *     that slide (font-size + px line-heights) down uniformly — hierarchy
+ *     preserved — toward the measured overflow factor, re-measuring after
+ *     each pass until it fits, bottoms out at MIN_SCALE, or hits
+ *     MAX_ITER. Fixed px margins make small under-shrinks converge rather
+ *     than overshoot.
+ *
+ * Idempotent, dependency-free, safe to include once per page.
+ */
+(() => {
+  if (window.__deckAutofit) return;
+  window.__deckAutofit = true;
+
+  const TOL = 1;         // px tolerance on both axes
+  const MIN_SCALE = 0.4; // never shrink text below 40% of authored size
+  const MAX_ITER = 12;   // per-slide convergence passes
+
+  /** Slides already fitted — guards against accidental double-runs. */
+  const processed = new WeakSet();
+
+  const slideRoots = () => {
+    const stage = document.querySelector('deck-stage');
+    if (stage) {
+      return Array.from(stage.children)
+        .filter((el) => !/^(SCRIPT|STYLE|TEMPLATE)$/.test(el.tagName));
+    }
+    const container = document.querySelector('.slides-container');
+    if (container) {
+      return Array.from(container.children)
+        .filter((el) => !/^(SCRIPT|STYLE|TEMPLATE)$/.test(el.tagName));
+    }
+    return [];
+  };
+
+  /** Snapshot authored font metrics of every descendant (+ the slide root)
+   *  once, so repeated passes scale from the ORIGINAL values, not from the
+   *  previously shrunk ones (prevents compounding drift). */
+  const snapshot = (slide) => {
+    const els = [slide].concat(Array.from(slide.querySelectorAll('*')));
+    const sizes = [];
+    const lineHeights = [];
+    els.forEach((el) => {
+      const cs = getComputedStyle(el);
+      const fs = parseFloat(cs.fontSize);
+      if (fs > 0) sizes.push([el, fs]);
+      if (cs.lineHeight.endsWith('px')) lineHeights.push([el, parseFloat(cs.lineHeight)]);
+    });
+    return { sizes, lineHeights, k: 1 };
+  };
+
+  const applyScale = (snap, k) => {
+    for (const [el, fs] of snap.sizes) el.style.fontSize = (fs * k) + 'px';
+    for (const [el, lh] of snap.lineHeights) el.style.lineHeight = (lh * k) + 'px';
+    snap.k = k;
+  };
+
+  /** A hidden-overflow (or max-height) container that clips its own
+   *  flowing text is a layout defect in itself: reveal it instead of
+   *  fighting it with infinite font shrink. Decorative clamps (image
+   *  masks, grain overlays) hold no text and are left untouched. */
+  const relaxClippedText = (slide) => {
+    for (const el of slide.querySelectorAll('*')) {
+      const cs = getComputedStyle(el);
+      const clipped =
+        /(hidden|clip)/.test(cs.overflowY) || /(hidden|clip)/.test(cs.overflowX);
+      const maxPinned = cs.maxHeight !== 'none';
+      if (!clipped && !maxPinned) continue;
+      const limit = maxPinned ? parseFloat(cs.maxHeight) || 0 : el.clientHeight;
+      if (el.scrollHeight > limit + TOL && el.textContent.trim()) {
+        if (clipped) el.style.overflow = 'visible';
+        if (maxPinned) el.style.maxHeight = 'none';
+        const fixedPxHeight = /\d+(\.\d+)?px/.test(cs.height) &&
+          parseFloat(cs.height) < el.scrollHeight;
+        if (fixedPxHeight) el.style.height = 'auto';
+      }
+    }
+  };
+
+  const slideOverflowFactor = (slide) => Math.max(
+    slide.scrollWidth / (slide.clientWidth || 1),
+    slide.scrollHeight / (slide.clientHeight || 1)
+  );
+
+  /** Fit one slide. Returns the applied scale factor, or null if nothing
+   *  was changed (it already fit, or there was nothing measurable).
+   *  Failures are isolated: one bad slide must never abort the deck. */
+  const fitSlide = (slide) => {
+    if (processed.has(slide)) return null;
+    try {
+      relaxClippedText(slide);
+      if (slideOverflowFactor(slide) <= 1.0001) return null; // slide fits
+      const snap = snapshot(slide);
+      if (!snap.sizes.length) return null;
+      let k = 1;
+      for (let i = 0; i < MAX_ITER && k > MIN_SCALE; i++) {
+        const over = slideOverflowFactor(slide);
+        if (over <= 1.0001) break;
+        // Move toward the measured need, but never more than ~12% per pass.
+        k = Math.max(MIN_SCALE, k * Math.max(1 / over, 0.88) * 0.995);
+        applyScale(snap, k);
+      }
+      processed.add(slide);
+      return k < 1 ? k : null;
+    } catch (err) {
+      console.warn('[autofit] could not fit a slide:', err);
+      return null;
+    }
+  };
+
+  const run = () => {
+    const scaled = [];
+    for (const slide of slideRoots()) {
+      const k = fitSlide(slide);
+      if (k != null) scaled.push(k.toFixed(2));
+    }
+    if (scaled.length) {
+      console.info('[autofit] text scaled to fit on slides at factors:', scaled.join(', '));
+    }
+  };
+
+  const start = () => {
+    if (document.readyState === 'loading') {
+      addEventListener('DOMContentLoaded', start);
+      return;
+    }
+    // Webfonts change text metrics — measure once they are ready (or if
+    // they stall/reject, measure anyway). No frame-waiting: rAF can be
+    // starved under some headless/virtual-time environments.
+    const fontsReady = document.fonts && document.fonts.ready
+      ? document.fonts.ready
+      : Promise.resolve();
+    fontsReady.then(run, run);
+  };
+
+  start();
+})();
+</script>
+</body>
+</html>

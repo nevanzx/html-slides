@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sugar Grid — Concept Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#FFFFFF; --ink:#111111; --muted:#6B6B6B;
+    --pink:#FFD1E3; --sky:#CDE7FF; --lime:#E4F5C1; --tangerine:#FFE0C2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#E9E9E4;font-family:'Space Grotesk',sans-serif;color:var(--ink);overflow:hidden}
+  #stage{position:fixed;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center center;
+    background:var(--white);
+    background-image:linear-gradient(rgba(17,17,17,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(17,17,17,.05) 1px,transparent 1px);
+    background-size:64px 64px;overflow:hidden;box-shadow:0 40px 140px rgba(0,0,0,.28)}
+  .slide{position:absolute;inset:0;padding:80px 110px;display:none;flex-direction:column}
+  .slide.active{display:flex}
+  .topbar{display:flex;justify-content:space-between;align-items:center;
+    font-size:17px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+  .topbar b{color:var(--ink);font-weight:700}
+  .rule{height:2px;background:var(--ink);margin-top:22px}
+
+  .cover{flex:1;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding-top:10px}
+  .kicker{font-size:19px;letter-spacing:.34em;text-transform:uppercase;color:var(--muted);margin-bottom:28px}
+  .display{font-family:'Archivo',sans-serif;font-weight:900;font-size:150px;line-height:.84;letter-spacing:-.045em;text-transform:uppercase}
+  .display .line{display:block}
+  .hl{background:var(--pink);padding:0 .1em;box-decoration-break:clone}
+  .sub{margin-top:38px;font-size:28px;line-height:1.45;color:#3A3A3A;max-width:640px;font-weight:500}
+  .meta{margin-top:48px;display:inline-flex;gap:14px;align-items:center;font-size:18px;letter-spacing:.16em;text-transform:uppercase;
+    border:2px solid var(--ink);padding:14px 22px;font-weight:600}
+
+  .art{position:relative;height:700px}
+  .circle{position:absolute;width:420px;height:420px;border-radius:50%;background:var(--sky);right:30px;top:10px}
+  .arch{position:absolute;width:260px;height:430px;border-radius:260px 260px 0 0;background:var(--tangerine);left:20px;bottom:0}
+  .quarter{position:absolute;width:230px;height:230px;border-radius:0 0 230px 0;background:var(--lime);right:0;bottom:30px}
+  .checker{position:absolute;width:170px;height:170px;left:130px;top:30px;
+    background-image:linear-gradient(45deg,var(--ink) 25%,transparent 25%,transparent 75%,var(--ink) 75%),
+                     linear-gradient(45deg,var(--ink) 25%,transparent 25%,transparent 75%,var(--ink) 75%);
+    background-size:28px 28px;background-position:0 0,14px 14px}
+  .tag{position:absolute;right:120px;bottom:150px;background:var(--white);border:2px solid var(--ink);
+    padding:12px 18px;font-size:16px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;transform:rotate(-4deg)}
+
+  .h2{font-family:'Archivo',sans-serif;font-weight:900;font-size:82px;line-height:.95;letter-spacing:-.03em;text-transform:uppercase;margin-top:46px}
+  .cells{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:56px;flex:1;align-items:stretch}
+  .cell{padding:36px 32px;display:flex;flex-direction:column;justify-content:space-between;min-height:420px}
+  .cell .num{font-family:'Archivo',sans-serif;font-weight:900;font-size:92px;line-height:1;letter-spacing:-.03em}
+  .cell h3{font-family:'Archivo',sans-serif;font-weight:800;font-size:34px;line-height:1.05;text-transform:uppercase;margin-top:20px}
+  .cell p{font-size:21px;line-height:1.5;color:#2B2B2B;margin-top:14px;font-weight:500}
+
+  .nav{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);display:flex;gap:10px;z-index:10}
+  .nav button{width:34px;height:6px;border:0;border-radius:99px;background:rgba(0,0,0,.18);cursor:pointer}
+  .nav button.on{background:#111111}
+</style>
+</head>
+<body>
+<div id="stage">
+  <section class="slide active">
+    <div class="topbar"><span><b>Sugar Grid</b> · Concept</span><span>2026 — 01</span></div>
+    <div class="rule"></div>
+    <div class="cover">
+      <div>
+        <div class="kicker">Design system</div>
+        <h1 class="display"><span class="line">The</span><span class="line hl">Pastel</span><span class="line">Playbook</span></h1>
+        <p class="sub">A design system for modern brands — soft color, sharp structure, and room to breathe.</p>
+        <div class="meta">Studio Preview · 2026</div>
+      </div>
+      <div class="art">
+        <div class="circle"></div>
+        <div class="arch"></div>
+        <div class="quarter"></div>
+        <div class="checker"></div>
+        <div class="tag">Pastel / Pop</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="topbar"><span><b>Sugar Grid</b> · Why pastel</span><span>2026 — 02</span></div>
+    <div class="rule"></div>
+    <h2 class="h2">Why pastel works</h2>
+    <div class="cells">
+      <div class="cell" style="background:var(--pink)">
+        <div class="num">01</div>
+        <div><h3>Calm<br>authority</h3><p>Soft color lowers resistance without losing structure.</p></div>
+      </div>
+      <div class="cell" style="background:var(--sky)">
+        <div class="num">02</div>
+        <div><h3>Clear<br>hierarchy</h3><p>Pastel fills separate ideas; ink text keeps them legible.</p></div>
+      </div>
+      <div class="cell" style="background:var(--lime)">
+        <div class="num">03</div>
+        <div><h3>Human<br>warmth</h3><p>Color signals approachability in formal rooms.</p></div>
+      </div>
+      <div class="cell" style="background:var(--tangerine)">
+        <div class="num">04</div>
+        <div><h3>Wide<br>range</h3><p>Four pastels cover every section without a new palette.</p></div>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="nav"><button class="on" data-i="0"></button><button data-i="1"></button></div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const dots=[...document.querySelectorAll('.nav button')];
+  let i=0;
+  function show(n){i=(n+slides.length)%slides.length;slides.forEach((s,k)=>s.classList.toggle('active',k===i));dots.forEach((d,k)=>d.classList.toggle('on',k===i));}
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')show(i+1);if(e.key==='ArrowLeft')show(i-1);});
+  dots.forEach(d=>d.onclick=()=>show(+d.dataset.i));
+  function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);document.getElementById('stage').style.transform=`translate(-50%,-50%) scale(${s})`;}
+  addEventListener('resize',fit);fit();
+  const _h=parseInt((location.hash||'').slice(1));if(_h>0)show(_h-1);
+</script>
+</body>
+</html>

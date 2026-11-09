@@ -1,5 +1,5 @@
 window.LIBRARY = {
-    "updated_at":  "2026-10-29T10:16:02.8900223Z",
+    "updated_at":  "2026-11-08T13:22:34.7186372Z",
     "templates":  [
                       {
                           "slug":  "8-bit-orbit",
@@ -567,6 +567,70 @@ window.LIBRARY = {
                                            "literary or editorial pitch",
                                            "founder reflection / vision deck",
                                            "bilingual EN/CN deck"
+                                       ]
+                      },
+                      {
+                          "slug":  "porcelain",
+                          "name":  "Porcelain",
+                          "tagline":  "Refined white canvas with pastel color-block cards, Fraunces serifs, and generous editorial whitespace.",
+                          "scheme":  "light",
+                          "formality":  "medium-high",
+                          "density":  "medium",
+                          "slide_count":  13,
+                          "occasion":  [
+                                           "brand strategy",
+                                           "advisory deliverable",
+                                           "product launch",
+                                           "portfolio",
+                                           "classroom deck"
+                                       ]
+                      },
+                      {
+                          "slug":  "sugar-grid",
+                          "name":  "Sugar Grid",
+                          "tagline":  "Swiss-pop white canvas with pastel geometry, Archivo Black headlines, and candy-color highlight bars.",
+                          "scheme":  "light",
+                          "formality":  "medium",
+                          "density":  "high",
+                          "slide_count":  13,
+                          "occasion":  [
+                                           "startup pitch",
+                                           "creative agency",
+                                           "design review",
+                                           "product launch",
+                                           "brand deck"
+                                       ]
+                      },
+                      {
+                          "slug":  "study-hall",
+                          "name":  "Study Hall",
+                          "tagline":  "Warm white canvas with a soft pastel wash, highlighter marks, sticky notes, and handwritten accents.",
+                          "scheme":  "light",
+                          "formality":  "low",
+                          "density":  "medium",
+                          "slide_count":  13,
+                          "occasion":  [
+                                           "classroom discussion",
+                                           "lesson deck",
+                                           "study guide",
+                                           "workshop",
+                                           "wellness program"
+                                       ]
+                      },
+                      {
+                          "slug":  "bookmark",
+                          "name":  "Bookmark",
+                          "tagline":  "Dot-grid white canvas with pastel bookmark-tab navigation and a notebook page-flip transition.",
+                          "scheme":  "light",
+                          "formality":  "medium",
+                          "density":  "medium-high",
+                          "slide_count":  13,
+                          "occasion":  [
+                                           "classroom workbook",
+                                           "study guide",
+                                           "research readout",
+                                           "workshop workbook",
+                                           "editorial"
                                        ]
                       }
                   ]

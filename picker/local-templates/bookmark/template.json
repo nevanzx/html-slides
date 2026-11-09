@@ -1,0 +1,30 @@
+{
+  "slug": "bookmark",
+  "name": "Bookmark",
+  "tagline": "Dot-grid white canvas with pastel bookmark-tab navigation and a notebook page-flip transition.",
+  "mood": ["studious", "organized", "warm", "tactile", "modern"],
+  "occasion": ["classroom workbook", "study guide", "research readout", "workshop workbook", "editorial"],
+  "tone": ["structured", "approachable", "editorial", "tactile"],
+  "formality": "medium",
+  "density": "medium-high",
+  "scheme": "light",
+  "palette": {
+    "bg": "#FFFFFF",
+    "fg": "#1F1F1F",
+    "pink": "#FFD6E8",
+    "blue": "#D6ECFF",
+    "yellow": "#FFF3A3",
+    "mint": "#D9F2E6",
+    "lilac": "#E7D9FF",
+    "description": "white with a faint dot grid and five pastel bookmark tabs"
+  },
+  "typography": {
+    "display": "Bricolage Grotesque",
+    "body": "DM Sans",
+    "style": "characterful grotesque display with a clean sans body and handwritten Caveat accents"
+  },
+  "best_for": "Classroom workbooks, study guides, research readouts, workshop workbooks, and editorial decks that want tactile organization.",
+  "avoid_for": "Contexts that need loud pop energy or pure minimalist restraint.",
+  "slide_count": 13,
+  "navigation": "deck-stage with notebook page-flip transitions and bookmark-tab section nav"
+}

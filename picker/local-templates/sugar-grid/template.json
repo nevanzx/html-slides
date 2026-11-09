@@ -1,0 +1,29 @@
+{
+  "slug": "sugar-grid",
+  "name": "Sugar Grid",
+  "tagline": "Swiss-pop white canvas with pastel geometry, Archivo Black headlines, and candy-color highlight bars.",
+  "mood": ["energetic", "graphic", "confident", "modern", "playful-professional"],
+  "occasion": ["startup pitch", "creative agency", "design review", "product launch", "brand deck"],
+  "tone": ["bold", "design-led", "graphic", "upbeat"],
+  "formality": "medium",
+  "density": "high",
+  "scheme": "light",
+  "palette": {
+    "bg": "#FFFFFF",
+    "fg": "#111111",
+    "pink": "#FFD1E3",
+    "sky": "#CDE7FF",
+    "lime": "#E4F5C1",
+    "tangerine": "#FFE0C2",
+    "description": "crisp white with faint grid, ink structure, four saturated pastels used as flat blocks"
+  },
+  "typography": {
+    "display": "Archivo",
+    "body": "Space Grotesk",
+    "style": "heavy grotesk display with a technical geometric sans body"
+  },
+  "best_for": "Startup pitches, creative agency decks, design reviews, and product launches that want pastel color with Swiss graphic punch.",
+  "avoid_for": "Contexts that need quiet literary restraint or traditional institutional gravitas.",
+  "slide_count": 13,
+  "navigation": "deck-stage with pastel-wipe slide transitions"
+}

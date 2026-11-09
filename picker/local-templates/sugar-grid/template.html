@@ -1,0 +1,1747 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--
+  deck-provenance
+  generator: html-slides skill (opencode)
+  template: sugar-grid
+  source_files: authored from scratch for this library
+  built_at: 2026-11-08T20:27:58+08:00
+-->
+<meta charset="utf-8" />
+<title>Sugar Grid — Slide Template</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+<script src="deck-stage.js"></script>
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --ink: #111111;
+    --muted: #6B6B6B;
+    --pink: #FFD1E3;
+    --sky: #CDE7FF;
+    --lime: #E4F5C1;
+    --tangerine: #FFE0C2;
+    --grid: rgba(17, 17, 17, 0.055);
+    --wipe: #FFD1E3;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #101012; }
+  body {
+    font-family: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  deck-stage { background: #101012; }
+
+  h1, h2, h3, h4, p, blockquote, ul { margin: 0; }
+
+  /* ── slide shell: faint 64px grid + pastel wipe ─────────────────── */
+  section.slide {
+    position: relative;
+    background: var(--bg);
+    color: var(--ink);
+    overflow: hidden;
+    --wipe: #FFD1E3;
+  }
+  section.slide::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-image:
+      linear-gradient(to right, var(--grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+    background-size: 64px 64px;
+    background-position: -1px -1px;
+    pointer-events: none;
+  }
+  section.slide::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 80;
+    background: var(--wipe);
+    transform: scaleX(0);
+    transform-origin: left center;
+    pointer-events: none;
+  }
+  section.slide[data-deck-active]::after {
+    animation: wipe-across 450ms cubic-bezier(.7, 0, .2, 1) both;
+  }
+  @keyframes wipe-across {
+    0%   { transform: scaleX(0); transform-origin: left center; }
+    42%  { transform: scaleX(1); transform-origin: left center; }
+    43%  { transform: scaleX(1); transform-origin: right center; }
+    100% { transform: scaleX(0); transform-origin: right center; }
+  }
+  section.slide[data-deck-active] .main > * {
+    animation: content-rise 560ms cubic-bezier(.7, 0, .2, 1) 100ms both;
+  }
+  @keyframes content-rise {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    section.slide[data-deck-active]::after,
+    section.slide[data-deck-active] .main > * { animation: none; }
+  }
+
+  /* ── top chrome ─────────────────────────────────────────────────── */
+  .top {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 92px;
+    padding: 0 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 2px solid var(--ink);
+    z-index: 30;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 30px;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .brand .sep { color: var(--muted); font-weight: 700; }
+  .brand .section-name {
+    font-family: "Space Grotesk", sans-serif;
+    font-weight: 500;
+    font-size: 30px;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .checker-sm {
+    width: 22px;
+    height: 22px;
+    flex: 0 0 22px;
+    border: 2px solid var(--ink);
+    background-image: repeating-conic-gradient(var(--ink) 0% 25%, #fff 0% 50%);
+    background-size: 11px 11px;
+  }
+  .pageno {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: "Archivo", sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+  .pageno .dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--ink);
+    background: var(--pink);
+  }
+  .pageno .dot.sky { background: var(--sky); }
+  .pageno .dot.lime { background: var(--lime); }
+  .pageno .dot.tangerine { background: var(--tangerine); }
+
+  /* ── content frame ──────────────────────────────────────────────── */
+  .main {
+    position: absolute;
+    top: 92px; left: 0; right: 0; bottom: 0;
+    padding: 52px 64px 56px;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+  }
+  /* Slides whose .main is also the layout grid: let top/bottom pin the box. */
+  .main.cover-grid,
+  .main.divider-main,
+  .main.closing-main { height: auto; }
+
+  /* ── typography ─────────────────────────────────────────────────── */
+  .h-display {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 150px;
+    line-height: 0.86;
+    letter-spacing: -0.035em;
+    text-transform: uppercase;
+  }
+  .h1 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 128px;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+  .h2 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 900;
+    font-size: 76px;
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+  }
+  .h3 {
+    font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 800;
+    font-size: 40px;
+    line-height: 1.04;
+    letter-spacing: -0.012em;
+    text-transform: uppercase;
+  }
+  .lead { font-size: 36px; line-height: 1.35; font-weight: 500; }
+  .p { font-size: 30px; line-height: 1.48; }
+  .muted { color: var(--muted); }
+
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    font-family: "Archivo", sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    line-height: 1;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .kicker .bar {
+    display: inline-block;
+    width: 56px;
+    height: 10px;
+    background: var(--ink);
+  }
+
+  .hl-pink, .hl-sky, .hl-lime, .hl-tangerine {
+    padding: 0 0.08em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  .hl-pink { background: var(--pink); }
+  .hl-sky { background: var(--sky); }
+  .hl-lime { background: var(--lime); }
+  .hl-tangerine { background: var(--tangerine); }
+
+  .sticker {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 22px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    background: #fff;
+    font-family: "Archivo", sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    line-height: 1.1;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .sticker.pink { background: var(--pink); }
+  .sticker.sky { background: var(--sky); }
+  .sticker.lime { background: var(--lime); }
+  .sticker.tangerine { background: var(--tangerine); }
+  .sticker.ink { background: var(--ink); color: #fff; }
+
+  .checker {
+    background-image: repeating-conic-gradient(var(--ink) 0% 25%, #fff 0% 50%);
+    background-size: 36px 36px;
+    border: 2px solid var(--ink);
+  }
+
+  .slide-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 48px;
+    margin-bottom: 38px;
+    flex-shrink: 0;
+  }
+  .slide-head .head-copy { display: flex; flex-direction: column; gap: 16px; }
+  .slide-head .head-note {
+    max-width: 520px;
+    font-size: 30px;
+    line-height: 1.4;
+    color: var(--muted);
+    padding-bottom: 8px;
+  }
+
+  /* ── 01 cover ───────────────────────────────────────────────────── */
+  .cover-grid {
+    display: grid;
+    grid-template-columns: 1.12fr 0.88fr;
+    gap: 64px;
+    align-items: center;
+    height: 100%;
+  }
+  .cover-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+  }
+  .cover-lead { max-width: 800px; color: #2a2a2a; }
+  .cover-meta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 6px; }
+  .cover-art { position: relative; height: 100%; min-height: 0; }
+  .art-frame {
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--ink);
+    background: #fff;
+    clip-path: inset(0);
+  }
+  .art-frame::after,
+  .ca-frame::after,
+  .divider-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--ink);
+    pointer-events: none;
+    z-index: 6;
+  }
+  .shape { position: absolute; }
+  .circle-pink {
+    width: 460px; height: 460px;
+    border-radius: 50%;
+    background: var(--pink);
+    top: -70px; right: -50px;
+  }
+  .arch-sky {
+    width: 300px; height: 420px;
+    border-radius: 999px 999px 0 0;
+    background: var(--sky);
+    bottom: 0; left: 44px;
+  }
+  .quarter-lime {
+    width: 250px; height: 250px;
+    border-radius: 0 100% 0 0;
+    background: var(--lime);
+    right: 36px; bottom: 96px;
+  }
+  .dot-tangerine {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: var(--tangerine);
+    border: 2px solid var(--ink);
+    left: 360px; top: 110px;
+  }
+  .art-checker {
+    position: absolute;
+    left: 44px; top: 44px;
+    width: 220px; height: 110px;
+  }
+  .art-label {
+    position: absolute;
+    top: 44px; right: 48px;
+    font-family: "Archivo", sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .sticker-float {
+    position: absolute;
+    left: 46px; bottom: 46px;
+    transform: rotate(-4deg);
+    z-index: 3;
+  }
+
+  /* ── 02 agenda ──────────────────────────────────────────────────── */
+  .agenda-grid {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 26px;
+  }
+  .agenda-item {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    border: 2px solid var(--ink);
+    background: #fff;
+    padding: 24px 28px;
+  }
+  .agenda-item .n {
+    flex: 0 0 auto;
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    font-size: 44px;
+    line-height: 1;
+    padding: 12px 16px;
+    border: 2px solid var(--ink);
+  }
+  .agenda-item:nth-child(1) .n { background: var(--pink); }
+  .agenda-item:nth-child(2) .n { background: var(--sky); }
+  .agenda-item:nth-child(3) .n { background: var(--lime); }
+  .agenda-item:nth-child(4) .n { background: var(--tangerine); }
+  .agenda-item:nth-child(5) .n { background: var(--sky); }
+  .agenda-item:nth-child(6) .n { background: var(--pink); }
+  .agenda-item h3 { font-size: 38px; margin-bottom: 6px; }
+  .agenda-item p { font-size: 30px; line-height: 1.35; color: #333; }
+
+  /* ── 03 section divider ─────────────────────────────────────────── */
+  section.slide.divider { background: var(--pink); }
+  section.slide.divider::before { opacity: 0.6; }
+  .divider-main {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 56px;
+    align-items: center;
+    height: 100%;
+  }
+  .divider-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 28px; }
+  .divider-copy .h1 { font-size: 128px; }
+  .divider-copy .lead { max-width: 720px; }
+  .divider-rule { width: 100%; height: 2px; background: var(--ink); }
+  .divider-card {
+    position: relative;
+    clip-path: inset(0);
+    background: #fff;
+    border: 2px solid var(--ink);
+    padding: 44px 44px 52px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-height: 560px;
+    justify-content: flex-start;
+  }
+  .divider-card .ghost {
+    position: absolute;
+    right: -18px; bottom: -70px;
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    font-size: 300px;
+    line-height: 1;
+    color: var(--sky);
+    letter-spacing: -0.05em;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .divider-card > * { position: relative; z-index: 1; }
+  .divider-card h3 {
+    font-family: "Archivo", sans-serif;
+    font-weight: 800;
+    font-size: 34px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .divider-list { display: flex; flex-direction: column; gap: 20px; }
+  .divider-list .row {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    font-size: 30px;
+    line-height: 1.35;
+    border-bottom: 2px solid rgba(17, 17, 17, 0.14);
+    padding-bottom: 18px;
+  }
+  .divider-list .row:last-child { border-bottom: 0; padding-bottom: 0; }
+  .divider-list .sw {
+    width: 28px; height: 28px;
+    flex: 0 0 28px;
+    border: 2px solid var(--ink);
+  }
+
+  /* ── 04 key points ──────────────────────────────────────────────── */
+  .rules-grid {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1.55fr 0.95fr;
+    gap: 48px;
+  }
+  .rule-list { display: flex; flex-direction: column; justify-content: space-between; min-height: 0; }
+  .rule {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    gap: 24px;
+    border-top: 2px solid var(--ink);
+    padding: 18px 0;
+  }
+  .rule:last-child { border-bottom: 2px solid var(--ink); }
+  .rule .num {
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    font-size: 34px;
+    line-height: 1;
+    padding: 12px 0;
+    text-align: center;
+    border: 2px solid var(--ink);
+    height: 62px;
+  }
+  .rule:nth-child(1) .num { background: var(--pink); }
+  .rule:nth-child(2) .num { background: var(--sky); }
+  .rule:nth-child(3) .num { background: var(--lime); }
+  .rule:nth-child(4) .num { background: var(--tangerine); }
+  .rule h3 { font-size: 38px; margin-bottom: 6px; }
+  .rule p { font-size: 30px; line-height: 1.38; color: #333; }
+  .rule-panel {
+    position: relative;
+    border: 2px solid var(--ink);
+    background: #fff;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .rule-panel .checker { height: 120px; }
+  .rule-panel .panel-body {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 32px;
+  }
+  .rule-panel .big-circle {
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: var(--pink);
+    align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    font-size: 54px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 8px 0 26px;
+  }
+  .rule-panel p { font-size: 30px; line-height: 1.4; }
+  .rule-panel .mini-bars { display: flex; gap: 12px; margin-top: 20px; }
+  .rule-panel .mini-bars span { flex: 1; height: 22px; border: 2px solid var(--ink); }
+
+  /* ── 05 two-column color ────────────────────────────────────────── */
+  .color-grid {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 1.02fr;
+    gap: 56px;
+  }
+  .token-list { display: flex; flex-direction: column; justify-content: center; }
+  .token {
+    display: grid;
+    grid-template-columns: 84px 1fr;
+    gap: 24px;
+    align-items: center;
+    padding: 17px 0;
+    border-bottom: 2px solid rgba(17, 17, 17, 0.14);
+  }
+  .token:first-child { border-top: 2px solid rgba(17, 17, 17, 0.14); }
+  .token .sw { width: 76px; height: 76px; border: 2px solid var(--ink); }
+  .token h3 { font-size: 34px; margin-bottom: 4px; }
+  .token p { font-size: 30px; line-height: 1.35; color: var(--muted); }
+  .palette-art {
+    border: 2px solid var(--ink);
+    background: #fff;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+  .swatch-block {
+    position: relative;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 6px;
+    border-right: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+  }
+  .swatch-block:nth-child(2n) { border-right: 0; }
+  .swatch-block:nth-child(n+3) { border-bottom: 0; }
+  .swatch-block .nm {
+    font-family: "Archivo", sans-serif;
+    font-weight: 800;
+    font-size: 34px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .swatch-block .hx { font-size: 30px; letter-spacing: 0.06em; }
+
+  /* ── 06 stat grid ───────────────────────────────────────────────── */
+  .stat-grid {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .stat-card {
+    border: 2px solid var(--ink);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card.pink { background: var(--pink); }
+  .stat-card.sky { background: var(--sky); }
+  .stat-card.lime { background: var(--lime); }
+  .stat-card.tangerine { background: var(--tangerine); }
+  .stat-card .v {
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    font-size: 150px;
+    line-height: 0.82;
+    letter-spacing: -0.05em;
+  }
+  .stat-card .lab {
+    font-family: "Archivo", sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .stat-card p { font-size: 30px; line-height: 1.35; }
+  .stat-card .corner {
+    position: absolute;
+    top: 24px; right: 24px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--ink);
+    background: #fff;
+  }
+
+  /* ── 07 process ─────────────────────────────────────────────────── */
+  .steps {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 44px;
+  }
+  .step {
+    position: relative;
+    border: 2px solid var(--ink);
+    background: #fff;
+    padding: 30px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .step .band { height: 14px; margin: -30px -28px 8px; background: var(--pink); }
+  .step:nth-child(2) .band { background: var(--sky); }
+  .step:nth-child(3) .band { background: var(--lime); }
+  .step:nth-child(4) .band { background: var(--tangerine); }
+  .step .num {
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    font-size: 30px;
+    letter-spacing: 0.08em;
+  }
+  .step h3 { font-size: 38px; }
+  .step p { font-size: 30px; line-height: 1.4; color: #333; }
+  .step .ghost {
+    margin-top: auto;
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    font-size: 104px;
+    line-height: 0.82;
+    letter-spacing: -0.04em;
+    color: rgba(17, 17, 17, 0.12);
+  }
+  .step .foot {
+    display: inline-flex;
+    align-self: flex-start;
+    padding: 8px 16px;
+    border: 2px solid var(--ink);
+    font-family: "Archivo", sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .step .arrow {
+    position: absolute;
+    right: -40px;
+    top: 46px;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    line-height: 1;
+    z-index: 5;
+  }
+  .step:last-child .arrow { display: none; }
+
+  /* ── 08 timeline ────────────────────────────────────────────────── */
+  .timeline-wrap { position: relative; flex: 1; min-height: 0; }
+  .timeline-wrap::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    top: 50%;
+    height: 2px;
+    background: var(--ink);
+    z-index: 0;
+  }
+  .timeline {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 22px;
+  }
+  .tl-item {
+    display: grid;
+    grid-template-rows: 1fr 56px 1fr;
+    justify-items: center;
+    min-height: 0;
+  }
+  .tl-card {
+    border: 2px solid var(--ink);
+    background: #fff;
+    padding: 20px 22px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .tl-item:nth-child(odd) .tl-card { align-self: end; }
+  .tl-item:nth-child(even) .tl-card { grid-row: 3; align-self: start; }
+  .tl-card .yr {
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    font-size: 46px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .tl-card h3 { font-size: 34px; }
+  .tl-card p { font-size: 30px; line-height: 1.32; color: #333; }
+  .tl-dot {
+    grid-row: 2;
+    align-self: center;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--ink);
+    background: var(--pink);
+  }
+  .tl-item:nth-child(2) .tl-dot { background: var(--sky); }
+  .tl-item:nth-child(3) .tl-dot { background: var(--lime); }
+  .tl-item:nth-child(4) .tl-dot { background: var(--tangerine); }
+  .tl-item:nth-child(5) .tl-dot { background: var(--ink); }
+
+  /* ── 09 comparison ──────────────────────────────────────────────── */
+  .compare {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1.05fr 1.45fr 1.45fr;
+    grid-auto-rows: 1fr;
+    border: 2px solid var(--ink);
+    background: #fff;
+  }
+  .cell {
+    padding: 22px 28px;
+    border-right: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    display: flex;
+    align-items: center;
+    font-size: 30px;
+    line-height: 1.34;
+  }
+  .cell:nth-child(3n) { border-right: 0; }
+  .cell.last { border-bottom: 0; }
+  .cell.head {
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    font-size: 34px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .cell.head.a { background: var(--ink); color: #fff; }
+  .cell.head.b { background: var(--pink); }
+  .cell.head.c { background: var(--sky); }
+  .cell.crit {
+    font-family: "Archivo", sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    background: #fafafa;
+  }
+  .cell.col-b { background: rgba(255, 209, 227, 0.32); }
+  .cell.col-c { background: rgba(205, 231, 255, 0.34); }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 16px;
+    border: 2px solid var(--ink);
+    font-family: "Archivo", sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    line-height: 1.2;
+    margin-right: 12px;
+  }
+  .pill.pink { background: var(--pink); }
+  .pill.sky { background: var(--sky); }
+
+  /* ── 10 pull quote ──────────────────────────────────────────────── */
+  .quote-main {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 32px;
+    height: 100%;
+  }
+  .quote-art {
+    position: absolute;
+    right: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 460px;
+    height: 640px;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .quote-art .qa-circle {
+    position: absolute;
+    right: 0; top: 0;
+    width: 380px; height: 380px;
+    border-radius: 50%;
+    background: var(--sky);
+  }
+  .quote-art .qa-arch {
+    position: absolute;
+    right: 150px; bottom: 0;
+    width: 240px; height: 320px;
+    border-radius: 999px 999px 0 0;
+    background: var(--lime);
+  }
+  .quote-art .qa-checker {
+    position: absolute;
+    right: 40px; bottom: 30px;
+    width: 160px; height: 80px;
+  }
+  .quote-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 30px; max-width: 1250px; }
+  .quote-mark {
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    font-size: 190px;
+    line-height: 0.62;
+    color: var(--pink);
+    height: 100px;
+  }
+  blockquote.q {
+    font-family: "Archivo", sans-serif;
+    font-weight: 800;
+    font-size: 68px;
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+  }
+  .quote-attr { display: flex; align-items: center; gap: 20px; }
+  .quote-attr .avatar {
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    border: 2px solid var(--ink);
+    background: var(--pink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    font-size: 32px;
+  }
+  .quote-attr .who { font-family: "Archivo", sans-serif; font-weight: 800; font-size: 36px; }
+  .quote-attr .role { font-size: 30px; color: var(--muted); }
+
+  /* ── 11 figure ──────────────────────────────────────────────────── */
+  .figure-grid {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 1.35fr 0.65fr;
+    gap: 48px;
+  }
+  .figure {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    border: 2px solid var(--ink);
+    background: #fff;
+    clip-path: inset(0);
+  }
+  .figure .fig-field {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(17,17,17,0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(17,17,17,0.07) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+  .figure .fig-circle {
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: var(--pink);
+    left: 90px; top: 90px;
+  }
+  .figure .fig-arch {
+    position: absolute;
+    width: 260px; height: 340px;
+    border-radius: 999px 999px 0 0;
+    background: var(--sky);
+    left: 400px; top: 160px;
+  }
+  .figure .fig-quarter {
+    position: absolute;
+    width: 260px; height: 260px;
+    border-radius: 0 100% 0 0;
+    background: var(--lime);
+    right: 80px; bottom: 120px;
+  }
+  .figure .fig-dot {
+    position: absolute;
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    background: var(--tangerine);
+    border: 2px solid var(--ink);
+    right: 330px; top: 110px;
+  }
+  .figure .fig-checker {
+    position: absolute;
+    width: 180px; height: 90px;
+    right: 70px; top: 70px;
+  }
+  .figure .fig-tag { position: absolute; left: 40px; bottom: 40px; z-index: 2; }
+  .figure-caption {
+    flex: 0 0 auto;
+    margin-top: 18px;
+    font-size: 30px;
+    line-height: 1.4;
+    color: var(--muted);
+  }
+  .figure-col { display: flex; flex-direction: column; min-height: 0; }
+  .figure-copy { display: flex; flex-direction: column; gap: 18px; flex: 1; justify-content: center; }
+  .figure-copy .item {
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    gap: 16px;
+    align-items: start;
+    border-top: 2px solid rgba(17,17,17,0.14);
+    padding-top: 16px;
+  }
+  .figure-copy .item .dot { width: 26px; height: 26px; border: 2px solid var(--ink); margin-top: 4px; }
+  .figure-copy .item:nth-child(1) .dot { background: var(--pink); border-radius: 50%; }
+  .figure-copy .item:nth-child(2) .dot { background: var(--sky); border-radius: 999px 999px 0 0; }
+  .figure-copy .item:nth-child(3) .dot { background: var(--lime); border-radius: 0 100% 0 0; }
+  .figure-copy .item h3 { font-size: 34px; margin-bottom: 4px; }
+  .figure-copy .item p { font-size: 30px; line-height: 1.35; color: #333; }
+
+  /* ── 12 team ────────────────────────────────────────────────────── */
+  .team {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .person {
+    border: 2px solid var(--ink);
+    background: #fff;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .avatar {
+    width: 150px; height: 150px;
+    border-radius: 50%;
+    border: 2px solid var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Archivo", sans-serif;
+    font-weight: 900;
+    font-size: 54px;
+    letter-spacing: 0.02em;
+  }
+  .person:nth-child(1) .avatar { background: var(--pink); }
+  .person:nth-child(2) .avatar { background: var(--sky); }
+  .person:nth-child(3) .avatar { background: var(--lime); }
+  .person:nth-child(4) .avatar { background: var(--tangerine); }
+  .person h3 { font-size: 36px; line-height: 1.05; }
+  .person .role {
+    font-family: "Archivo", sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .person p { font-size: 30px; line-height: 1.35; color: #333; }
+  .person .tags { display: flex; gap: 10px; flex-wrap: wrap; }
+  .person .tags span {
+    border: 2px solid var(--ink);
+    padding: 4px 12px;
+    font-family: "Archivo", sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  /* ── 13 closing ─────────────────────────────────────────────────── */
+  .closing-main {
+    display: grid;
+    grid-template-columns: 1.18fr 0.82fr;
+    gap: 56px;
+    align-items: center;
+    height: 100%;
+  }
+  .closing-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 30px; }
+  .closing-copy .h-display { font-size: 132px; }
+  .closing-copy .lead { max-width: 720px; }
+  .cta-row { display: flex; align-items: center; gap: 26px; flex-wrap: wrap; margin-top: 6px; }
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    background: var(--ink);
+    color: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    padding: 18px 34px;
+    font-family: "Archivo", sans-serif;
+    font-weight: 800;
+    font-size: 34px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .cta-link { font-size: 30px; letter-spacing: 0.02em; border-bottom: 2px solid var(--ink); padding-bottom: 4px; }
+  .closing-art { position: relative; height: 100%; min-height: 0; }
+  .closing-art .ca-frame { position: absolute; inset: 0; border: 2px solid var(--ink); background: #fff; clip-path: inset(0); }
+  .ca-circle { position: absolute; width: 360px; height: 360px; border-radius: 50%; background: var(--sky); top: -60px; left: -60px; }
+  .ca-quarter { position: absolute; width: 300px; height: 300px; border-radius: 0 0 0 100%; background: var(--tangerine); right: -20px; bottom: -20px; }
+  .ca-lime { position: absolute; width: 200px; height: 260px; border-radius: 999px 999px 0 0; background: var(--lime); left: 80px; bottom: 0; }
+  .ca-checker { position: absolute; width: 200px; height: 100px; right: 90px; top: 210px; }
+  .ca-sticker { position: absolute; right: 60px; bottom: 80px; transform: rotate(3deg); z-index: 3; }
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+  <!-- ═════════ 01 · COVER ═════════ -->
+  <section class="slide" data-label="01 Cover" style="--wipe: var(--pink)">
+    <div class="top">
+      <div class="brand"><span class="checker-sm" aria-hidden="true"></span> Sugar Grid <span class="sep">/</span> <span class="section-name">The Pastel Playbook</span></div>
+      <div class="pageno"><span class="dot"></span>01 / 13</div>
+    </div>
+    <div class="main cover-grid">
+      <div class="cover-copy">
+        <div class="sticker lime">Design system · v1.0</div>
+        <h1 class="h-display">The<br /><span class="hl-pink">Pastel</span><br />Playbook</h1>
+        <p class="lead cover-lead">A flexible visual system for modern brands that want color with intention — not decoration with a color wheel.</p>
+        <div class="cover-meta">
+          <span class="sticker sky">Brand identity</span>
+          <span class="sticker tangerine">Digital product</span>
+          <span class="sticker">Editorial</span>
+        </div>
+      </div>
+      <div class="cover-art">
+        <div class="art-frame">
+          <div class="shape circle-pink"></div>
+          <div class="shape arch-sky"></div>
+          <div class="shape quarter-lime"></div>
+          <div class="shape dot-tangerine"></div>
+          <div class="checker art-checker"></div>
+          <div class="art-label">Fig. 00 — Shape set</div>
+          <span class="sticker ink sticker-float">Made for modern brands</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ 02 · AGENDA ═════════ -->
+  <section class="slide" data-label="02 Agenda" style="--wipe: var(--sky)">
+    <div class="top">
+      <div class="brand"><span class="checker-sm" aria-hidden="true"></span> Sugar Grid <span class="sep">/</span> <span class="section-name">Agenda</span></div>
+      <div class="pageno"><span class="dot sky"></span>02 / 13</div>
+    </div>
+    <div class="main">
+      <div class="slide-head">
+        <div class="head-copy">
+          <div class="kicker"><span class="bar"></span>Contents</div>
+          <h2 class="h2">What's inside</h2>
+        </div>
+        <p class="head-note">Six parts, one system. Read it front to back or steal the pieces you need today.</p>
+      </div>
+      <div class="agenda-grid">
+        <div class="agenda-item">
+          <div class="n">01</div>
+          <div><h3>Foundations</h3><p>Grid, type, and the 8-point rhythm that holds it all together.</p></div>
+        </div>
+        <div class="agenda-item">
+          <div class="n">02</div>
+          <div><h3>Color</h3><p>Four pastels with precise jobs — and a rule for every fill.</p></div>
+        </div>
+        <div class="agenda-item">
+          <div class="n">03</div>
+          <div><h3>Components</h3><p>Cards, pills, rules, chrome, and the shape vocabulary.</p></div>
+        </div>
+        <div class="agenda-item">
+          <div class="n">04</div>
+          <div><h3>Motion</h3><p>The wipe, the rise, and the snap that makes it feel alive.</p></div>
+        </div>
+        <div class="agenda-item">
+          <div class="n">05</div>
+          <div><h3>Voice</h3><p>Writing that sounds like us: direct, warm, never cute.</p></div>
+        </div>
+        <div class="agenda-item">
+          <div class="n">06</div>
+          <div><h3>Rollout</h3><p>From one deck to a whole brand, in four focused steps.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ 03 · SECTION DIVIDER ═════════ -->
+  <section class="slide divider" data-label="03 Section · Foundations" style="--wipe: var(--lime)">
+    <div class="top">
+      <div class="brand"><span class="checker-sm" aria-hidden="true"></span> Sugar Grid <span class="sep">/</span> <span class="section-name">Foundations</span></div>
+      <div class="pageno"><span class="dot lime"></span>03 / 13</div>
+    </div>
+    <div class="main divider-main">
+      <div class="divider-copy">
+        <div class="sticker">Part One</div>
+        <h1 class="h1">Foundations</h1>
+        <div class="divider-rule"></div>
+        <p class="lead">Everything in this system sits on a 12-column grid with a 64px base unit. Learn the grid once, and every page after it becomes obvious.</p>
+      </div>
+      <div class="divider-card">
+        <div class="ghost">01</div>
+        <h3>In this part</h3>
+        <div class="divider-list">
+          <div class="row"><span class="sw" style="background:var(--pink)"></span>The 12-column grid</div>
+          <div class="row"><span class="sw" style="background:var(--sky)"></span>Type at two speeds</div>
+          <div class="row"><span class="sw" style="background:var(--lime)"></span>The 8-point rhythm</div>
+          <div class="row"><span class="sw" style="background:var(--tangerine)"></span>Rules, radius, and edge</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ 04 · KEY POINTS ═════════ -->
+  <section class="slide" data-label="04 Principles" style="--wipe: var(--tangerine)">
+    <div class="top">
+      <div class="brand"><span class="checker-sm" aria-hidden="true"></span> Sugar Grid <span class="sep">/</span> <span class="section-name">Principles</span></div>
+      <div class="pageno"><span class="dot tangerine"></span>04 / 13</div>
+    </div>
+    <div class="main">
+      <div class="slide-head">
+        <div class="head-copy">
+          <div class="kicker"><span class="bar"></span>Key points</div>
+          <h2 class="h2">Four rules we design by</h2>
+        </div>
+        <p class="head-note">Every decision in this deck follows one of these. When two options look equally good, the rule decides.</p>
+      </div>
+      <div class="rules-grid">
+        <div class="rule-list">
+          <div class="rule">
+            <div class="num">01</div>
+            <div><h3>Color earns its place</h3><p>Every pastel has a job. Pink pulls attention, sky explains, lime confirms, tangerine points forward.</p></div>
+          </div>
+          <div class="rule">
+            <div class="num">02</div>
+            <div><h3>Structure before decoration</h3><p>The grid holds the page. Shapes sit on top of it — never in place of it.</p></div>
+          </div>
+          <div class="rule">
+            <div class="num">03</div>
+            <div><h3>Type is the loudest element</h3><p>Archivo 900 carries the message. Everything else supports it and stays quiet.</p></div>
+          </div>
+          <div class="rule">
+            <div class="num">04</div>
+            <div><h3>Keep the edge crisp</h3><p>2px rules, flat fills, sharp geometry. No soft shadows, no gradients, no haze.</p></div>
+          </div>
+        </div>
+        <div class="rule-panel">
+          <div class="checker"></div>
+          <div class="panel-body">
+            <div class="big-circle">Grid</div>
+            <p>Every layout is measured in 64px steps. If a gap feels random, it probably is.</p>
+            <div class="mini-bars">
+              <span style="background:var(--pink)"></span>
+              <span style="background:var(--sky)"></span>
+              <span style="background:var(--lime)"></span>
+              <span style="background:var(--tangerine)"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ 05 · TWO COLUMN ═════════ -->
+  <section class="slide" data-label="05 Color System" style="--wipe: var(--pink)">
+    <div class="top">
+      <div class="brand"><span class="checker-sm" aria-hidden="true"></span> Sugar Grid <span class="sep">/</span> <span class="section-name">Color</span></div>
+      <div class="pageno"><span class="dot"></span>05 / 13</div>
+    </div>
+    <div class="main">
+      <div class="slide-head">
+        <div class="head-copy">
+          <div class="kicker"><span class="bar"></span>Color system</div>
+          <h2 class="h2">Color with a job to do</h2>
+        </div>
+        <p class="head-note">Four pastels, one ink, one white. Each color owns a role so a page never argues with itself.</p>
+      </div>
+      <div class="color-grid">
+        <div class="token-list">
+          <div class="token">
+            <div class="sw" style="background:var(--pink)"></div>
+            <div><h3>Candy Pink — #FFD1E3</h3><p>The attention color. Headline highlights and the primary call to action.</p></div>
+          </div>
+          <div class="token">
+            <div class="sw" style="background:var(--sky)"></div>
+            <div><h3>Sky — #CDE7FF</h3><p>The explainer. Diagrams, secondary panels, and supporting data.</p></div>
+          </div>
+          <div class="token">
+            <div class="sw" style="background:var(--lime)"></div>
+            <div><h3>Lime — #E4F5C1</h3><p>The confirmation. Positive states, checklists, and success moments.</p></div>
+          </div>
+          <div class="token">
+            <div class="sw" style="background:var(--tangerine)"></div>
+            <div><h3>Tangerine — #FFE0C2</h3><p>The directional color. Arrows, next steps, and forward motion.</p></div>
+          </div>
+        </div>
+        <div class="palette-art">
+          <div class="swatch-block" style="background:var(--pink)"><div class="nm">Candy Pink</div><div class="hx">#FFD1E3</div></div>
+          <div class="swatch-block" style="background:var(--sky)"><div class="nm">Sky</div><div class="hx">#CDE7FF</div></div>
+          <div class="swatch-block" style="background:var(--lime)"><div class="nm">Lime</div><div class="hx">#E4F5C1</div></div>
+          <div class="swatch-block" style="background:var(--tangerine)"><div class="nm">Tangerine</div><div class="hx">#FFE0C2</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ 06 · STAT GRID ═════════ -->
+  <section class="slide" data-label="06 By the Numbers" style="--wipe: var(--sky)">
+    <div class="top">
+      <div class="brand"><span class="checker-sm" aria-hidden="true"></span> Sugar Grid <span class="sep">/</span> <span class="section-name">By the numbers</span></div>
+      <div class="pageno"><span class="dot sky"></span>06 / 13</div>
+    </div>
+    <div class="main">
+      <div class="slide-head">
+        <div class="head-copy">
+          <div class="kicker"><span class="bar"></span>By the numbers</div>
+          <h2 class="h2">Small system, big range</h2>
+        </div>
+        <p class="head-note">A tight set of constants is what makes the output feel consistent at speed.</p>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card pink">
+          <div class="corner"></div>
+          <div class="v">64px</div>
+          <div><div class="lab">Base unit</div><p>Every margin, gap, and grid line is a multiple of 64.</p></div>
+        </div>
+        <div class="stat-card sky">
+          <div class="corner"></div>
+          <div class="v">4</div>
+          <div><div class="lab">Pastels</div><p>One color, one job. Never two accents fighting for the same point.</p></div>
+        </div>
+        <div class="stat-card lime">
+          <div class="corner"></div>
+          <div class="v">12</div>
+          <div><div class="lab">Columns</div><p>A single grid under every layout, from cover to closing slide.</p></div>
+        </div>
+        <div class="stat-card tangerine">
+          <div class="corner"></div>
+          <div class="v">2px</div>
+          <div><div class="lab">Rules</div><p>One line weight for every border, divider, and edge in the system.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ 07 · PROCESS ═════════ -->
+  <section class="slide" data-label="07 Process" style="--wipe: var(--lime)">
+    <div class="top">
+      <div class="brand"><span class="checker-sm" aria-hidden="true"></span> Sugar Grid <span class="sep">/</span> <span class="section-name">Process</span></div>
+      <div class="pageno"><span class="dot lime"></span>07 / 13</div>
+    </div>
+    <div class="main">
+      <div class="slide-head">
+        <div class="head-copy">
+          <div class="kicker"><span class="bar"></span>Process</div>
+          <h2 class="h2">From brief to brand</h2>
+        </div>
+        <p class="head-note">Four steps, roughly six weeks. Each one ends with an artifact the team can actually use.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="band"></div>
+          <div class="num">STEP 01</div>
+          <h3>Audit</h3>
+          <p>Find the seams. We map every deck, template, and one-off that speaks for the brand today.</p>
+          <div class="ghost" aria-hidden="true">01</div>
+          <div class="foot">Week 1</div>
+          <div class="arrow" aria-hidden="true">→</div>
+        </div>
+        <div class="step">
+          <div class="band"></div>
+          <div class="num">STEP 02</div>
+          <h3>Build</h3>
+          <p>Set the system. Grid, type, color, and motion rules get written down exactly once.</p>
+          <div class="ghost" aria-hidden="true">02</div>
+          <div class="foot">Weeks 2–3</div>
+          <div class="arrow" aria-hidden="true">→</div>
+        </div>
+        <div class="step">
+          <div class="band"></div>
+          <div class="num">STEP 03</div>
+          <h3>Apply</h3>
+          <p>Prove it on real work: three decks — pitch, product, and report — rebuilt on the system.</p>
+          <div class="ghost" aria-hidden="true">03</div>
+          <div class="foot">Weeks 4–5</div>
+          <div class="arrow" aria-hidden="true">→</div>
+        </div>
+        <div class="step">
+          <div class="band"></div>
+          <div class="num">STEP 04</div>
+          <h3>Ship</h3>
+          <p>Hand it over: a living library, a starter deck, and a 90-minute team workshop.</p>
+          <div class="ghost" aria-hidden="true">04</div>
+          <div class="foot">Week 6</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ 08 · TIMELINE ═════════ -->
+  <section class="slide" data-label="08 Timeline" style="--wipe: var(--tangerine)">
+    <div class="top">
+      <div class="brand"><span class="checker-sm" aria-hidden="true"></span> Sugar Grid <span class="sep">/</span> <span class="section-name">Timeline</span></div>
+      <div class="pageno"><span class="dot tangerine"></span>08 / 13</div>
+    </div>
+    <div class="main">
+      <div class="slide-head">
+        <div class="head-copy">
+          <div class="kicker"><span class="bar"></span>Timeline</div>
+          <h2 class="h2">A year, end to end</h2>
+        </div>
+        <p class="head-note">Five milestones from first audit to a system that runs without us.</p>
+      </div>
+      <div class="timeline-wrap">
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-card">
+              <div class="yr">JAN</div>
+              <h3>Audit</h3>
+              <p>Inventory 40 decks and mark what breaks.</p>
+            </div>
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-card">
+              <div class="yr">APR</div>
+              <h3>Foundations</h3>
+              <p>Lock the grid, the type scale, and the palette.</p>
+            </div>
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-card">
+              <div class="yr">JUL</div>
+              <h3>Components</h3>
+              <p>Ship the kit: cards, pills, rules, and chrome.</p>
+            </div>
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-card">
+              <div class="yr">OCT</div>
+              <h3>Rollout</h3>
+              <p>Rebuild the top five decks and train the team.</p>
+            </div>
+            <div class="tl-dot"></div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-card">
+              <div class="yr">2027</div>
+              <h3>Scale</h3>
+              <p>Open the system to partners and product.</p>
+            </div>
+            <div class="tl-dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ 09 · COMPARISON ═════════ -->
+  <section class="slide" data-label="09 Comparison" style="--wipe: var(--pink)">
+    <div class="top">
+      <div class="brand"><span class="checker-sm" aria-hidden="true"></span> Sugar Grid <span class="sep">/</span> <span class="section-name">Comparison</span></div>
+      <div class="pageno"><span class="dot"></span>09 / 13</div>
+    </div>
+    <div class="main">
+      <div class="slide-head">
+        <div class="head-copy">
+          <div class="kicker"><span class="bar"></span>Comparison</div>
+          <h2 class="h2">Sugar Grid vs. the default deck</h2>
+        </div>
+        <p class="head-note">What changes when a brand stops borrowing a template and starts using a system.</p>
+      </div>
+      <div class="compare">
+        <div class="cell head a">Criterion</div>
+        <div class="cell head b">Sugar Grid</div>
+        <div class="cell head c">Corporate Blue</div>
+
+        <div class="cell crit col-a">Foundation</div>
+        <div class="cell col-b">12-column grid on a 64px base</div>
+        <div class="cell col-c">Slide master with a 10-column default</div>
+
+        <div class="cell crit col-a">Typography</div>
+        <div class="cell col-b">Archivo 900 with Space Grotesk body</div>
+        <div class="cell col-c">Arial, or whatever the laptop has</div>
+
+        <div class="cell crit col-a">Color</div>
+        <div class="cell col-b">Four pastels, each with an assigned role</div>
+        <div class="cell col-c">One corporate blue, used everywhere</div>
+
+        <div class="cell crit col-a">Motion</div>
+        <div class="cell col-b">Pastel wipe, 450ms, hard stop</div>
+        <div class="cell col-c">A fade, or nothing at all</div>
+
+        <div class="cell crit col-a last">Feels like</div>
+        <div class="cell col-b last"><span class="pill pink">Chosen</span>A brand with a point of view</div>
+        <div class="cell col-c last"><span class="pill sky">Default</span>A template with a logo on it</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ 10 · PULL QUOTE ═════════ -->
+  <section class="slide" data-label="10 Pull Quote" style="--wipe: var(--sky)">
+    <div class="top">
+      <div class="brand"><span class="checker-sm" aria-hidden="true"></span> Sugar Grid <span class="sep">/</span> <span class="section-name">Field note</span></div>
+      <div class="pageno"><span class="dot sky"></span>10 / 13</div>
+    </div>
+    <div class="main">
+      <div class="quote-main">
+        <div class="quote-art" aria-hidden="true">
+          <div class="qa-circle"></div>
+          <div class="qa-arch"></div>
+          <div class="checker qa-checker"></div>
+        </div>
+        <div class="quote-content">
+          <div class="sticker tangerine">Field note 01</div>
+          <div class="quote-mark" aria-hidden="true">“</div>
+          <blockquote class="q">A brand system should feel like a <span class="hl-sky">personality</span>, not a policy.</blockquote>
+          <div class="quote-attr">
+            <div class="avatar">MV</div>
+            <div>
+              <div class="who">Mara Villanueva</div>
+              <div class="role">Creative Director, Sugar Grid</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ 11 · IMAGE / FIGURE ═════════ -->
+  <section class="slide" data-label="11 Figure" style="--wipe: var(--lime)">
+    <div class="top">
+      <div class="brand"><span class="checker-sm" aria-hidden="true"></span> Sugar Grid <span class="sep">/</span> <span class="section-name">Figure</span></div>
+      <div class="pageno"><span class="dot lime"></span>11 / 13</div>
+    </div>
+    <div class="main">
+      <div class="slide-head">
+        <div class="head-copy">
+          <div class="kicker"><span class="bar"></span>In practice</div>
+          <h2 class="h2">Shapes that carry meaning</h2>
+        </div>
+        <p class="head-note">Three primitives cover every decorative need in the system.</p>
+      </div>
+      <div class="figure-grid">
+        <div class="figure-col">
+          <div class="figure">
+            <div class="fig-field"></div>
+            <div class="fig-circle"></div>
+            <div class="fig-arch"></div>
+            <div class="fig-quarter"></div>
+            <div class="fig-dot"></div>
+            <div class="checker fig-checker"></div>
+            <div class="fig-tag sticker ink">Fig. 01 — Geometry set</div>
+          </div>
+          <p class="figure-caption">Circle, arch, and quarter-round. Always flat, always cropped by the frame.</p>
+        </div>
+        <div class="figure-copy">
+          <div class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div><h3>Circle</h3><p>Community and continuity. Used for avatars, stat marks, and soft anchors.</p></div>
+          </div>
+          <div class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div><h3>Arch</h3><p>Openness. Frames a figure without closing it, and lifts a quiet page.</p></div>
+          </div>
+          <div class="item">
+            <span class="dot" aria-hidden="true"></span>
+            <div><h3>Quarter</h3><p>Momentum. A hard corner that pushes the eye toward the next thing.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ 12 · TEAM ═════════ -->
+  <section class="slide" data-label="12 Team" style="--wipe: var(--tangerine)">
+    <div class="top">
+      <div class="brand"><span class="checker-sm" aria-hidden="true"></span> Sugar Grid <span class="sep">/</span> <span class="section-name">Team</span></div>
+      <div class="pageno"><span class="dot tangerine"></span>12 / 13</div>
+    </div>
+    <div class="main">
+      <div class="slide-head">
+        <div class="head-copy">
+          <div class="kicker"><span class="bar"></span>Team</div>
+          <h2 class="h2">The people behind the pastel</h2>
+        </div>
+        <p class="head-note">A small studio with a deliberately narrow set of skills.</p>
+      </div>
+      <div class="team">
+        <div class="person">
+          <div class="avatar">MV</div>
+          <div><h3>Mara Villanueva</h3><div class="role">Creative Director</div></div>
+          <p>Turns a messy brand story into a system people can actually use.</p>
+          <div class="tags"><span>Strategy</span><span>Type</span></div>
+        </div>
+        <div class="person">
+          <div class="avatar">IS</div>
+          <div><h3>Ivo Santos</h3><div class="role">Design Engineer</div></div>
+          <p>Builds the kit, keeps the tokens honest, and ships the starter deck.</p>
+          <div class="tags"><span>Code</span><span>Tokens</span></div>
+        </div>
+        <div class="person">
+          <div class="avatar">PR</div>
+          <div><h3>Priya Raman</h3><div class="role">Brand Strategist</div></div>
+          <p>Runs the audit, finds the seams, and writes the rules down once.</p>
+          <div class="tags"><span>Audit</span><span>Voice</span></div>
+        </div>
+        <div class="person">
+          <div class="avatar">TL</div>
+          <div><h3>Theo Lindqvist</h3><div class="role">Motion Lead</div></div>
+          <p>Owns the wipe, the rise, and the 450ms that makes a deck feel alive.</p>
+          <div class="tags"><span>Motion</span><span>Prototype</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ 13 · CLOSING ═════════ -->
+  <section class="slide" data-label="13 Closing" style="--wipe: var(--pink)">
+    <div class="top">
+      <div class="brand"><span class="checker-sm" aria-hidden="true"></span> Sugar Grid <span class="sep">/</span> <span class="section-name">Closing</span></div>
+      <div class="pageno"><span class="dot"></span>13 / 13</div>
+    </div>
+    <div class="main closing-main">
+      <div class="closing-copy">
+        <div class="sticker lime">Next step</div>
+        <h2 class="h-display">Let's make<br />it <span class="hl-pink">sweet.</span></h2>
+        <p class="lead">Bring us one deck. We'll send back a system you can build on for years.</p>
+        <div class="cta-row">
+          <span class="cta-button">Start the conversation →</span>
+          <span class="cta-link">hello@sugargrid.studio</span>
+        </div>
+      </div>
+      <div class="closing-art">
+        <div class="ca-frame">
+          <div class="shape ca-circle"></div>
+          <div class="shape ca-quarter"></div>
+          <div class="shape ca-lime"></div>
+          <div class="checker ca-checker"></div>
+          <span class="sticker sky ca-sticker">v1.0 · Ready to ship</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</deck-stage>
+
+<script>
+/*! autofit.js — html-slides mechanical font-fit runtime
+ *
+ * Embedded inline in every deck built by the html-slides skill. Its job:
+ * guarantee that no slide's text overflows the fixed design canvas, no
+ * matter the resolution or monitor size, WITHOUT any AI auditing.
+ *
+ * How it works (fully deterministic):
+ *  1. Finds the deck's slide elements — direct light-DOM children of
+ *     <deck-stage>, or the children of a `.slides-container` for scroll
+ *     decks. Hidden slides are still measurable (visibility:hidden keeps
+ *     layout), so ALL slides are fitted at load, not just the visible one.
+ *  2. Relaxes nested text-clipping containers once (a fixed-height card
+ *     with `overflow:hidden` that clips its own flowing text grows to fit)
+ *     — font shrinking alone cannot beat pinned px margins inside a
+ *     fixed box.
+ *  3. Measures each slide in design-canvas coordinates — ancestor
+ *     transforms (the stage's uniform scale) do not affect
+ *     scroll/client metrics, so this is resolution-independent.
+ *  4. For any slide whose content exceeds its box, scales ALL text on
+ *     that slide (font-size + px line-heights) down uniformly — hierarchy
+ *     preserved — toward the measured overflow factor, re-measuring after
+ *     each pass until it fits, bottoms out at MIN_SCALE, or hits
+ *     MAX_ITER. Fixed px margins make small under-shrinks converge rather
+ *     than overshoot.
+ *
+ * Idempotent, dependency-free, safe to include once per page.
+ */
+(() => {
+  if (window.__deckAutofit) return;
+  window.__deckAutofit = true;
+
+  const TOL = 1;         // px tolerance on both axes
+  const MIN_SCALE = 0.4; // never shrink text below 40% of authored size
+  const MAX_ITER = 12;   // per-slide convergence passes
+
+  /** Slides already fitted — guards against accidental double-runs. */
+  const processed = new WeakSet();
+
+  const slideRoots = () => {
+    const stage = document.querySelector('deck-stage');
+    if (stage) {
+      return Array.from(stage.children)
+        .filter((el) => !/^(SCRIPT|STYLE|TEMPLATE)$/.test(el.tagName));
+    }
+    const container = document.querySelector('.slides-container');
+    if (container) {
+      return Array.from(container.children)
+        .filter((el) => !/^(SCRIPT|STYLE|TEMPLATE)$/.test(el.tagName));
+    }
+    return [];
+  };
+
+  /** Snapshot authored font metrics of every descendant (+ the slide root)
+   *  once, so repeated passes scale from the ORIGINAL values, not from the
+   *  previously shrunk ones (prevents compounding drift). */
+  const snapshot = (slide) => {
+    const els = [slide].concat(Array.from(slide.querySelectorAll('*')));
+    const sizes = [];
+    const lineHeights = [];
+    els.forEach((el) => {
+      const cs = getComputedStyle(el);
+      const fs = parseFloat(cs.fontSize);
+      if (fs > 0) sizes.push([el, fs]);
+      if (cs.lineHeight.endsWith('px')) lineHeights.push([el, parseFloat(cs.lineHeight)]);
+    });
+    return { sizes, lineHeights, k: 1 };
+  };
+
+  const applyScale = (snap, k) => {
+    for (const [el, fs] of snap.sizes) el.style.fontSize = (fs * k) + 'px';
+    for (const [el, lh] of snap.lineHeights) el.style.lineHeight = (lh * k) + 'px';
+    snap.k = k;
+  };
+
+  /** A hidden-overflow (or max-height) container that clips its own
+   *  flowing text is a layout defect in itself: reveal it instead of
+   *  fighting it with infinite font shrink. Decorative clamps (image
+   *  masks, grain overlays) hold no text and are left untouched. */
+  const relaxClippedText = (slide) => {
+    for (const el of slide.querySelectorAll('*')) {
+      const cs = getComputedStyle(el);
+      const clipped =
+        /(hidden|clip)/.test(cs.overflowY) || /(hidden|clip)/.test(cs.overflowX);
+      const maxPinned = cs.maxHeight !== 'none';
+      if (!clipped && !maxPinned) continue;
+      const limit = maxPinned ? parseFloat(cs.maxHeight) || 0 : el.clientHeight;
+      if (el.scrollHeight > limit + TOL && el.textContent.trim()) {
+        if (clipped) el.style.overflow = 'visible';
+        if (maxPinned) el.style.maxHeight = 'none';
+        const fixedPxHeight = /\d+(\.\d+)?px/.test(cs.height) &&
+          parseFloat(cs.height) < el.scrollHeight;
+        if (fixedPxHeight) el.style.height = 'auto';
+      }
+    }
+  };
+
+  const slideOverflowFactor = (slide) => Math.max(
+    slide.scrollWidth / (slide.clientWidth || 1),
+    slide.scrollHeight / (slide.clientHeight || 1)
+  );
+
+  /** Fit one slide. Returns the applied scale factor, or null if nothing
+   *  was changed (it already fit, or there was nothing measurable).
+   *  Failures are isolated: one bad slide must never abort the deck. */
+  const fitSlide = (slide) => {
+    if (processed.has(slide)) return null;
+    try {
+      relaxClippedText(slide);
+      if (slideOverflowFactor(slide) <= 1.0001) return null; // slide fits
+      const snap = snapshot(slide);
+      if (!snap.sizes.length) return null;
+      let k = 1;
+      for (let i = 0; i < MAX_ITER && k > MIN_SCALE; i++) {
+        const over = slideOverflowFactor(slide);
+        if (over <= 1.0001) break;
+        // Move toward the measured need, but never more than ~12% per pass.
+        k = Math.max(MIN_SCALE, k * Math.max(1 / over, 0.88) * 0.995);
+        applyScale(snap, k);
+      }
+      processed.add(slide);
+      return k < 1 ? k : null;
+    } catch (err) {
+      console.warn('[autofit] could not fit a slide:', err);
+      return null;
+    }
+  };
+
+  const run = () => {
+    const scaled = [];
+    for (const slide of slideRoots()) {
+      const k = fitSlide(slide);
+      if (k != null) scaled.push(k.toFixed(2));
+    }
+    if (scaled.length) {
+      console.info('[autofit] text scaled to fit on slides at factors:', scaled.join(', '));
+    }
+  };
+
+  const start = () => {
+    if (document.readyState === 'loading') {
+      addEventListener('DOMContentLoaded', start);
+      return;
+    }
+    // Webfonts change text metrics — measure once they are ready (or if
+    // they stall/reject, measure anyway). No frame-waiting: rAF can be
+    // starved under some headless/virtual-time environments.
+    const fontsReady = document.fonts && document.fonts.ready
+      ? document.fonts.ready
+      : Promise.resolve();
+    fontsReady.then(run, run);
+  };
+
+  start();
+})();
+</script>
+</body>
+</html>

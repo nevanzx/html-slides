@@ -1,0 +1,29 @@
+{
+  "slug": "study-hall",
+  "name": "Study Hall",
+  "tagline": "Warm white canvas with a soft pastel wash, highlighter marks, sticky notes, and handwritten accents.",
+  "mood": ["friendly", "warm", "encouraging", "approachable", "sunny"],
+  "occasion": ["classroom discussion", "lesson deck", "study guide", "workshop", "wellness program"],
+  "tone": ["soft", "classroom", "lighthearted", "supportive"],
+  "formality": "low",
+  "density": "medium",
+  "scheme": "light",
+  "palette": {
+    "bg": "#FFFFFF",
+    "fg": "#1F1F1F",
+    "yellow": "#FFF3A3",
+    "pink": "#FFD6E8",
+    "blue": "#D6ECFF",
+    "mint": "#D9F2E6",
+    "description": "white base with a soft pastel corner wash and highlighter pastels"
+  },
+  "typography": {
+    "display": "Archivo",
+    "body": "Nunito",
+    "style": "heavy grotesk heads with a rounded sans body and handwritten Caveat accents"
+  },
+  "best_for": "Classroom discussions, lesson decks, study guides, workshops, and wellness programs that should feel warm and encouraging.",
+  "avoid_for": "Contexts that require hard-edged corporate authority or maximal data density.",
+  "slide_count": 13,
+  "navigation": "deck-stage with soft fade and sticky-note pop transitions"
+}

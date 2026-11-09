@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Study Hall — Concept Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Caveat:wght@500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#FFFFFF; --ink:#1F1F1F; --muted:#6B6B6B;
+    --yellow:#FFF3A3; --pink:#FFD6E8; --blue:#D6ECFF; --mint:#D9F2E6;
+    --line:#E7E7E7; --margin:#F3B8C6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#E9E9E4;font-family:'Nunito',sans-serif;color:var(--ink);overflow:hidden}
+  #stage{position:fixed;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center center;
+    background:var(--white);overflow:hidden;box-shadow:0 40px 140px rgba(0,0,0,.28)}
+  #stage::before,#stage::after{display:none}
+
+  .slide{position:absolute;inset:0;padding:80px 110px 90px 110px;display:none;flex-direction:column;z-index:2}
+  .slide.active{display:flex}
+  .topbar{display:flex;justify-content:space-between;align-items:center;
+    font-family:'Archivo',sans-serif;font-size:17px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  .topbar b{color:var(--ink);font-weight:800}
+  .rule{height:2px;background:var(--ink);margin-top:22px}
+
+  .tabs{display:none}
+  .tabs .tab{width:56px;height:96px;border-radius:10px 0 0 10px;box-shadow:-4px 6px 14px rgba(0,0,0,.08)}
+
+  .cover-body{flex:1;display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center;padding-top:10px}
+  .kicker{font-family:'Caveat',cursive;font-size:34px;color:#B06A80;margin-bottom:10px}
+  .display{font-family:'Archivo',sans-serif;font-weight:900;font-size:128px;line-height:.92;letter-spacing:-.04em;text-transform:uppercase}
+  .mark{background:linear-gradient(180deg,transparent 54%,var(--yellow) 54%,var(--yellow) 90%,transparent 90%);padding:0 .06em}
+  .sub{font-size:29px;line-height:1.5;color:#4A4A4A;max-width:660px;margin-top:26px}
+  .meta{margin-top:42px;display:flex;gap:26px;align-items:center;font-family:'Archivo',sans-serif;
+    font-size:17px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+  .meta .dot{width:8px;height:8px;border-radius:50%;background:var(--ink)}
+
+  .side{position:relative;height:660px}
+  .sticky{position:absolute;width:360px;background:var(--yellow);padding:34px 32px;box-shadow:6px 10px 26px rgba(0,0,0,.14);
+    transform:rotate(3deg);right:20px;top:40px}
+  .sticky .hand{font-family:'Caveat',cursive;font-size:42px;line-height:1.15;color:#3A3416}
+  .sticky .pin{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:26px;height:26px;border-radius:50%;
+    background:#E85D4E;box-shadow:inset 0 -3px 6px rgba(0,0,0,.2)}
+  .note-card{position:absolute;left:10px;bottom:60px;width:380px;background:var(--white);border:2px solid var(--ink);
+    border-radius:14px;padding:28px 30px;box-shadow:8px 10px 0 rgba(31,31,31,.12);transform:rotate(-2deg)}
+  .note-card .row{display:flex;align-items:center;gap:14px;font-family:'Archivo',sans-serif;font-size:16px;
+    letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:14px}
+  .note-card .swatch{width:26px;height:26px;border-radius:6px}
+  .note-card p{font-size:20px;line-height:1.45;color:#4A4A4A}
+  .doodle{position:absolute;left:40px;top:10px;font-family:'Caveat',cursive;font-size:32px;color:#B06A80;transform:rotate(-8deg)}
+
+  .h2{font-family:'Archivo',sans-serif;font-weight:900;font-size:78px;line-height:.98;letter-spacing:-.03em;text-transform:uppercase;margin-top:46px}
+  .body-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:60px;margin-top:40px;flex:1;align-items:start}
+  .points{display:flex;flex-direction:column;gap:34px}
+  .point{display:grid;grid-template-columns:64px 1fr;gap:22px;align-items:start}
+  .point .n{width:52px;height:52px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;
+    font-family:'Archivo',sans-serif;font-weight:900;font-size:22px}
+  .point h3{font-family:'Archivo',sans-serif;font-size:34px;font-weight:800;letter-spacing:-.01em}
+  .point p{font-size:23px;line-height:1.55;color:#4A4A4A;margin-top:8px}
+  .hl-y{background:linear-gradient(180deg,transparent 52%,var(--yellow) 52%,var(--yellow) 92%,transparent 92%)}
+  .hl-p{background:linear-gradient(180deg,transparent 52%,var(--pink) 52%,var(--pink) 92%,transparent 92%)}
+  .hl-m{background:linear-gradient(180deg,transparent 52%,var(--mint) 52%,var(--mint) 92%,transparent 92%)}
+  .aside-sticky{background:var(--mint);padding:34px 32px;box-shadow:6px 10px 26px rgba(0,0,0,.12);transform:rotate(2deg)}
+  .aside-sticky .hand{font-family:'Caveat',cursive;font-size:38px;line-height:1.2;color:#254034}
+  .aside-sticky .small{font-size:18px;line-height:1.5;color:#2F4A3E;margin-top:14px}
+
+  .nav{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);display:flex;gap:10px;z-index:10}
+  .nav button{width:34px;height:6px;border:0;border-radius:99px;background:rgba(0,0,0,.18);cursor:pointer}
+  .nav button.on{background:#1F1F1F}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="tabs">
+    <div class="tab" style="background:var(--pink)"></div>
+    <div class="tab" style="background:var(--blue)"></div>
+    <div class="tab" style="background:var(--yellow)"></div>
+    <div class="tab" style="background:var(--mint)"></div>
+  </div>
+
+  <section class="slide active">
+    <div class="topbar"><span><b>Study Hall</b> · Concept</span><span>2026 — 01</span></div>
+    <div class="rule"></div>
+    <div class="cover-body">
+      <div>
+        <div class="kicker">design system notes</div>
+        <h1 class="display">The <span class="mark">Pastel</span><br>Playbook</h1>
+        <p class="sub">A design system for modern brands — soft color, sharp structure, and room to breathe.</p>
+        <div class="meta"><span>Studio Preview</span><span class="dot"></span><span>2026</span></div>
+      </div>
+      <div class="side">
+        <div class="doodle">make it warm!</div>
+        <div class="sticky">
+          <div class="pin"></div>
+          <div class="hand">White page,<br>pastel highlight,<br>zero beige.</div>
+        </div>
+        <div class="note-card">
+          <div class="row"><span class="swatch" style="background:var(--yellow)"></span>Palette</div>
+          <p>Highlighter yellow, blush pink, study blue, and mint — used as marker strokes, not backgrounds.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="topbar"><span><b>Study Hall</b> · Why pastel</span><span>2026 — 02</span></div>
+    <div class="rule"></div>
+    <h2 class="h2">Why pastel works</h2>
+    <div class="body-grid">
+      <div class="points">
+        <div class="point"><div class="n" style="background:var(--pink)">1</div>
+          <div><h3><span class="hl-p">Calm authority</span></h3><p>Soft color lowers resistance without losing structure. The deck feels considered, not loud.</p></div></div>
+        <div class="point"><div class="n" style="background:var(--blue)">2</div>
+          <div><h3><span class="hl-y">Clear hierarchy</span></h3><p>Pastel fills separate ideas while ink text keeps every label crisp and legible.</p></div></div>
+        <div class="point"><div class="n" style="background:var(--mint)">3</div>
+          <div><h3><span class="hl-m">Human warmth</span></h3><p>Color signals approachability, even in formal rooms where trust is the point.</p></div></div>
+      </div>
+      <div class="aside-sticky">
+        <div class="hand">remember:</div>
+        <div class="small">Use the marker only on the word that matters. If everything is highlighted, nothing is.</div>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="nav"><button class="on" data-i="0"></button><button data-i="1"></button></div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const dots=[...document.querySelectorAll('.nav button')];
+  let i=0;
+  function show(n){i=(n+slides.length)%slides.length;slides.forEach((s,k)=>s.classList.toggle('active',k===i));dots.forEach((d,k)=>d.classList.toggle('on',k===i));}
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')show(i+1);if(e.key==='ArrowLeft')show(i-1);});
+  dots.forEach(d=>d.onclick=()=>show(+d.dataset.i));
+  function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);document.getElementById('stage').style.transform=`translate(-50%,-50%) scale(${s})`;}
+  addEventListener('resize',fit);fit();
+  const _h=parseInt((location.hash||'').slice(1));if(_h>0)show(_h-1);
+</script>
+</body>
+</html>

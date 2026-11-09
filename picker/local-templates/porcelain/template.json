@@ -1,0 +1,29 @@
+{
+  "slug": "porcelain",
+  "name": "Porcelain",
+  "tagline": "Refined white canvas with pastel color-block cards, Fraunces serifs, and generous editorial whitespace.",
+  "mood": ["refined", "airy", "editorial", "calm", "modern"],
+  "occasion": ["brand strategy", "advisory deliverable", "product launch", "portfolio", "classroom deck"],
+  "tone": ["poised", "elegant", "restrained", "contemporary"],
+  "formality": "medium-high",
+  "density": "medium",
+  "scheme": "light",
+  "palette": {
+    "bg": "#FFFFFF",
+    "fg": "#161616",
+    "blush": "#F6D5DC",
+    "mint": "#D6EFDD",
+    "butter": "#FFF1C9",
+    "periwinkle": "#DCE4FF",
+    "description": "crisp white base, ink text, four pastel fills"
+  },
+  "typography": {
+    "display": "Fraunces",
+    "body": "Manrope",
+    "style": "high-contrast serif paired with a clean geometric sans"
+  },
+  "best_for": "Brand and product strategy, advisory deliverables, portfolios, and refined classroom decks that want soft color with sharp structure.",
+  "avoid_for": "Contexts that need loud energy, neo-brutalist edge, or heavy data density.",
+  "slide_count": 13,
+  "navigation": "deck-stage with refined fade-and-rise transitions"
+}

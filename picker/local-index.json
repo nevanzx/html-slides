@@ -1,0 +1,129 @@
+{
+    "updated_at":  "2026-11-08T13:21:55.2160168Z",
+    "templates":  [
+                      {
+                          "slug":  "porcelain",
+                          "name":  "Porcelain",
+                          "tagline":  "Refined white canvas with pastel color-block cards, Fraunces serifs, and generous editorial whitespace.",
+                          "mood":  [
+                                       "refined",
+                                       "airy",
+                                       "editorial",
+                                       "calm",
+                                       "modern"
+                                   ],
+                          "occasion":  [
+                                           "brand strategy",
+                                           "advisory deliverable",
+                                           "product launch",
+                                           "portfolio",
+                                           "classroom deck"
+                                       ],
+                          "tone":  [
+                                       "poised",
+                                       "elegant",
+                                       "restrained",
+                                       "contemporary"
+                                   ],
+                          "formality":  "medium-high",
+                          "density":  "medium",
+                          "scheme":  "light",
+                          "best_for":  "Brand and product strategy, advisory deliverables, portfolios, and refined classroom decks that want soft color with sharp structure.",
+                          "avoid_for":  "Contexts that need loud energy, neo-brutalist edge, or heavy data density.",
+                          "slide_count":  13
+                      },
+                      {
+                          "slug":  "sugar-grid",
+                          "name":  "Sugar Grid",
+                          "tagline":  "Swiss-pop white canvas with pastel geometry, Archivo Black headlines, and candy-color highlight bars.",
+                          "mood":  [
+                                       "energetic",
+                                       "graphic",
+                                       "confident",
+                                       "modern",
+                                       "playful-professional"
+                                   ],
+                          "occasion":  [
+                                           "startup pitch",
+                                           "creative agency",
+                                           "design review",
+                                           "product launch",
+                                           "brand deck"
+                                       ],
+                          "tone":  [
+                                       "bold",
+                                       "design-led",
+                                       "graphic",
+                                       "upbeat"
+                                   ],
+                          "formality":  "medium",
+                          "density":  "high",
+                          "scheme":  "light",
+                          "best_for":  "Startup pitches, creative agency decks, design reviews, and product launches that want pastel color with Swiss graphic punch.",
+                          "avoid_for":  "Contexts that need quiet literary restraint or traditional institutional gravitas.",
+                          "slide_count":  13
+                      },
+                      {
+                          "slug":  "study-hall",
+                          "name":  "Study Hall",
+                          "tagline":  "Warm white canvas with a soft pastel wash, highlighter marks, sticky notes, and handwritten accents.",
+                          "mood":  [
+                                       "friendly",
+                                       "warm",
+                                       "encouraging",
+                                       "approachable",
+                                       "sunny"
+                                   ],
+                          "occasion":  [
+                                           "classroom discussion",
+                                           "lesson deck",
+                                           "study guide",
+                                           "workshop",
+                                           "wellness program"
+                                       ],
+                          "tone":  [
+                                       "soft",
+                                       "classroom",
+                                       "lighthearted",
+                                       "supportive"
+                                   ],
+                          "formality":  "low",
+                          "density":  "medium",
+                          "scheme":  "light",
+                          "best_for":  "Classroom discussions, lesson decks, study guides, workshops, and wellness programs that should feel warm and encouraging.",
+                          "avoid_for":  "Contexts that require hard-edged corporate authority or maximal data density.",
+                          "slide_count":  13
+                      },
+                      {
+                          "slug":  "bookmark",
+                          "name":  "Bookmark",
+                          "tagline":  "Dot-grid white canvas with pastel bookmark-tab navigation and a notebook page-flip transition.",
+                          "mood":  [
+                                       "studious",
+                                       "organized",
+                                       "warm",
+                                       "tactile",
+                                       "modern"
+                                   ],
+                          "occasion":  [
+                                           "classroom workbook",
+                                           "study guide",
+                                           "research readout",
+                                           "workshop workbook",
+                                           "editorial"
+                                       ],
+                          "tone":  [
+                                       "structured",
+                                       "approachable",
+                                       "editorial",
+                                       "tactile"
+                                   ],
+                          "formality":  "medium",
+                          "density":  "medium-high",
+                          "scheme":  "light",
+                          "best_for":  "Classroom workbooks, study guides, research readouts, workshop workbooks, and editorial decks that want tactile organization.",
+                          "avoid_for":  "Contexts that need loud pop energy or pure minimalist restraint.",
+                          "slide_count":  13
+                      }
+                  ]
+}

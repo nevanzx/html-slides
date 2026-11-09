@@ -1,0 +1,1837 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!--
+  deck-provenance
+  generator: html-slides skill (opencode)
+  template: bookmark
+  source_files: authored from scratch for this library
+  built_at: 2026-11-08T00:00:00.000Z
+-->
+<meta charset="utf-8" />
+<title>Bookmark — The Pastel Playbook</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Caveat:wght@500;600;700&family=DM+Sans:opsz,wght@9..40,400..700&display=swap" rel="stylesheet" />
+<script src="deck-stage.js"></script>
+<style>
+  :root {
+    --white: #FFFFFF;
+    --ink: #1F1F1F;
+    --muted: #6B6B6B;
+    --dot: rgba(31,31,31,.10);
+    --pink: #FFD6E8;
+    --blue: #D6ECFF;
+    --yellow: #FFF3A3;
+    --mint: #D9F2E6;
+    --lilac: #E7D9FF;
+    --rule: rgba(31,31,31,.13);
+    --rule-soft: rgba(31,31,31,.08);
+    --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+    --body: "DM Sans", "Helvetica Neue", Arial, sans-serif;
+    --hand: "Caveat", "Segoe Script", cursive;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #141414; }
+  body { font-family: var(--body); color: var(--ink); -webkit-font-smoothing: antialiased; }
+  deck-stage { background: #141414; }
+  h1, h2, h3, h4, p, ul, ol, blockquote { margin: 0; }
+  ul, ol { list-style: none; padding: 0; }
+
+  section.slide {
+    position: relative;
+    overflow: hidden;
+    color: var(--ink);
+    background-color: var(--white);
+    background-image: radial-gradient(circle, var(--dot) 1.35px, transparent 1.45px);
+    background-size: 32px 32px;
+    background-position: 16px 16px;
+    transform-origin: left center;
+    box-shadow:
+      inset -18px 0 30px -30px rgba(31,31,31,.38),
+      inset 0 -18px 30px -30px rgba(31,31,31,.28);
+  }
+
+  section.slide::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 64px;
+    z-index: 6;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgba(31,31,31,.10) 0%, rgba(31,31,31,.035) 35%, rgba(31,31,31,0) 100%);
+    opacity: .85;
+  }
+
+  section.slide::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 90;
+    pointer-events: none;
+    opacity: 0;
+    background: linear-gradient(100deg, rgba(31,31,31,.30) 0%, rgba(31,31,31,.12) 24%, rgba(31,31,31,0) 46%);
+  }
+
+  section.slide[data-deck-active] {
+    animation: pageFlipIn 700ms cubic-bezier(.2,.8,.2,1);
+  }
+  section.slide[data-deck-active]::after {
+    animation: pageShadowSweep 700ms cubic-bezier(.2,.8,.2,1);
+  }
+
+  @keyframes pageFlipIn {
+    0% {
+      opacity: .3;
+      transform: perspective(2400px) rotateY(-18deg);
+    }
+    55% { opacity: .88; }
+    100% {
+      opacity: 1;
+      transform: perspective(2400px) rotateY(0deg);
+    }
+  }
+
+  @keyframes pageShadowSweep {
+    0% {
+      opacity: .9;
+      transform: translateX(-16%);
+    }
+    55% { opacity: .34; }
+    100% {
+      opacity: 0;
+      transform: translateX(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    section.slide[data-deck-active],
+    section.slide[data-deck-active]::after { animation: none; }
+  }
+
+  .chrome {
+    position: absolute;
+    top: 36px;
+    left: 90px;
+    right: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--rule);
+    z-index: 30;
+  }
+  .chrome-left { display: flex; align-items: center; gap: 18px; }
+  .brand {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 28px;
+    letter-spacing: .18em;
+  }
+  .sec {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-left: 18px;
+    border-left: 1px solid var(--rule);
+  }
+  .pg {
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+
+  .body {
+    position: absolute;
+    left: 90px;
+    right: 160px;
+    top: 150px;
+    bottom: 90px;
+    z-index: 10;
+  }
+
+  .eyebrow {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .hand { font-family: var(--hand); font-weight: 600; color: var(--ink); }
+
+  .page-head h2 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 82px;
+    line-height: .95;
+    letter-spacing: -.03em;
+    margin-top: 12px;
+    max-width: 20ch;
+  }
+  .page-head p {
+    font-size: 30px;
+    line-height: 1.42;
+    color: var(--muted);
+    margin-top: 18px;
+    max-width: 56ch;
+  }
+
+  .s-cover .body { display: grid; grid-template-columns: 1.15fr .85fr; gap: 70px; align-items: center; }
+  .s-cover h1 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 148px;
+    line-height: .92;
+    letter-spacing: -.038em;
+    margin: 26px 0 30px;
+  }
+  .s-cover .lede {
+    font-size: 34px;
+    line-height: 1.45;
+    color: var(--muted);
+    max-width: 29ch;
+    margin-bottom: 44px;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 38px;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+  }
+  .cover-meta span { display: flex; align-items: center; gap: 12px; }
+  .cover-meta span::before {
+    content: "";
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--pink);
+  }
+  .cover-meta span:nth-child(2)::before { background: var(--blue); }
+  .cover-visual {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 16px;
+    padding-top: 4px;
+  }
+  .cover-visual::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -22px;
+    right: -22px;
+    height: 8px;
+    border-radius: 4px;
+    background: rgba(31,31,31,.16);
+    box-shadow: 0 3px 0 rgba(31,31,31,.06);
+  }
+  .ribbon {
+    width: 92px;
+    padding: 20px 0;
+    border-radius: 0 0 10px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    box-shadow: 0 16px 30px rgba(31,31,31,.13), inset 0 0 0 1px rgba(31,31,31,.05);
+  }
+  .ribbon span {
+    writing-mode: vertical-rl;
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: rgba(31,31,31,.62);
+  }
+  .ribbon:nth-child(1) { height: 250px; background: var(--pink); }
+  .ribbon:nth-child(2) { height: 330px; background: var(--blue); }
+  .ribbon:nth-child(3) { height: 210px; background: var(--yellow); }
+  .ribbon:nth-child(4) { height: 380px; background: var(--mint); }
+  .ribbon:nth-child(5) { height: 300px; background: var(--lilac); }
+  .cover-note {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-2deg);
+    font-family: var(--hand);
+    font-size: 42px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .s-agenda .body { display: flex; flex-direction: column; gap: 38px; }
+  .agenda-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 64px;
+    align-content: start;
+  }
+  .agenda-item {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    padding: 20px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .agenda-item .num {
+    width: 58px;
+    height: 58px;
+    flex: 0 0 auto;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 26px;
+  }
+  .agenda-item:nth-child(1) .num { background: var(--pink); }
+  .agenda-item:nth-child(2) .num { background: var(--blue); }
+  .agenda-item:nth-child(3) .num { background: var(--yellow); }
+  .agenda-item:nth-child(4) .num { background: var(--mint); }
+  .agenda-item:nth-child(5) .num { background: var(--lilac); }
+  .agenda-item:nth-child(6) .num { background: var(--pink); }
+  .agenda-item h3 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 38px;
+    line-height: 1.05;
+    margin-bottom: 6px;
+  }
+  .agenda-item p { font-size: 30px; line-height: 1.35; color: var(--muted); }
+
+  .s-divider .body {
+    display: grid;
+    grid-template-columns: 1.05fr .95fr;
+    gap: 70px;
+    align-items: stretch;
+  }
+  .divider-left { display: flex; flex-direction: column; justify-content: center; }
+  .giant {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 230px;
+    line-height: .82;
+    letter-spacing: -.055em;
+    margin: 20px 0 28px;
+  }
+  .divider-left .lede {
+    font-size: 34px;
+    line-height: 1.4;
+    color: var(--muted);
+    max-width: 26ch;
+  }
+  .divider-panel {
+    border-radius: 26px;
+    padding: 54px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 34px;
+    background: var(--blue);
+    box-shadow: 0 22px 44px rgba(31,31,31,.10), inset 0 0 0 1px rgba(31,31,31,.06);
+  }
+  .panel-label {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+  }
+  .divider-list { display: flex; flex-direction: column; gap: 26px; }
+  .divider-list li {
+    display: flex;
+    gap: 20px;
+    border-top: 1px solid rgba(31,31,31,.18);
+    padding-top: 22px;
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  .divider-list .n {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 28px;
+    opacity: .45;
+  }
+  .divider-panel .hand {
+    font-size: 44px;
+    color: rgba(31,31,31,.64);
+    transform: rotate(-2deg);
+  }
+
+  .s-bullets .body { display: grid; grid-template-columns: 1.45fr .55fr; gap: 70px; }
+  .s-bullets h2 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 72px;
+    line-height: .96;
+    letter-spacing: -.03em;
+    max-width: 22ch;
+  }
+  .bullet-list { display: flex; flex-direction: column; margin-top: 28px; }
+  .bullet {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 22px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .bullet .dot {
+    width: 18px;
+    height: 18px;
+    margin-top: 14px;
+    border-radius: 50%;
+    background: var(--ink);
+  }
+  .bullet:nth-child(1) .dot { background: var(--pink); }
+  .bullet:nth-child(2) .dot { background: var(--blue); }
+  .bullet:nth-child(3) .dot { background: var(--yellow); }
+  .bullet:nth-child(4) .dot { background: var(--mint); }
+  .bullet:nth-child(5) .dot { background: var(--lilac); }
+  .bullet h3 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 1.08;
+    margin-bottom: 4px;
+  }
+  .bullet p { font-size: 30px; line-height: 1.32; color: var(--muted); }
+  .side-note {
+    align-self: stretch;
+    border-radius: 24px;
+    padding: 46px;
+    background: var(--mint);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 20px 40px rgba(31,31,31,.09), inset 0 0 0 1px rgba(31,31,31,.05);
+  }
+  .side-note .hand { font-size: 56px; line-height: 1.02; }
+  .side-note p {
+    font-size: 30px;
+    line-height: 1.4;
+    color: rgba(31,31,31,.68);
+    border-top: 1px solid rgba(31,31,31,.18);
+    padding-top: 22px;
+  }
+  .side-note .mini-tabs { display: flex; gap: 8px; }
+  .side-note .mini-tabs i {
+    width: 34px;
+    height: 8px;
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 1px rgba(31,31,31,.14);
+  }
+  .side-note .mini-tabs i:nth-child(4) { box-shadow: inset 0 0 0 2px rgba(255,255,255,.95); }
+  .side-note .mini-tabs i:nth-child(1) { background: var(--pink); }
+  .side-note .mini-tabs i:nth-child(2) { background: var(--blue); }
+  .side-note .mini-tabs i:nth-child(3) { background: var(--yellow); }
+  .side-note .mini-tabs i:nth-child(4) { background: var(--mint); }
+  .side-note .mini-tabs i:nth-child(5) { background: var(--lilac); }
+
+  .s-twocol .body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 90px;
+    align-items: center;
+  }
+  .twocol-copy h2 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 78px;
+    line-height: .96;
+    letter-spacing: -.032em;
+    max-width: 16ch;
+  }
+  .twocol-copy p {
+    font-size: 30px;
+    line-height: 1.52;
+    color: var(--muted);
+    margin-top: 24px;
+    max-width: 38ch;
+  }
+  .checklist { margin-top: 30px; display: flex; flex-direction: column; gap: 16px; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    font-size: 30px;
+    line-height: 1.35;
+    font-weight: 600;
+  }
+  .checklist li::before {
+    content: "✓";
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    font-size: 18px;
+    margin-top: 2px;
+  }
+  .palette-stack {
+    position: relative;
+    height: 640px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+  }
+  .swatch {
+    height: 98px;
+    border-radius: 16px;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 14px 28px rgba(31,31,31,.10), inset 0 0 0 1px rgba(31,31,31,.07);
+  }
+  .swatch b {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 30px;
+    letter-spacing: -.01em;
+  }
+  .swatch span {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(31,31,31,.62);
+  }
+  .swatch:nth-child(1) { background: var(--pink); transform: rotate(-1.4deg); }
+  .swatch:nth-child(2) { background: var(--blue); transform: rotate(1.1deg); }
+  .swatch:nth-child(3) { background: var(--yellow); transform: rotate(-.9deg); }
+  .swatch:nth-child(4) { background: var(--mint); transform: rotate(1.5deg); }
+  .swatch:nth-child(5) { background: var(--lilac); transform: rotate(-1.1deg); }
+  .palette-note {
+    position: absolute;
+    right: 12px;
+    bottom: 6px;
+    transform: rotate(-3deg);
+    font-family: var(--hand);
+    font-size: 40px;
+    color: var(--muted);
+  }
+
+  .stat-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 60px;
+    margin-bottom: 42px;
+  }
+  .stat-head h2 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 82px;
+    line-height: .95;
+    letter-spacing: -.032em;
+    max-width: 15ch;
+  }
+  .stat-head p {
+    font-size: 30px;
+    line-height: 1.4;
+    color: var(--muted);
+    max-width: 36ch;
+    text-align: right;
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    height: 548px;
+  }
+  .stat-card {
+    border-radius: 22px;
+    padding: 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 18px 34px rgba(31,31,31,.09), inset 0 0 0 1px rgba(31,31,31,.06);
+  }
+  .stat-card:nth-child(1) { background: var(--pink); }
+  .stat-card:nth-child(2) { background: var(--blue); }
+  .stat-card:nth-child(3) { background: var(--yellow); }
+  .stat-card:nth-child(4) { background: var(--mint); }
+  .stat-card .tag {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: rgba(31,31,31,.55);
+  }
+  .stat-card .big {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 128px;
+    line-height: .84;
+    letter-spacing: -.045em;
+  }
+  .stat-card .label {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 34px;
+    line-height: 1.12;
+  }
+  .stat-card .note {
+    font-size: 30px;
+    line-height: 1.38;
+    color: rgba(31,31,31,.68);
+  }
+
+  .process-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 60px; }
+  .process-head h2 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 78px;
+    line-height: .95;
+    letter-spacing: -.032em;
+    max-width: 17ch;
+  }
+  .process-head p {
+    font-size: 30px;
+    line-height: 1.4;
+    color: var(--muted);
+    max-width: 40ch;
+    text-align: right;
+  }
+  .process-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    margin-top: 46px;
+    height: 520px;
+  }
+  .process-grid::before {
+    content: "";
+    position: absolute;
+    top: 54px;
+    left: 40px;
+    right: 40px;
+    height: 2px;
+    background: rgba(31,31,31,.14);
+  }
+  .step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 30px;
+    border-radius: 18px;
+    background: #fff;
+    border: 1px solid var(--rule-soft);
+    border-top: 8px solid var(--pink);
+    box-shadow: 0 16px 30px rgba(31,31,31,.07);
+  }
+  .step:nth-child(2) { border-top-color: var(--blue); }
+  .step:nth-child(3) { border-top-color: var(--yellow); }
+  .step:nth-child(4) { border-top-color: var(--mint); }
+  .step .num {
+    position: relative;
+    z-index: 2;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--pink);
+    display: grid;
+    place-items: center;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 28px;
+    box-shadow: 0 0 0 8px #fff;
+  }
+  .step:nth-child(2) .num { background: var(--blue); }
+  .step:nth-child(3) .num { background: var(--yellow); }
+  .step:nth-child(4) .num { background: var(--mint); }
+  .step h3 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 38px;
+    line-height: 1.05;
+  }
+  .step p {
+    font-size: 30px;
+    line-height: 1.42;
+    color: var(--muted);
+  }
+  .step .deliverable {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px dashed rgba(31,31,31,.22);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: rgba(31,31,31,.6);
+  }
+
+  .timeline-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 60px; }
+  .timeline-head h2 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 82px;
+    line-height: .95;
+    letter-spacing: -.032em;
+  }
+  .timeline-head p {
+    font-size: 30px;
+    line-height: 1.4;
+    color: var(--muted);
+    max-width: 38ch;
+    text-align: right;
+  }
+  .timeline {
+    position: relative;
+    height: 600px;
+    margin-top: 34px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 18px;
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    top: 50%;
+    height: 3px;
+    background: rgba(31,31,31,.16);
+  }
+  .milestone {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .milestone .dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--pink);
+    border: 5px solid #fff;
+    box-shadow: 0 0 0 2px rgba(31,31,31,.22);
+    z-index: 2;
+  }
+  .milestone:nth-child(2) .dot { background: var(--blue); }
+  .milestone:nth-child(3) .dot { background: var(--yellow); }
+  .milestone:nth-child(4) .dot { background: var(--mint); }
+  .milestone:nth-child(5) .dot { background: var(--lilac); }
+  .milestone .card {
+    position: absolute;
+    left: 0;
+    right: 0;
+    padding: 0 14px;
+    text-align: center;
+  }
+  .milestone.up .card { bottom: calc(50% + 42px); }
+  .milestone.down .card { top: calc(50% + 42px); }
+  .milestone .week {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .milestone h3 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 1.05;
+    margin: 6px 0 8px;
+  }
+  .milestone p {
+    font-size: 30px;
+    line-height: 1.35;
+    color: var(--muted);
+  }
+
+  .compare-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 60px; }
+  .compare-head h2 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 82px;
+    line-height: .95;
+    letter-spacing: -.032em;
+  }
+  .compare-head p {
+    font-size: 30px;
+    line-height: 1.4;
+    color: var(--muted);
+    max-width: 40ch;
+    text-align: right;
+  }
+  .compare-table {
+    margin-top: 40px;
+    border: 1px solid var(--rule);
+    border-radius: 18px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 18px 36px rgba(31,31,31,.07);
+  }
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr 1fr;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .compare-row:last-child { border-bottom: 0; }
+  .compare-row > div {
+    padding: 21px 30px;
+    font-size: 30px;
+    line-height: 1.3;
+    display: flex;
+    align-items: center;
+  }
+  .compare-row .c-head {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 32px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+  .compare-row .c-head:first-child { color: var(--muted); }
+  .compare-row .c-head.b { background: var(--blue); }
+  .compare-row .c-label {
+    font-weight: 700;
+    background: rgba(31,31,31,.025);
+  }
+  .compare-row .bad { color: var(--muted); }
+  .compare-row .good { font-weight: 600; }
+  .compare-row .good::before {
+    content: "✓";
+    width: 28px;
+    height: 28px;
+    margin-right: 12px;
+    border-radius: 50%;
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 auto;
+    background: var(--mint);
+    font-size: 17px;
+    color: var(--ink);
+  }
+  .compare-row .bad::before {
+    content: "×";
+    margin-right: 12px;
+    font-size: 28px;
+    line-height: 1;
+    color: rgba(31,31,31,.35);
+  }
+
+  .quote-panel {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 28px;
+    padding: 74px 90px;
+    background: var(--mint);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 24px 50px rgba(31,31,31,.10), inset 0 0 0 1px rgba(31,31,31,.06);
+  }
+  .quote-mark {
+    position: absolute;
+    top: 2px;
+    left: 58px;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 340px;
+    line-height: .68;
+    color: rgba(255,255,255,.62);
+  }
+  .quote-text {
+    position: relative;
+    z-index: 2;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 86px;
+    line-height: 1.06;
+    letter-spacing: -.032em;
+    max-width: 23ch;
+  }
+  .quote-attr {
+    position: relative;
+    z-index: 2;
+    margin-top: 48px;
+    font-family: var(--hand);
+    font-size: 50px;
+    color: rgba(31,31,31,.68);
+  }
+  .quote-tags {
+    position: absolute;
+    left: 90px;
+    bottom: 54px;
+    display: flex;
+    gap: 10px;
+  }
+  .quote-tags i { width: 42px; height: 10px; border-radius: 5px; box-shadow: inset 0 0 0 1px rgba(31,31,31,.14); }
+  .quote-tags i:nth-child(1) { background: var(--pink); }
+  .quote-tags i:nth-child(2) { background: var(--blue); }
+  .quote-tags i:nth-child(3) { background: var(--yellow); }
+  .quote-tags i:nth-child(4) { background: var(--mint); }
+  .quote-tags i:nth-child(5) { background: var(--lilac); }
+  .quote-fan {
+    position: absolute;
+    top: 58px;
+    right: 58px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .quote-fan i { width: 26px; border-radius: 0 0 7px 7px; box-shadow: inset 0 0 0 1px rgba(31,31,31,.14); }
+  .quote-fan i:nth-child(4) { box-shadow: inset 0 0 0 2px rgba(255,255,255,.95); }
+  .quote-tags i:nth-child(4) { box-shadow: inset 0 0 0 2px rgba(255,255,255,.95); }
+  .quote-fan i:nth-child(1) { height: 96px; background: var(--pink); }
+  .quote-fan i:nth-child(2) { height: 132px; background: var(--blue); }
+  .quote-fan i:nth-child(3) { height: 78px; background: var(--yellow); }
+  .quote-fan i:nth-child(4) { height: 150px; background: var(--mint); }
+  .quote-fan i:nth-child(5) { height: 112px; background: var(--lilac); }
+
+  .s-figure .body { display: flex; flex-direction: column; }
+  .figure-head h2 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 82px;
+    line-height: .95;
+    letter-spacing: -.032em;
+    margin-top: 10px;
+  }
+  .figure-layout {
+    flex: 1;
+    min-height: 0;
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1.62fr .38fr;
+    gap: 50px;
+  }
+  .figure-frame {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 20px;
+    background: #fff;
+    border: 1px solid var(--rule);
+    box-shadow: 0 20px 40px rgba(31,31,31,.08);
+  }
+  .figure-canvas {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid var(--rule-soft);
+    background-color: #fff;
+    background-image: radial-gradient(circle, rgba(31,31,31,.16) 1.6px, transparent 1.7px);
+    background-size: 32px 32px;
+  }
+  .figure-canvas .fig-tabs {
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    bottom: 0;
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+  }
+  .figure-canvas .fig-tabs i {
+    flex: 1;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 -10px 24px rgba(31,31,31,.08), inset 0 0 0 1px rgba(31,31,31,.05);
+  }
+  .figure-canvas .fig-tabs i:nth-child(1) { height: 140px; background: var(--pink); }
+  .figure-canvas .fig-tabs i:nth-child(2) { height: 210px; background: var(--blue); }
+  .figure-canvas .fig-tabs i:nth-child(3) { height: 118px; background: var(--yellow); }
+  .figure-canvas .fig-tabs i:nth-child(4) { height: 250px; background: var(--mint); }
+  .figure-canvas .fig-tabs i:nth-child(5) { height: 176px; background: var(--lilac); }
+  .placeholder-tag {
+    position: absolute;
+    top: 44px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 16px 28px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid var(--rule);
+    box-shadow: 0 10px 24px rgba(31,31,31,.07);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .figure-caption {
+    padding: 14px 6px 2px;
+    font-size: 24px;
+    line-height: 1.4;
+    color: var(--muted);
+  }
+  .figure-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 22px;
+  }
+  .figure-side h3 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 40px;
+    line-height: 1.05;
+  }
+  .figure-side p { font-size: 30px; line-height: 1.42; color: var(--muted); }
+  .figure-side ul { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; }
+  .figure-side li {
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    padding-top: 12px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .team-head h2 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 84px;
+    line-height: .95;
+    letter-spacing: -.032em;
+    margin-top: 10px;
+  }
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+  }
+  .person {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 30px;
+    border-radius: 20px;
+    background: #fff;
+    border: 1px solid var(--rule-soft);
+    border-top: 8px solid var(--pink);
+    box-shadow: 0 16px 32px rgba(31,31,31,.07);
+    min-height: 430px;
+  }
+  .person:nth-child(2) { border-top-color: var(--blue); }
+  .person:nth-child(3) { border-top-color: var(--yellow); }
+  .person:nth-child(4) { border-top-color: var(--mint); }
+  .avatar {
+    width: 116px;
+    height: 116px;
+    border-radius: 50%;
+    background: var(--pink);
+    display: grid;
+    place-items: center;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 42px;
+    letter-spacing: -.02em;
+    box-shadow: inset 0 0 0 1px rgba(31,31,31,.07);
+  }
+  .person:nth-child(2) .avatar { background: var(--blue); }
+  .person:nth-child(3) .avatar { background: var(--yellow); }
+  .person:nth-child(4) .avatar { background: var(--mint); }
+  .person h3 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 34px;
+    line-height: 1.05;
+  }
+  .person .role {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .person p {
+    margin-top: auto;
+    font-size: 30px;
+    line-height: 1.35;
+    color: var(--muted);
+  }
+
+  .s-close .body {
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .close-copy h2 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 148px;
+    line-height: .88;
+    letter-spacing: -.042em;
+    margin: 24px 0 30px;
+  }
+  .close-copy p {
+    font-size: 32px;
+    line-height: 1.45;
+    color: var(--muted);
+    max-width: 32ch;
+    margin-bottom: 40px;
+  }
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    padding: 24px 38px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 30px;
+    font-weight: 600;
+    box-shadow: 0 18px 34px rgba(31,31,31,.20);
+  }
+  .cta .arrow {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--yellow);
+    color: var(--ink);
+    display: grid;
+    place-items: center;
+    font-size: 24px;
+    font-weight: 800;
+  }
+  .close-card {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    padding: 48px;
+    border-radius: 26px;
+    background: #fff;
+    border: 1px solid var(--rule);
+    box-shadow: 0 24px 48px rgba(31,31,31,.10);
+  }
+  .close-card .hand { font-size: 48px; }
+  .close-card ol { display: flex; flex-direction: column; gap: 18px; }
+  .close-card li {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    padding-top: 18px;
+    border-top: 1px dashed rgba(31,31,31,.24);
+    font-size: 30px;
+    line-height: 1.35;
+  }
+  .close-card .n {
+    flex: 0 0 auto;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 26px;
+    color: var(--muted);
+  }
+  .close-card .foot {
+    margin-top: 4px;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .close-swatches { display: flex; gap: 8px; }
+  .close-swatches i { width: 46px; height: 10px; border-radius: 5px; }
+  .close-swatches i:nth-child(1) { background: var(--pink); }
+  .close-swatches i:nth-child(2) { background: var(--blue); }
+  .close-swatches i:nth-child(3) { background: var(--yellow); }
+  .close-swatches i:nth-child(4) { background: var(--mint); }
+  .close-swatches i:nth-child(5) { background: var(--lilac); }
+
+  .bookmark-tabs {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2147482500;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+  }
+  .bmark-tab {
+    pointer-events: auto;
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    width: 58px;
+    height: 128px;
+    padding: 14px 0;
+    border-radius: 12px 0 0 12px;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(12px);
+    transform-origin: right center;
+    box-shadow: -6px 8px 20px rgba(31,31,31,.15), inset 0 0 0 1px rgba(31,31,31,.08);
+    transition: transform .34s cubic-bezier(.2,.8,.2,1), width .34s cubic-bezier(.2,.8,.2,1), box-shadow .34s ease, font-weight .2s ease;
+  }
+  .bmark-tab.t-start { background: var(--pink); }
+  .bmark-tab.t-ideas { background: var(--blue); }
+  .bmark-tab.t-proof { background: var(--yellow); }
+  .bmark-tab.t-story { background: var(--mint); }
+  .bmark-tab.t-close { background: var(--lilac); }
+  .bmark-tab:hover { transform: translateX(4px); }
+  .bmark-tab:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  .bmark-tab.is-active {
+    width: 72px;
+    transform: translateX(0);
+    font-weight: 800;
+    box-shadow: -12px 14px 30px rgba(31,31,31,.22), inset 0 0 0 1px rgba(31,31,31,.16);
+  }
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+  <section class="slide s-cover" data-label="01 Cover">
+    <header class="chrome">
+      <div class="chrome-left"><span class="brand">BOOKMARK</span><span class="sec">Start</span></div>
+      <div class="pg">01 / 13</div>
+    </header>
+    <div class="body">
+      <div class="cover-copy">
+        <div class="eyebrow">Field guide · 2026 edition</div>
+        <h1>The Pastel<br />Playbook</h1>
+        <p class="lede">A design system for modern brands that want to feel warm, exact, and quietly confident.</p>
+        <div class="cover-meta"><span>Design Systems Guild</span><span>5 tabs · 13 pages</span></div>
+      </div>
+      <div class="cover-visual" aria-hidden="true">
+        <div class="ribbon"><span>Start</span></div>
+        <div class="ribbon"><span>Ideas</span></div>
+        <div class="ribbon"><span>Proof</span></div>
+        <div class="ribbon"><span>Story</span></div>
+        <div class="ribbon"><span>Close</span></div>
+        <div class="cover-note">a place for every idea</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-agenda" data-label="02 Agenda">
+    <header class="chrome">
+      <div class="chrome-left"><span class="brand">BOOKMARK</span><span class="sec">Start</span></div>
+      <div class="pg">02 / 13</div>
+    </header>
+    <div class="body">
+      <div class="page-head">
+        <div class="eyebrow">Contents</div>
+        <h2>Six stops, one system.</h2>
+        <p>The book is organised like a well-kept notebook: five pastel tabs, one clear idea per page.</p>
+      </div>
+      <div class="agenda-grid">
+        <div class="agenda-item">
+          <div class="num">01</div>
+          <div><h3>The brief</h3><p>Why pastels, and why they need a system.</p></div>
+        </div>
+        <div class="agenda-item">
+          <div class="num">02</div>
+          <div><h3>Ideas</h3><p>Principles that hold the palette together.</p></div>
+        </div>
+        <div class="agenda-item">
+          <div class="num">03</div>
+          <div><h3>Foundations</h3><p>Colour, type, grid, and tactile texture.</p></div>
+        </div>
+        <div class="agenda-item">
+          <div class="num">04</div>
+          <div><h3>Proof</h3><p>Numbers, process, and a five-week timeline.</p></div>
+        </div>
+        <div class="agenda-item">
+          <div class="num">05</div>
+          <div><h3>Story</h3><p>Voices and figures from the field.</p></div>
+        </div>
+        <div class="agenda-item">
+          <div class="num">06</div>
+          <div><h3>Close</h3><p>The first page your team should ship.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-divider" data-label="03 Ideas">
+    <header class="chrome">
+      <div class="chrome-left"><span class="brand">BOOKMARK</span><span class="sec">Ideas</span></div>
+      <div class="pg">03 / 13</div>
+    </header>
+    <div class="body">
+      <div class="divider-left">
+        <div class="eyebrow">Section 02 · Ideas</div>
+        <h2 class="giant">Ideas</h2>
+        <p class="lede">Three principles that keep a pastel system from turning into decoration.</p>
+      </div>
+      <div class="divider-panel">
+        <div class="panel-label">In this section</div>
+        <ol class="divider-list">
+          <li><span class="n">01</span><span>Rules that keep pastels expensive-looking.</span></li>
+          <li><span class="n">02</span><span>Colour as a sorting system, not a mood.</span></li>
+          <li><span class="n">03</span><span>One grid, one type scale, one hand.</span></li>
+        </ol>
+        <div class="hand">warmth with a spine</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-bullets" data-label="04 Key Points">
+    <header class="chrome">
+      <div class="chrome-left"><span class="brand">BOOKMARK</span><span class="sec">Ideas</span></div>
+      <div class="pg">04 / 13</div>
+    </header>
+    <div class="body">
+      <div>
+        <div class="eyebrow">Ideas · Rules</div>
+        <h2>Five rules that keep pastels expensive-looking.</h2>
+        <div class="bullet-list">
+          <div class="bullet"><span class="dot"></span><div><h3>Pick five, not fifty.</h3><p>A tight pastel set does the work of a whole rainbow.</p></div></div>
+          <div class="bullet"><span class="dot"></span><div><h3>Keep the canvas white.</h3><p>Pastels need paper to breathe against.</p></div></div>
+          <div class="bullet"><span class="dot"></span><div><h3>Pair every pastel with ink.</h3><p>Contrast carries the hierarchy; the tint only sets the tone.</p></div></div>
+          <div class="bullet"><span class="dot"></span><div><h3>Use colour to sort, not decorate.</h3><p>Each tab should mean something before it looks good.</p></div></div>
+          <div class="bullet"><span class="dot"></span><div><h3>Allow one handwritten note.</h3><p>Warmth needs a human edge, every few pages.</p></div></div>
+        </div>
+      </div>
+      <aside class="side-note">
+        <div class="hand">Pastels are precise, not cute.</div>
+        <p>A tight palette is a promise: every colour has a job, and every page keeps it.</p>
+        <div class="mini-tabs" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="slide s-twocol" data-label="05 Two Columns">
+    <header class="chrome">
+      <div class="chrome-left"><span class="brand">BOOKMARK</span><span class="sec">Ideas</span></div>
+      <div class="pg">05 / 13</div>
+    </header>
+    <div class="body">
+      <div class="twocol-copy">
+        <div class="eyebrow">Ideas · Colour</div>
+        <h2>Colour is a system, not a mood.</h2>
+        <p>Each tint earns a role before it earns a place on a page. Pink starts, blue explains, yellow proves, mint listens, lilac closes.</p>
+        <ul class="checklist">
+          <li>Name every tint and its job.</li>
+          <li>Check contrast against white and ink.</li>
+          <li>Reserve one accent for action.</li>
+        </ul>
+      </div>
+      <div class="palette-stack" aria-label="Five pastel tints and their roles">
+        <div class="swatch"><b>Pink</b><span>#FFD6E8 · Start</span></div>
+        <div class="swatch"><b>Blue</b><span>#D6ECFF · Ideas</span></div>
+        <div class="swatch"><b>Yellow</b><span>#FFF3A3 · Proof</span></div>
+        <div class="swatch"><b>Mint</b><span>#D9F2E6 · Story</span></div>
+        <div class="swatch"><b>Lilac</b><span>#E7D9FF · Close</span></div>
+        <div class="palette-note">the order is the system</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-stats" data-label="06 Proof">
+    <header class="chrome">
+      <div class="chrome-left"><span class="brand">BOOKMARK</span><span class="sec">Proof</span></div>
+      <div class="pg">06 / 13</div>
+    </header>
+    <div class="body">
+      <div class="stat-head">
+        <div>
+          <div class="eyebrow">Proof · Snapshot</div>
+          <h2>Proof in four numbers.</h2>
+        </div>
+        <p>A compact system is easier to teach, audit, and keep consistent.</p>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="tag">Palette</div>
+          <div class="big">5</div>
+          <div class="label">Core pastels</div>
+          <div class="note">Every tint is named, owned, and contrast-checked.</div>
+        </div>
+        <div class="stat-card">
+          <div class="tag">Grid</div>
+          <div class="big">32<span style="font-size:56px">px</span></div>
+          <div class="label">Dot rhythm</div>
+          <div class="note">The page grid that keeps white space honest.</div>
+        </div>
+        <div class="stat-card">
+          <div class="tag">Layouts</div>
+          <div class="big">12</div>
+          <div class="label">Page skeletons</div>
+          <div class="note">Cover to close, all built on the same page.</div>
+        </div>
+        <div class="stat-card">
+          <div class="tag">Type</div>
+          <div class="big">3</div>
+          <div class="label">Typefaces</div>
+          <div class="note">Display, body, and one handwritten voice.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-process" data-label="07 Process">
+    <header class="chrome">
+      <div class="chrome-left"><span class="brand">BOOKMARK</span><span class="sec">Proof</span></div>
+      <div class="pg">07 / 13</div>
+    </header>
+    <div class="body">
+      <div class="process-head">
+        <div>
+          <div class="eyebrow">Proof · Process</div>
+          <h2>From brief to playbook in four passes.</h2>
+        </div>
+        <p>A two-week sprint, run once, that leaves the team with a system instead of a one-off deck.</p>
+      </div>
+      <div class="process-grid">
+        <div class="step">
+          <div class="num">01</div>
+          <h3>Audit</h3>
+          <p>Collect every colour, type size, and component already in use.</p>
+          <div class="deliverable">Current-state map</div>
+        </div>
+        <div class="step">
+          <div class="num">02</div>
+          <h3>Cut</h3>
+          <p>Reduce the palette to five tints and the type to three faces.</p>
+          <div class="deliverable">Token sheet</div>
+        </div>
+        <div class="step">
+          <div class="num">03</div>
+          <h3>Apply</h3>
+          <p>Rebuild twelve layouts on the 32px dot grid.</p>
+          <div class="deliverable">Page library</div>
+        </div>
+        <div class="step">
+          <div class="num">04</div>
+          <h3>Hand off</h3>
+          <p>Document the rules, the don'ts, and the first page to ship.</p>
+          <div class="deliverable">The playbook</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-timeline" data-label="08 Timeline">
+    <header class="chrome">
+      <div class="chrome-left"><span class="brand">BOOKMARK</span><span class="sec">Proof</span></div>
+      <div class="pg">08 / 13</div>
+    </header>
+    <div class="body">
+      <div class="timeline-head">
+        <div>
+          <div class="eyebrow">Proof · Timeline</div>
+          <h2>A five-week path to launch.</h2>
+        </div>
+        <p>Five small passages, each one leaving a usable artifact behind.</p>
+      </div>
+      <div class="timeline">
+        <div class="milestone up">
+          <span class="dot"></span>
+          <div class="card"><div class="week">Week 01</div><h3>Audit</h3><p>Inventory every colour and component in the current deck.</p></div>
+        </div>
+        <div class="milestone down">
+          <span class="dot"></span>
+          <div class="card"><div class="week">Week 02</div><h3>Palette</h3><p>Name five tints; retire the rest with a migration note.</p></div>
+        </div>
+        <div class="milestone up">
+          <span class="dot"></span>
+          <div class="card"><div class="week">Week 03</div><h3>Type</h3><p>Set the display, body, and handwritten voices.</p></div>
+        </div>
+        <div class="milestone down">
+          <span class="dot"></span>
+          <div class="card"><div class="week">Week 04</div><h3>Layouts</h3><p>Rebuild twelve pages on the dot grid.</p></div>
+        </div>
+        <div class="milestone up">
+          <span class="dot"></span>
+          <div class="card"><div class="week">Week 05</div><h3>Launch</h3><p>Ship the playbook and train the team on the rules.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-compare" data-label="09 Comparison">
+    <header class="chrome">
+      <div class="chrome-left"><span class="brand">BOOKMARK</span><span class="sec">Proof</span></div>
+      <div class="pg">09 / 13</div>
+    </header>
+    <div class="body">
+      <div class="compare-head">
+        <div>
+          <div class="eyebrow">Proof · Comparison</div>
+          <h2>Ad-hoc pastel vs. the playbook.</h2>
+        </div>
+        <p>A side-by-side look at what changes when the palette becomes a system.</p>
+      </div>
+      <div class="compare-table">
+        <div class="compare-row">
+          <div class="c-head">Decision</div>
+          <div class="c-head">Ad-hoc pastel</div>
+          <div class="c-head b">The playbook</div>
+        </div>
+        <div class="compare-row">
+          <div class="c-label">Palette size</div>
+          <div class="bad">Wherever the mood lands</div>
+          <div class="good">Five named tints</div>
+        </div>
+        <div class="compare-row">
+          <div class="c-label">Contrast</div>
+          <div class="bad">Checked by eye</div>
+          <div class="good">AA minimum, documented</div>
+        </div>
+        <div class="compare-row">
+          <div class="c-label">Page grid</div>
+          <div class="bad">Whatever fits today</div>
+          <div class="good">32px dot grid</div>
+        </div>
+        <div class="compare-row">
+          <div class="c-label">Handoff</div>
+          <div class="bad">Screenshots and memory</div>
+          <div class="good">Tokens and templates</div>
+        </div>
+        <div class="compare-row">
+          <div class="c-label">New pages</div>
+          <div class="bad">Starts from scratch</div>
+          <div class="good">Starts from a layout</div>
+        </div>
+        <div class="compare-row">
+          <div class="c-label">Longevity</div>
+          <div class="bad">Drifts within a quarter</div>
+          <div class="good">Holds across releases</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-quote" data-label="10 Story">
+    <header class="chrome">
+      <div class="chrome-left"><span class="brand">BOOKMARK</span><span class="sec">Story</span></div>
+      <div class="pg">10 / 13</div>
+    </header>
+    <div class="body">
+      <div class="quote-panel">
+        <div class="quote-mark" aria-hidden="true">“</div>
+        <blockquote class="quote-text">A pastel palette is not a soft choice. It is a decision to make warmth measurable.</blockquote>
+        <div class="quote-attr">Mira Sol · Brand Director, Fieldnote</div>
+        <div class="quote-tags" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="quote-fan" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-figure" data-label="11 Figure">
+    <header class="chrome">
+      <div class="chrome-left"><span class="brand">BOOKMARK</span><span class="sec">Story</span></div>
+      <div class="pg">11 / 13</div>
+    </header>
+    <div class="body">
+      <div class="figure-head">
+        <div class="eyebrow">Story · Figure</div>
+        <h2>The page, up close.</h2>
+      </div>
+      <div class="figure-layout">
+        <figure class="figure-frame">
+          <div class="figure-canvas">
+            <div class="placeholder-tag">Figure placeholder · 16:9</div>
+            <div class="fig-tabs" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <figcaption class="figure-caption">Figure 01 — the 32px dot grid with 1.4px ink dots at 10% opacity, and the five bookmark tabs in reading order.</figcaption>
+        </figure>
+        <aside class="figure-side">
+          <div class="eyebrow">Figure notes</div>
+          <h3>One grid, every layout.</h3>
+          <p>The dot grid is the quiet constant: it sets margins, aligns captions, and gives every pastel panel a place to sit.</p>
+          <ul>
+            <li>32px rhythm</li>
+            <li>160px outer margin</li>
+            <li>1.4px ink dots</li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-team" data-label="12 Team">
+    <header class="chrome">
+      <div class="chrome-left"><span class="brand">BOOKMARK</span><span class="sec">Story</span></div>
+      <div class="pg">12 / 13</div>
+    </header>
+    <div class="body">
+      <div class="team-head">
+        <div class="eyebrow">Story · People</div>
+        <h2>The people behind the pages.</h2>
+      </div>
+      <div class="team-grid">
+        <div class="person">
+          <div class="avatar">MS</div>
+          <h3>Mira Sol</h3>
+          <div class="role">Brand Director</div>
+          <p>Keeps the palette honest and the voice warm.</p>
+        </div>
+        <div class="person">
+          <div class="avatar">TP</div>
+          <h3>Theo Park</h3>
+          <div class="role">Type Designer</div>
+          <p>Sets the voice in Bricolage and DM Sans.</p>
+        </div>
+        <div class="person">
+          <div class="avatar">IC</div>
+          <h3>Ines Cruz</h3>
+          <div class="role">Systems Lead</div>
+          <p>Turns the rules into templates teams can use.</p>
+        </div>
+        <div class="person">
+          <div class="avatar">NB</div>
+          <h3>Nadia Bell</h3>
+          <div class="role">Editorial Lead</div>
+          <p>Writes the notes in the margins, and means them.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide s-close" data-label="13 Close">
+    <header class="chrome">
+      <div class="chrome-left"><span class="brand">BOOKMARK</span><span class="sec">Close</span></div>
+      <div class="pg">13 / 13</div>
+    </header>
+    <div class="body">
+      <div class="close-copy">
+        <div class="eyebrow">Close · Section 05</div>
+        <h2>Start with<br />one page.</h2>
+        <p>Pick a single slide, apply the five pastels and the dot grid, then compare it with the page it replaced.</p>
+        <div class="cta">Download the playbook <span class="arrow">↗</span></div>
+      </div>
+      <aside class="close-card">
+        <div class="hand">the first three moves</div>
+        <ol>
+          <li><span class="n">01</span><span>Choose one pastel for action, and let it lead.</span></li>
+          <li><span class="n">02</span><span>Rebuild one page on the 32px dot grid.</span></li>
+          <li><span class="n">03</span><span>Share the rules before the next deck begins.</span></li>
+        </ol>
+        <div class="close-swatches" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="foot">Design Systems Guild · 2026</div>
+      </aside>
+    </div>
+  </section>
+
+</deck-stage>
+
+<nav class="bookmark-tabs" aria-label="Bookmark sections">
+  <button class="bmark-tab t-start is-active" type="button" data-target="0" data-section="start" aria-current="true">Start</button>
+  <button class="bmark-tab t-ideas" type="button" data-target="2" data-section="ideas">Ideas</button>
+  <button class="bmark-tab t-proof" type="button" data-target="5" data-section="proof">Proof</button>
+  <button class="bmark-tab t-story" type="button" data-target="9" data-section="story">Story</button>
+  <button class="bmark-tab t-close" type="button" data-target="12" data-section="close">Close</button>
+</nav>
+
+<script>
+(() => {
+  const deck = document.querySelector('deck-stage');
+  const tabs = Array.from(document.querySelectorAll('.bmark-tab'));
+  const ranges = [
+    [0, 1, 'start'],
+    [2, 4, 'ideas'],
+    [5, 8, 'proof'],
+    [9, 11, 'story'],
+    [12, 12, 'close']
+  ];
+  const setActive = (index) => {
+    const hit = ranges.find(([min, max]) => index >= min && index <= max);
+    tabs.forEach((tab) => {
+      const on = !!hit && tab.dataset.section === hit[2];
+      tab.classList.toggle('is-active', on);
+      tab.setAttribute('aria-current', on ? 'true' : 'false');
+    });
+  };
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => deck.goTo(Number(tab.dataset.target)));
+  });
+  deck.addEventListener('slidechange', (event) => setActive(event.detail.index));
+  const hash = (location.hash || '').match(/^#(\d+)$/);
+  setActive(hash ? Number(hash[1]) - 1 : (deck.index || 0));
+})();
+</script>
+
+<script>
+/*! autofit.js — html-slides mechanical font-fit runtime
+ *
+ * Embedded inline in every deck built by the html-slides skill. Its job:
+ * guarantee that no slide's text overflows the fixed design canvas, no
+ * matter the resolution or monitor size, WITHOUT any AI auditing.
+ *
+ * How it works (fully deterministic):
+ *  1. Finds the deck's slide elements — direct light-DOM children of
+ *     <deck-stage>, or the children of a `.slides-container` for scroll
+ *     decks. Hidden slides are still measurable (visibility:hidden keeps
+ *     layout), so ALL slides are fitted at load, not just the visible one.
+ *  2. Relaxes nested text-clipping containers once (a fixed-height card
+ *     with `overflow:hidden` that clips its own flowing text grows to fit)
+ *     — font shrinking alone cannot beat pinned px margins inside a
+ *     fixed box.
+ *  3. Measures each slide in design-canvas coordinates — ancestor
+ *     transforms (the stage's uniform scale) do not affect
+ *     scroll/client metrics, so this is resolution-independent.
+ *  4. For any slide whose content exceeds its box, scales ALL text on
+ *     that slide (font-size + px line-heights) down uniformly — hierarchy
+ *     preserved — toward the measured overflow factor, re-measuring after
+ *     each pass until it fits, bottoms out at MIN_SCALE, or hits
+ *     MAX_ITER. Fixed px margins make small under-shrinks converge rather
+ *     than overshoot.
+ *
+ * Idempotent, dependency-free, safe to include once per page.
+ */
+(() => {
+  if (window.__deckAutofit) return;
+  window.__deckAutofit = true;
+
+  const TOL = 1;         // px tolerance on both axes
+  const MIN_SCALE = 0.4; // never shrink text below 40% of authored size
+  const MAX_ITER = 12;   // per-slide convergence passes
+
+  /** Slides already fitted — guards against accidental double-runs. */
+  const processed = new WeakSet();
+
+  const slideRoots = () => {
+    const stage = document.querySelector('deck-stage');
+    if (stage) {
+      return Array.from(stage.children)
+        .filter((el) => !/^(SCRIPT|STYLE|TEMPLATE)$/.test(el.tagName));
+    }
+    const container = document.querySelector('.slides-container');
+    if (container) {
+      return Array.from(container.children)
+        .filter((el) => !/^(SCRIPT|STYLE|TEMPLATE)$/.test(el.tagName));
+    }
+    return [];
+  };
+
+  /** Snapshot authored font metrics of every descendant (+ the slide root)
+   *  once, so repeated passes scale from the ORIGINAL values, not from the
+   *  previously shrunk ones (prevents compounding drift). */
+  const snapshot = (slide) => {
+    const els = [slide].concat(Array.from(slide.querySelectorAll('*')));
+    const sizes = [];
+    const lineHeights = [];
+    els.forEach((el) => {
+      const cs = getComputedStyle(el);
+      const fs = parseFloat(cs.fontSize);
+      if (fs > 0) sizes.push([el, fs]);
+      if (cs.lineHeight.endsWith('px')) lineHeights.push([el, parseFloat(cs.lineHeight)]);
+    });
+    return { sizes, lineHeights, k: 1 };
+  };
+
+  const applyScale = (snap, k) => {
+    for (const [el, fs] of snap.sizes) el.style.fontSize = (fs * k) + 'px';
+    for (const [el, lh] of snap.lineHeights) el.style.lineHeight = (lh * k) + 'px';
+    snap.k = k;
+  };
+
+  /** A hidden-overflow (or max-height) container that clips its own
+   *  flowing text is a layout defect in itself: reveal it instead of
+   *  fighting it with infinite font shrink. Decorative clamps (image
+   *  masks, grain overlays) hold no text and are left untouched. */
+  const relaxClippedText = (slide) => {
+    for (const el of slide.querySelectorAll('*')) {
+      const cs = getComputedStyle(el);
+      const clipped =
+        /(hidden|clip)/.test(cs.overflowY) || /(hidden|clip)/.test(cs.overflowX);
+      const maxPinned = cs.maxHeight !== 'none';
+      if (!clipped && !maxPinned) continue;
+      const limit = maxPinned ? parseFloat(cs.maxHeight) || 0 : el.clientHeight;
+      if (el.scrollHeight > limit + TOL && el.textContent.trim()) {
+        if (clipped) el.style.overflow = 'visible';
+        if (maxPinned) el.style.maxHeight = 'none';
+        const fixedPxHeight = /\d+(\.\d+)?px/.test(cs.height) &&
+          parseFloat(cs.height) < el.scrollHeight;
+        if (fixedPxHeight) el.style.height = 'auto';
+      }
+    }
+  };
+
+  const slideOverflowFactor = (slide) => Math.max(
+    slide.scrollWidth / (slide.clientWidth || 1),
+    slide.scrollHeight / (slide.clientHeight || 1)
+  );
+
+  /** Fit one slide. Returns the applied scale factor, or null if nothing
+   *  was changed (it already fit, or there was nothing measurable).
+   *  Failures are isolated: one bad slide must never abort the deck. */
+  const fitSlide = (slide) => {
+    if (processed.has(slide)) return null;
+    try {
+      relaxClippedText(slide);
+      if (slideOverflowFactor(slide) <= 1.0001) return null; // slide fits
+      const snap = snapshot(slide);
+      if (!snap.sizes.length) return null;
+      let k = 1;
+      for (let i = 0; i < MAX_ITER && k > MIN_SCALE; i++) {
+        const over = slideOverflowFactor(slide);
+        if (over <= 1.0001) break;
+        // Move toward the measured need, but never more than ~12% per pass.
+        k = Math.max(MIN_SCALE, k * Math.max(1 / over, 0.88) * 0.995);
+        applyScale(snap, k);
+      }
+      processed.add(slide);
+      return k < 1 ? k : null;
+    } catch (err) {
+      console.warn('[autofit] could not fit a slide:', err);
+      return null;
+    }
+  };
+
+  const run = () => {
+    const scaled = [];
+    for (const slide of slideRoots()) {
+      const k = fitSlide(slide);
+      if (k != null) scaled.push(k.toFixed(2));
+    }
+    if (scaled.length) {
+      console.info('[autofit] text scaled to fit on slides at factors:', scaled.join(', '));
+    }
+  };
+
+  const start = () => {
+    if (document.readyState === 'loading') {
+      addEventListener('DOMContentLoaded', start);
+      return;
+    }
+    // Webfonts change text metrics — measure once they are ready (or if
+    // they stall/reject, measure anyway). No frame-waiting: rAF can be
+    // starved under some headless/virtual-time environments.
+    const fontsReady = document.fonts && document.fonts.ready
+      ? document.fonts.ready
+      : Promise.resolve();
+    fontsReady.then(run, run);
+  };
+
+  start();
+})();
+</script>
+
+</body>
+</html>

@@ -11,8 +11,34 @@ if (-not (Test-Path (Join-Path $repo '.git'))) {
     git -C $repo reset --hard origin/main
 }
 
+# ---------- section 1b: re-apply locally authored templates (survive the reset) ----------
+$localTemplates = Join-Path $PSScriptRoot 'local-templates'
+if (Test-Path $localTemplates) {
+    Get-ChildItem -LiteralPath $localTemplates -Directory | ForEach-Object {
+        $dest = Join-Path $repo ('templates\' + $_.Name)
+        New-Item -ItemType Directory -Force -Path $dest | Out-Null
+        Copy-Item -Path (Join-Path $_.FullName '*') -Destination $dest -Recurse -Force
+    }
+    Write-Host 'install: local templates re-applied'
+}
+
 # ---------- section 2: templates.json + library.json.js ----------
 $index = Get-Content (Join-Path $repo 'index.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+
+# merge locally authored index entries (dedupe by slug) so they appear in the picker
+$localIndexPath = Join-Path $PSScriptRoot 'local-index.json'
+if (Test-Path $localIndexPath) {
+    $localIndex = Get-Content $localIndexPath -Raw -Encoding UTF8 | ConvertFrom-Json
+    $merged = [System.Collections.ArrayList]::new()
+    foreach ($t in @($index.templates)) { [void]$merged.Add($t) }
+    $have = @($merged | ForEach-Object { $_.slug })
+    foreach ($t in @($localIndex.templates)) {
+        if ($have -notcontains $t.slug) { [void]$merged.Add($t) }
+    }
+    $index.templates = $merged.ToArray()
+    $index.template_count = $merged.Count
+    Write-Host ('install: merged {0} local template entries' -f @($localIndex.templates).Count)
+}
 $templates = @(
     $index.templates | ForEach-Object {
         [ordered]@{

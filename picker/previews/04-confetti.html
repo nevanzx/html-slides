@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Confetti — Concept Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#FFFFFF; --ink:#171717; --muted:#6B6B6B;
+    --coral:#FFD3C7; --lilac:#E7D9FF; --yellow:#FFF0B8; --teal:#CFF0EA;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#E9E9E4;font-family:'Space Mono',monospace;color:var(--ink);overflow:hidden}
+  #stage{position:fixed;left:50%;top:50%;width:1920px;height:1080px;transform-origin:center center;
+    background:var(--white);overflow:hidden;box-shadow:0 40px 140px rgba(0,0,0,.28)}
+  .slide{position:absolute;inset:0;display:none}
+  .slide.active{display:block}
+
+  /* cover */
+  .cover{display:grid;grid-template-columns:56% 44%;height:100%}
+  .cover-left{position:relative;padding:86px 100px;display:flex;flex-direction:column}
+  .topbar{display:flex;justify-content:space-between;align-items:center;font-size:16px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .topbar b{color:var(--ink);font-weight:700}
+  .kicker{margin-top:120px;font-size:17px;letter-spacing:.34em;text-transform:uppercase;color:var(--muted)}
+  .display{font-family:'Playfair Display',serif;font-weight:700;font-size:118px;line-height:.98;letter-spacing:-.02em;margin-top:24px}
+  .display em{font-style:italic}
+  .sub{margin-top:34px;font-family:'Plus Jakarta Sans',sans-serif;font-size:28px;line-height:1.5;color:#4A4A4A;max-width:640px}
+  .meta{margin-top:auto;display:flex;justify-content:space-between;align-items:center;
+    border-top:2px solid var(--ink);padding-top:22px;font-size:15px;letter-spacing:.16em;text-transform:uppercase}
+
+  .cover-right{position:relative;background:var(--coral);overflow:hidden}
+  .ribbon{position:absolute;width:1400px;height:150px;background:var(--teal);left:-260px;top:300px;transform:rotate(-24deg);opacity:.95}
+  .panel-card{position:absolute;left:90px;top:250px;width:520px;background:var(--white);padding:46px 42px;
+    box-shadow:0 30px 70px rgba(0,0,0,.16);transform:rotate(-3deg)}
+  .panel-card .mono{font-size:15px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  .panel-card .quote{font-family:'Playfair Display',serif;font-size:52px;line-height:1.08;margin-top:18px}
+  .panel-card .sign{margin-top:26px;font-size:14px;letter-spacing:.16em;text-transform:uppercase}
+  .tape{position:absolute;width:180px;height:44px;background:var(--yellow);opacity:.85;left:60px;top:220px;transform:rotate(-8deg)}
+  .dot{position:absolute;border-radius:50%}
+
+  /* content */
+  .content{display:grid;grid-template-columns:1.15fr .85fr;height:100%}
+  .content-left{padding:84px 100px;display:flex;flex-direction:column}
+  .h2{font-family:'Playfair Display',serif;font-size:88px;line-height:1;letter-spacing:-.02em;margin-top:60px}
+  .lede{font-family:'Plus Jakarta Sans',sans-serif;font-size:27px;line-height:1.55;color:#4A4A4A;margin-top:28px;max-width:720px}
+  .list{margin-top:46px;display:flex;flex-direction:column;gap:0;border-top:2px solid var(--ink)}
+  .item{display:grid;grid-template-columns:110px 1fr;gap:26px;padding:26px 0;border-bottom:1px solid rgba(23,23,23,.18);align-items:start}
+  .item .n{font-size:17px;letter-spacing:.18em;padding-top:8px}
+  .item h3{font-family:'Playfair Display',serif;font-size:36px;font-weight:700}
+  .item p{font-family:'Plus Jakarta Sans',sans-serif;font-size:21px;line-height:1.5;color:#4A4A4A;margin-top:6px}
+  .content-right{position:relative;background:var(--lilac);overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .content-right .big{font-family:'Playfair Display',serif;font-size:300px;line-height:1;color:rgba(23,23,23,.12)}
+  .stamp{position:absolute;bottom:90px;left:80px;font-size:15px;letter-spacing:.2em;text-transform:uppercase;
+    border:2px solid var(--ink);padding:12px 18px;transform:rotate(-6deg);background:var(--yellow)}
+
+  .nav{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);display:flex;gap:10px;z-index:10}
+  .nav button{width:34px;height:6px;border:0;border-radius:99px;background:rgba(0,0,0,.18);cursor:pointer}
+  .nav button.on{background:#171717}
+</style>
+</head>
+<body>
+<div id="stage">
+  <section class="slide active">
+    <div class="cover">
+      <div class="cover-left">
+        <div class="topbar"><span><b>Confetti</b> · Concept</span><span>2026 — 01</span></div>
+        <div class="kicker">Design system</div>
+        <h1 class="display">The Pastel<br><em>Playbook</em></h1>
+        <p class="sub">A design system for modern brands — soft color, sharp structure, and room to breathe.</p>
+        <div class="meta"><span>Studio Preview</span><span>Issue 01 / 2026</span></div>
+      </div>
+      <div class="cover-right">
+        <div class="ribbon"></div>
+        <div class="tape"></div>
+        <div class="panel-card">
+          <div class="mono">Note to self</div>
+          <div class="quote">Pastel with punch, not pastel with beige.</div>
+          <div class="sign">— Studio Preview</div>
+        </div>
+        <div class="dot" style="width:26px;height:26px;background:var(--lilac);left:70px;bottom:120px"></div>
+        <div class="dot" style="width:18px;height:18px;background:var(--yellow);right:120px;top:150px"></div>
+        <div class="dot" style="width:34px;height:34px;background:var(--teal);right:220px;bottom:260px"></div>
+        <div class="dot" style="width:16px;height:16px;background:var(--ink);right:90px;bottom:170px"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <div class="content">
+      <div class="content-left">
+        <div class="topbar"><span><b>Confetti</b> · Why pastel</span><span>2026 — 02</span></div>
+        <h2 class="h2">Why pastel works</h2>
+        <p class="lede">Soft color is not the absence of a point of view. It is a way to make one that people actually want to read.</p>
+        <div class="list">
+          <div class="item"><div class="n">01 —</div><div><h3>Calm authority</h3><p>Soft color lowers resistance without losing structure.</p></div></div>
+          <div class="item"><div class="n">02 —</div><div><h3>Clear hierarchy</h3><p>Pastel fills separate ideas; ink text keeps them legible.</p></div></div>
+          <div class="item"><div class="n">03 —</div><div><h3>Human warmth</h3><p>Color signals approachability in formal rooms.</p></div></div>
+        </div>
+      </div>
+      <div class="content-right">
+        <div class="big">Aa</div>
+        <div class="stamp">Pastel / Editorial</div>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="nav"><button class="on" data-i="0"></button><button data-i="1"></button></div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const dots=[...document.querySelectorAll('.nav button')];
+  let i=0;
+  function show(n){i=(n+slides.length)%slides.length;slides.forEach((s,k)=>s.classList.toggle('active',k===i));dots.forEach((d,k)=>d.classList.toggle('on',k===i));}
+  addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')show(i+1);if(e.key==='ArrowLeft')show(i-1);});
+  dots.forEach(d=>d.onclick=()=>show(+d.dataset.i));
+  function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);document.getElementById('stage').style.transform=`translate(-50%,-50%) scale(${s})`;}
+  addEventListener('resize',fit);fit();
+  const _h=parseInt((location.hash||'').slice(1));if(_h>0)show(_h-1);
+</script>
+</body>
+</html>
